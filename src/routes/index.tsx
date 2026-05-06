@@ -7,6 +7,7 @@ import { Agents } from "@/components/landing/Agents";
 import { VideoPreview } from "@/components/landing/VideoPreview";
 import { Sigils } from "@/components/landing/Sigils";
 import { FinalCTA } from "@/components/landing/FinalCTA";
+import { Footer } from "@/components/landing/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,9 +38,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="min-h-screen">
+      <Nav />
       <main>
         <Hero />
-        <Nav />
         <FeatureStrip />
         <Zones />
         <Agents />
@@ -47,6 +48,7 @@ function Index() {
         <Sigils />
         <FinalCTA />
       </main>
+      <Footer />
     </div>
   );
 }

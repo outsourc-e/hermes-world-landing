@@ -1,5 +1,4 @@
 import { Play } from "lucide-react";
-import { Sigil, WordmarkHorizontal } from "./Sigil";
 
 const links = [
   { label: "World", href: "#world" },
@@ -11,14 +10,33 @@ const links = [
 
 export function Nav() {
   return (
-    <header className="sticky top-0 z-50 bg-obsidian/90 backdrop-blur-xl border-b border-gold/15">
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-8 h-[72px] flex items-center">
-        <a href="#top" className="flex items-center gap-3">
-          <Sigil size={46} />
-          <WordmarkHorizontal height={28} />
+    <header className="sticky top-0 z-50 bg-obsidian/95 backdrop-blur-xl border-b border-gold/25 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.6)]">
+      <div className="max-w-[1400px] mx-auto px-4 lg:px-8 h-[80px] flex items-center">
+        <a href="#top" className="flex items-center gap-3 group">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-gold/40 blur-2xl opacity-80 group-hover:opacity-100 transition-opacity" />
+            <img
+              src="/assets/hermesworld/art/hermesworld-logo-h.png"
+              alt="HermesWorld"
+              width={48}
+              height={48}
+              className="relative h-11 w-11 lg:h-12 lg:w-12 rounded-full object-cover ring-1 ring-gold/40 drop-shadow-[0_0_18px_rgba(241,197,109,0.55)]"
+            />
+          </div>
+          <div className="flex flex-col leading-none">
+            <span
+              className="font-display font-bold tracking-tight text-[22px] lg:text-[26px] bg-gradient-to-b from-[#FFFBE9] via-[#F5D97A] to-[#C89C2A] bg-clip-text text-transparent"
+              style={{ letterSpacing: "0.01em" }}
+            >
+              HermesWorld
+            </span>
+            <span className="text-[9px] lg:text-[10px] uppercase tracking-[0.28em] text-gold/70 font-body font-bold mt-1.5">
+              Persistent Agent RPG
+            </span>
+          </div>
         </a>
 
-        <nav className="hidden md:flex items-center gap-5 lg:gap-7 ml-8 lg:ml-14 text-[13px] lg:text-[15px] font-body font-medium text-parchment/70">
+        <nav className="hidden md:flex items-center gap-5 lg:gap-7 ml-10 lg:ml-16 text-[13px] lg:text-[14px] font-body font-medium text-parchment/75">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="hover:text-gold transition-colors">
               {l.label}
