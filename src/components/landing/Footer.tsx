@@ -1,11 +1,48 @@
 import { Sigil, WordmarkHorizontal } from "./Sigil";
-import { Twitter, Youtube, Github, MessageCircle } from "lucide-react";
+import { Twitter, Github, MessageCircle } from "lucide-react";
 
-const cols = [
-  { title: "World", links: ["Six zones. One living world."] },
-  { title: "Agents", links: ["Companions that work with you."] },
-  { title: "Sigils", links: ["Progress that unlocks."] },
-  { title: "Company", links: ["About", "Updates", "Contact"] },
+const cols: Array<{
+  title: string;
+  links: { label: string; href: string; external?: boolean }[];
+}> = [
+  {
+    title: "World",
+    links: [
+      { label: "Enter the World", href: "https://hermes-world.ai/play/", external: true },
+      { label: "Six Zones", href: "#world" },
+      { label: "Watch Preview", href: "#preview" },
+    ],
+  },
+  {
+    title: "Agents",
+    links: [
+      { label: "How Agents Live", href: "#agents" },
+      {
+        label: "Hermes Workspace",
+        href: "https://github.com/outsourc-e/hermes-workspace",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Sigils",
+    links: [
+      { label: "Sigil Lore", href: "#sigils" },
+      {
+        label: "Roadmap",
+        href: "https://github.com/outsourc-e/hermes-workspace/blob/main/docs/hermesworld/PUBLIC-ROADMAP.md",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Updates", href: "#updates" },
+      { label: "GitHub", href: "https://github.com/outsourc-e", external: true },
+      { label: "Discord", href: "https://discord.gg/clawd", external: true },
+    ],
+  },
 ];
 
 export function Footer() {
@@ -28,11 +65,12 @@ export function Footer() {
             </div>
             {c.links.map((l) => (
               <a
-                key={l}
-                href="#"
+                key={l.label}
+                href={l.href}
+                {...(l.external ? { target: "_blank", rel: "noreferrer" } : {})}
                 className="block text-[12px] text-parchment/50 hover:text-gold transition-colors mb-1.5 font-body font-normal"
               >
-                {l}
+                {l.label}
               </a>
             ))}
           </div>
@@ -40,19 +78,21 @@ export function Footer() {
       </div>
       <div className="border-t border-[#F1C56D]/10 py-5 max-w-[1240px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="text-[10px] text-parchment/35 font-body">
-          © 2025 HermesWorld. All rights reserved.
+          © 2026 HermesWorld. All rights reserved.
         </div>
         <div className="flex gap-4 text-parchment/40">
-          <a href="#" aria-label="Discord">
+          <a href="https://discord.gg/clawd" target="_blank" rel="noreferrer" aria-label="Discord">
             <MessageCircle className="w-4 h-4 hover:text-gold transition-colors" />
           </a>
-          <a href="#" aria-label="X">
+          <a href="https://x.com/buildingthefuture" target="_blank" rel="noreferrer" aria-label="X">
             <Twitter className="w-4 h-4 hover:text-gold transition-colors" />
           </a>
-          <a href="#" aria-label="YouTube">
-            <Youtube className="w-4 h-4 hover:text-gold transition-colors" />
-          </a>
-          <a href="#" aria-label="GitHub">
+          <a
+            href="https://github.com/outsourc-e"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+          >
             <Github className="w-4 h-4 hover:text-gold transition-colors" />
           </a>
         </div>
