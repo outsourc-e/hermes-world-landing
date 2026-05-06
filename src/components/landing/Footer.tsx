@@ -39,7 +39,7 @@ const cols: Array<{
     links: [
       { label: "Updates", href: "#updates" },
       { label: "GitHub", href: "https://github.com/outsourc-e", external: true },
-      { label: "Discord", href: "https://discord.gg/clawd", external: true },
+      { label: "Discord", href: "https://discord.gg/mATfwmrsWx", external: true },
     ],
   },
 ];
@@ -80,7 +80,7 @@ export function Footer() {
           {/* Social row in left column for prominence */}
           <div className="mt-6 flex items-center gap-2">
             <a
-              href="https://discord.gg/agentd"
+              href="https://discord.gg/mATfwmrsWx"
               target="_blank"
               rel="noreferrer"
               aria-label="Discord"

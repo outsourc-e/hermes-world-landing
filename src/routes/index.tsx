@@ -7,6 +7,7 @@ import { Agents } from "@/components/landing/Agents";
 import { VideoPreview } from "@/components/landing/VideoPreview";
 import { Sigils } from "@/components/landing/Sigils";
 import { FinalCTA } from "@/components/landing/FinalCTA";
+import { Updates } from "@/components/landing/Updates";
 import { Footer } from "@/components/landing/Footer";
 
 export const Route = createFileRoute("/")({
@@ -46,6 +47,7 @@ function Index() {
         <Agents />
         <VideoPreview />
         <Sigils />
+        <Updates />
         <FinalCTA />
       </main>
       <Footer />
