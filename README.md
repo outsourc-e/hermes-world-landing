@@ -1,83 +1,68 @@
 # hermes-world.ai Landing
 
-Production landing page for **HermesWorld** — the Agentic MMO.
+Lovable-exported landing page for **HermesWorld** — the Agentic MMO.
 
 Live: <https://hermes-world.ai>
 
 ## What this repo is
 
-A static landing site (single `index.html` + assets) deployed to Cloudflare Pages.
+This repo contains the marketing landing page for HermesWorld. The current implementation is a Lovable export built with TanStack Start, React 19, Vite, Tailwind CSS v4, and shadcn/Radix components.
 
-```
+The landing-page CTAs point users to the live playable world at:
+
+- <https://hermes-world.ai/play/>
+
+## Stack
+
+- **Framework:** TanStack Start / TanStack Router
+- **UI:** React 19, shadcn/ui, Radix primitives, lucide-react
+- **Styling:** Tailwind CSS v4
+- **Build:** Vite
+- **Deploy target:** Cloudflare Pages / Cloudflare Workers-compatible build output
+
+## Project structure
+
+```text
+src/
+├── assets/          # Lovable-exported section artwork
+├── components/
+│   ├── landing/     # Landing page sections and clickable overlays
+│   └── ui/          # shadcn/ui primitives
+├── hooks/           # Shared hooks
+├── lib/             # Utilities
+├── routes/          # TanStack file routes
+├── styles.css       # Design tokens and Tailwind theme
+└── router.tsx       # Router configuration
+
 public/
-├── index.html              # Main landing
-├── early-access.html       # Backup early-access entry
-├── hermes-world.html       # Backup landing variant
-├── _headers                # Cloudflare Pages headers
-├── _redirects              # Cloudflare Pages redirects
-├── manifest.json           # PWA manifest
-├── favicon.svg
-├── hermesworld-logo.svg
-├── apple-touch-icon.png
-├── social-preview.png
-├── robots.txt
-└── assets/hermesworld/
-    ├── art/                # Logos, sigils, hero/world graphics
-    ├── video/              # Hero/preview videos
-    └── zones/              # Zone screenshots (Agora, Forge, etc.)
+├── _headers         # Cloudflare Pages headers for static assets
+├── assets/          # Legacy/prod static assets retained for social/brand paths
+└── favicon.ico
 ```
 
-## Local preview
+## Local development
 
 ```bash
-cd public && python3 -m http.server 5173
+npm install
+npm run dev
 # open http://localhost:5173
 ```
 
-Or with any static server:
+## Checks
 
 ```bash
-npx serve public
+npm run lint
+npm run build
 ```
 
-## Deploy
+## Cloudflare preview flow
 
-Connected to **Cloudflare Pages** project `hermes-world` deploying from `main`.
+The upstream repo is connected to Cloudflare Pages. Open changes as a PR against `outsourc-e/hermes-world-landing:main`; Cloudflare should attach a preview deployment to the PR for review before merge.
 
-- **Production:** `hermes-world.ai` (apex + `www` → CNAME `hermes-world.pages.dev`)
-- **Preview:** `*.hermes-world.pages.dev`
-- **Build command:** *(none — static)*
-- **Output directory:** `public`
+Do not push directly to `main`.
 
-## How to contribute
+## Notes for collaborators
 
-1. Fork this repo or create a branch off `main`.
-2. Edit `public/index.html` and/or assets in `public/assets/hermesworld/`.
-3. Open a PR. Each PR gets a Cloudflare Pages preview URL automatically.
-4. After review, we merge to `main` → live in ~30s.
-
-### Style references
-
-The HermesWorld visual system uses:
-
-- **Palette:**
-  - GOLD `#F1C56D`
-  - BRONZE `#B8862B`
-  - PARCHMENT `#F4E9D3`
-  - VERDIGRIS `#2E6A63`
-  - MIDNIGHT `#0F1622`
-  - SLATE `#1B2433`
-  - STONE `#8A8F98`
-  - OBSIDIAN `#0A0D12`
-- **Type:** Canela / Instrument Serif (display) + Inter / Söhne (UI)
-- **Vibe:** premium dark fantasy MMO, warm golden-hour, verdigris glow, no off-palette neons or pure flat black.
-
-### Notes for collaborators
-
-- This repo is **landing-only**. The actual game runs on a separate origin and is embedded via the `Play` CTA.
-- Keep changes static. No build pipeline yet — if you want to add Tailwind / a bundler, propose it in an issue first so we agree on the toolchain.
-- Don't commit private keys or environment-specific URLs. Use placeholders if needed.
-
----
-
-Maintained by [@outsourc-e](https://github.com/outsourc-e). Issues / suggestions welcome.
+- This repo is landing-only. The playable world remains behind the `https://hermes-world.ai/play/` CTA.
+- Keep private keys, tokens, and environment-specific secrets out of the repo.
+- If deployment settings need adjustment, make them part of PR review rather than bypassing the protected `main` flow.
