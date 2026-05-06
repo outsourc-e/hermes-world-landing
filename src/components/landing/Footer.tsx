@@ -89,7 +89,7 @@ export function Footer() {
               <MessageCircle className="w-4 h-4" />
             </a>
             <a
-              href="https://x.com/buildingthefuture"
+              href="https://x.com/outsource_"
               target="_blank"
               rel="noreferrer"
               aria-label="X (Twitter)"

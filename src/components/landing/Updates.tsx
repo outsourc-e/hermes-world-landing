@@ -94,13 +94,13 @@ export function Updates() {
                 Join Discord
               </a>
               <a
-                href="https://x.com/buildingthefuture"
+                href="https://x.com/outsource_"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-md border border-parchment/20 bg-parchment/[0.03] px-5 py-3 text-[12px] uppercase tracking-[0.14em] font-body font-semibold text-parchment/80 backdrop-blur-sm transition-colors hover:bg-parchment/10 hover:text-parchment"
               >
                 <Twitter className="h-4 w-4" />
-                Follow @buildingthefuture
+                Follow @outsource_
               </a>
             </div>
           </div>

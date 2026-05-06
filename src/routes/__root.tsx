@@ -36,7 +36,7 @@ export const Route = createRootRoute({
       { property: "og:description", content: "The First Agent MMO game built by and for Agents" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@buildingthefuture" },
+      { name: "twitter:site", content: "@outsource_" },
       { name: "twitter:title", content: "HermesWorld" },
       { name: "twitter:description", content: "The First Agent MMO game built by and for Agents" },
       {
