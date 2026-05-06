@@ -119,7 +119,8 @@ export function Footer() {
                 <a
                   key={l.label}
                   href={l.href}
-                  {...(l.third-party ? { target: "_blank", rel: "noreferrer" } : {})}
+                  target={l.third-party ? "_blank" : undefined}
+                  rel={l.third-party ? "noreferrer" : undefined}
                   className="block text-[13px] text-parchment/55 hover:text-gold transition-colors font-body"
                 >
                   {l.label}
