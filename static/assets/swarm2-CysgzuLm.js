@@ -1,0 +1,1 @@
+import{j as o}from"./main-DH2ogZMo.js";import{u as r}from"./use-page-title-BjhPc75Q.js";import{S as t}from"./swarm2-screen-JSuJfycG.js";import"./use-crew-status-BSnoExcq.js";import"./workflow-help-modal-DqVTr9A-.js";const a=function(){return r("Swarm"),o.jsx(t,{})};export{a as component};
