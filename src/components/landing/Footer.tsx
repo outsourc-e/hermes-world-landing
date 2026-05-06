@@ -2,7 +2,7 @@ import { Twitter, Github, MessageCircle } from "lucide-react";
 
 const cols: Array<{
   title: string;
-  links: { label: string; href: string; external?: boolean }[];
+  links: { label: string; href: string; isExternal?: boolean }[];
 }> = [
   {
     title: "World",
@@ -19,7 +19,7 @@ const cols: Array<{
       {
         label: "Hermes Workspace",
         href: "https://github.com/outsourc-e/hermes-workspace",
-        external: true,
+        isExternal: true,
       },
     ],
   },
@@ -30,7 +30,7 @@ const cols: Array<{
       {
         label: "Roadmap",
         href: "https://github.com/outsourc-e/hermes-workspace/blob/main/docs/hermesworld/PUBLIC-ROADMAP.md",
-        external: true,
+        isExternal: true,
       },
     ],
   },
@@ -38,8 +38,8 @@ const cols: Array<{
     title: "Company",
     links: [
       { label: "Updates", href: "#updates" },
-      { label: "GitHub", href: "https://github.com/outsourc-e", external: true },
-      { label: "Discord", href: "https://discord.gg/mATfwmrsWx", external: true },
+      { label: "GitHub", href: "https://github.com/outsourc-e", isExternal: true },
+      { label: "Discord", href: "https://discord.gg/mATfwmrsWx", isExternal: true },
     ],
   },
 ];
@@ -119,8 +119,8 @@ export function Footer() {
                 <a
                   key={l.label}
                   href={l.href}
-                  target={l.third-party ? "_blank" : undefined}
-                  rel={l.third-party ? "noreferrer" : undefined}
+                  target={l.isExternal ? "_blank" : undefined}
+                  rel={l.isExternal ? "noreferrer" : undefined}
                   className="block text-[13px] text-parchment/55 hover:text-gold transition-colors font-body"
                 >
                   {l.label}
