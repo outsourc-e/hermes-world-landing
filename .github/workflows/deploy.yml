@@ -31,6 +31,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Strip generated wrangler config
+        run: rm -f dist/client/wrangler.json dist/client/wrangler.jsonc dist/client/wrangler.toml
+
       - name: Determine deploy branch
         id: branch
         run: |
