@@ -1,8 +1,34 @@
-node_modules/
-dist/
+
+!.vscode/extensions.json
+.dev.vars
 .DS_Store
 .env
 .env.local
+.idea
+.nitro
+.output
+.tanstack/**
+.vinxi
+.vscode/*
+.wrangler/
+*.local
 *.log
-.vscode/
-.idea/
+*.njsproj
+*.ntvs*
+*.sln
+*.suo
+*.sw?
+# Editor directories and files
+# Logs
+# Wrangler / Cloudflare
+dist
+dist-ssr
+dist/
+lerna-debug.log*
+logs
+node_modules
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
