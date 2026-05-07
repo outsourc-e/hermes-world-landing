@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>HermesWorld — Reserve your name</title>
+  <meta name="theme-color" content="#03080c" />
+  <style>
+    :root{--bg:#03080c;--panel:#09161d;--panel2:#0f2028;--gold:#f4c66d;--gold2:#ffebba;--cyan:#78f0ff;--text:#fff4dc;--muted:#9bb0a9;--line:rgba(244,198,109,.22);--danger:#ff8d73;--success:#7dffad}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 20% 0%,rgba(244,198,109,.18),transparent 25%),radial-gradient(circle at 80% 10%,rgba(120,240,255,.12),transparent 30%),linear-gradient(180deg,#020608 0%,#071319 45%,#020608 100%);color:var(--text);display:grid;place-items:center;padding:24px}a{color:inherit;text-decoration:none}.shell{width:min(100%,520px)}.card{border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(9,22,29,.94),rgba(3,9,12,.96));padding:32px 24px 24px;box-shadow:0 40px 120px rgba(0,0,0,.5),0 0 80px rgba(244,198,109,.08)}.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;border:1px solid rgba(244,198,109,.24);background:rgba(244,198,109,.08);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.title{font-family:Georgia,serif;font-size:clamp(38px,9vw,58px);line-height:.95;letter-spacing:-.05em;margin:18px 0 12px}.copy{color:var(--muted);font-size:16px;line-height:1.65;margin:0 0 24px}.status{margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.55}.status[data-tone="error"]{color:var(--danger)}.status[data-tone="success"]{color:var(--success)}.spinner{width:52px;height:52px;border-radius:999px;border:3px solid rgba(244,198,109,.16);border-top-color:var(--gold);animation:spin 1s linear infinite;margin:0 auto 20px}.panel{border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(255,255,255,.03);padding:18px}.form{display:grid;gap:14px}.label{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}.input{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:#050d12;color:var(--text);padding:16px 18px;font-size:17px;outline:none}.input:focus{border-color:rgba(120,240,255,.5);box-shadow:0 0 0 4px rgba(120,240,255,.08)}.hint{color:var(--muted);font-size:13px;line-height:1.5}.actions{display:grid;gap:12px}.btn{width:100%;min-height:56px;border-radius:16px;border:1px solid rgba(255,255,255,.12);display:inline-flex;align-items:center;justify-content:center;padding:0 18px;font-size:15px;font-weight:900;letter-spacing:.02em;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer}.btn.primary{background:linear-gradient(180deg,#ffe6a4 0%,#e9aa3c 48%,#a95d18 100%);border-color:rgba(255,229,168,.75);color:#160f07;box-shadow:0 22px 60px rgba(244,166,54,.22),inset 0 1px 0 rgba(255,255,255,.38)}.btn.secondary{background:rgba(255,255,255,.04)}.hidden{display:none!important}.meta{margin-top:18px;font-size:12px;color:#7c928b}.brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}.brand img{width:42px;height:42px;border-radius:50%;box-shadow:0 0 24px rgba(244,198,109,.22)}.brand b{font-size:18px}@keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="card">
+      <div class="brand"><img src="/assets/hermesworld/art/hermesworld-logo-h.png" alt="HermesWorld"><b>HermesWorld</b></div>
+      <div class="eyebrow">Google OAuth live</div>
+      <h1 class="title">Reserve your name before you enter the world.</h1>
+      <p class="copy">Google sign-in is now the gate. Lock a unique username now, then continue into HermesWorld.</p>
+      <section id="loading-panel" class="panel">
+        <div class="spinner" aria-hidden="true"></div>
+        <div id="loading-status" class="status">Exchanging your Google auth code…</div>
+      </section>
+      <section id="reserve-panel" class="panel hidden">
+        <form id="reserve-form" class="form">
+          <div>
+            <div class="label">Username</div>
+            <input id="username" class="input" name="username" autocomplete="nickname" autocapitalize="none" spellcheck="false" maxlength="24" placeholder="e.g. atlas_builder" />
+          </div>
+          <div class="hint">3–24 chars. Lowercase letters, numbers, underscores. This is the name people will see in HermesWorld.</div>
+          <div class="actions">
+            <button id="reserve-submit" class="btn primary" type="submit">Reserve my name →</button>
+            <a class="btn secondary" href="/">Back to landing</a>
+          </div>
+        </form>
+        <div id="reserve-status" class="status"></div>
+      </section>
+      <div id="footnote" class="meta">Post-auth destination: /play if available, otherwise /dashboard.</div>
+    </div>
+  </main>
+  <script type="module">
+    import { exchangeCodeFromCurrentUrl, getCurrentProfile, getDestination, normalizeUsername, reserveUsername, signInWithGoogle, suggestUsername } from '/assets/hermesworld/auth/supabase-client.js';
+
+    const loadingPanel = document.getElementById('loading-panel');
+    const reservePanel = document.getElementById('reserve-panel');
+    const loadingStatus = document.getElementById('loading-status');
+    const reserveStatus = document.getElementById('reserve-status');
+    const form = document.getElementById('reserve-form');
+    const usernameInput = document.getElementById('username');
+    const submitButton = document.getElementById('reserve-submit');
+    const footnote = document.getElementById('footnote');
+
+    function setStatus(node, message, tone = 'muted') {
+      node.textContent = message;
+      node.dataset.tone = tone;
+    }
+
+    function showReserve() {
+      loadingPanel.classList.add('hidden');
+      reservePanel.classList.remove('hidden');
+      usernameInput.focus();
+    }
+
+    async function continueToDestination() {
+      const destination = await getDestination();
+      footnote.textContent = `Destination locked: ${destination}`;
+      window.location.replace(destination);
+    }
+
+    async function bootstrap() {
+      const params = new URL(window.location.href).searchParams;
+      const hasCode = params.has('code');
+      if (hasCode) {
+        const result = await exchangeCodeFromCurrentUrl();
+        if (result?.error) {
+          console.error(result.error);
+          loadingPanel.classList.add('hidden');
+          reservePanel.classList.remove('hidden');
+          setStatus(reserveStatus, result.error.message || 'Could not finish Google sign-in. Try again.', 'error');
+          submitButton.textContent = 'Retry Google sign-in';
+          submitButton.type = 'button';
+          submitButton.addEventListener('click', async () => {
+            setStatus(reserveStatus, 'Redirecting to Google…');
+            const { error } = await signInWithGoogle();
+            if (error) setStatus(reserveStatus, error.message || 'Could not start Google sign-in.', 'error');
+          }, { once: true });
+          return;
+        }
+      }
+
+      const { user, profile } = await getCurrentProfile();
+      if (!user) {
+        loadingPanel.classList.add('hidden');
+        reservePanel.classList.remove('hidden');
+        setStatus(reserveStatus, 'No active session yet. Use Google sign-in again.', 'error');
+        submitButton.textContent = 'Sign in with Google';
+        submitButton.type = 'button';
+        submitButton.addEventListener('click', async () => {
+          setStatus(reserveStatus, 'Redirecting to Google…');
+          const { error } = await signInWithGoogle();
+          if (error) setStatus(reserveStatus, error.message || 'Could not start Google sign-in.', 'error');
+        }, { once: true });
+        return;
+      }
+
+      if (profile?.username) {
+        setStatus(loadingStatus, `Welcome back, ${profile.username}. Sending you to the portal…`, 'success');
+        await continueToDestination();
+        return;
+      }
+
+      usernameInput.value = suggestUsername(user);
+      setStatus(loadingStatus, `Signed in as ${user.email || 'your account'}. Pick your HermesWorld username.`, 'success');
+      showReserve();
+    }
+
+    usernameInput.addEventListener('input', () => {
+      const normalized = normalizeUsername(usernameInput.value);
+      if (usernameInput.value !== normalized) usernameInput.value = normalized;
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const username = normalizeUsername(usernameInput.value);
+      usernameInput.value = username;
+
+      if (username.length < 3) {
+        setStatus(reserveStatus, 'Username must be at least 3 characters.', 'error');
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Reserving…';
+      setStatus(reserveStatus, 'Claiming your handle…');
+
+      try {
+        const profile = await reserveUsername(username);
+        setStatus(reserveStatus, `Locked in. ${profile.username} is yours.`, 'success');
+        submitButton.textContent = 'Reserved';
+        await continueToDestination();
+      } catch (error) {
+        console.error(error);
+        const message = error?.code === '23505'
+          ? 'That username is taken. Try another.'
+          : (error?.message || 'Could not reserve that username.');
+        setStatus(reserveStatus, message, 'error');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Reserve my name →';
+      }
+    });
+
+    bootstrap().catch((error) => {
+      console.error(error);
+      loadingPanel.classList.add('hidden');
+      reservePanel.classList.remove('hidden');
+      setStatus(reserveStatus, error.message || 'Auth callback failed.', 'error');
+    });
+  </script>
+</body>
+</html>

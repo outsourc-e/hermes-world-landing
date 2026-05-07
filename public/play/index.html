@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>HermesWorld — Portal unlocked</title>
+  <meta name="theme-color" content="#03080c" />
+  <style>
+    :root{--bg:#03080c;--panel:#071318;--gold:#f4c66d;--text:#fff4dc;--muted:#9ab0a9;--cyan:#78f0ff;--success:#7dffad;--line:rgba(244,198,109,.22)}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 20% 0%,rgba(244,198,109,.18),transparent 25%),radial-gradient(circle at 80% 10%,rgba(120,240,255,.12),transparent 30%),linear-gradient(180deg,#020608 0%,#071319 45%,#020608 100%);color:var(--text);display:grid;place-items:center;padding:24px}a{color:inherit;text-decoration:none}.card{width:min(100%,560px);border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(9,22,29,.94),rgba(3,9,12,.96));padding:32px 24px 24px;box-shadow:0 40px 120px rgba(0,0,0,.5)}.eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;border:1px solid rgba(244,198,109,.24);background:rgba(244,198,109,.08);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.title{font-family:Georgia,serif;font-size:clamp(36px,8vw,56px);line-height:.95;letter-spacing:-.05em;margin:18px 0 10px}.copy{color:var(--muted);font-size:16px;line-height:1.65;margin:0 0 24px}.panel{border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(255,255,255,.03);padding:18px}.status{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.55}.status[data-tone="success"]{color:var(--success)}.status[data-tone="error"]{color:#ff8d73}.username{font-size:30px;font-weight:900;letter-spacing:-.03em;color:var(--gold)}.actions{display:grid;gap:12px;margin-top:20px}.btn{width:100%;min-height:56px;border-radius:16px;border:1px solid rgba(255,255,255,.12);display:inline-flex;align-items:center;justify-content:center;padding:0 18px;font-size:15px;font-weight:900;letter-spacing:.02em;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer}.btn.primary{background:linear-gradient(180deg,#ffe6a4 0%,#e9aa3c 48%,#a95d18 100%);border-color:rgba(255,229,168,.75);color:#160f07}.brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}.brand img{width:42px;height:42px;border-radius:50%}.hidden{display:none!important}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><img src="/assets/hermesworld/art/hermesworld-logo-h.png" alt="HermesWorld"><strong>HermesWorld</strong></div>
+    <div class="eyebrow">Portal unlocked</div>
+    <h1 class="title">You are in the queue.</h1>
+    <p class="copy">This is the post-auth wedge. Sign in, reserve your name, and use this page as the handoff into the real world.</p>
+    <section class="panel">
+      <div class="username" id="username">Loading…</div>
+      <div class="status" id="status">Checking your session…</div>
+    </section>
+    <div class="actions">
+      <a id="reserve-link" class="btn primary hidden" href="/auth/callback">Reserve your name →</a>
+      <a class="btn" href="/">Back to landing</a>
+      <button id="signout" class="btn" type="button">Sign out</button>
+    </div>
+  </main>
+  <script type="module">
+    import { getCurrentProfile, signInWithGoogle, signOut } from '/assets/hermesworld/auth/supabase-client.js';
+
+    const username = document.getElementById('username');
+    const status = document.getElementById('status');
+    const reserveLink = document.getElementById('reserve-link');
+    const signout = document.getElementById('signout');
+
+    function setStatus(message, tone = 'muted') {
+      status.textContent = message;
+      status.dataset.tone = tone;
+    }
+
+    async function bootstrap() {
+      const { user, profile } = await getCurrentProfile();
+      if (!user) {
+        username.textContent = 'Not signed in';
+        setStatus('Use Google sign-in to enter the wedge.', 'error');
+        reserveLink.classList.remove('hidden');
+        reserveLink.textContent = 'Sign in with Google';
+        reserveLink.addEventListener('click', async (event) => {
+          event.preventDefault();
+          const { error } = await signInWithGoogle();
+          if (error) setStatus(error.message || 'Could not start Google sign-in.', 'error');
+        });
+        return;
+      }
+
+      if (!profile?.username) {
+        username.textContent = user.email || 'Almost there';
+        setStatus('Finish reserving your HermesWorld name.', 'error');
+        reserveLink.classList.remove('hidden');
+        return;
+      }
+
+      username.textContent = '@' + profile.username;
+      setStatus('Google auth succeeded and your name is reserved.', 'success');
+    }
+
+    signout.addEventListener('click', async () => {
+      await signOut();
+      window.location.replace('/');
+    });
+
+    bootstrap().catch((error) => {
+      console.error(error);
+      username.textContent = 'Auth error';
+      setStatus(error.message || 'Could not load your profile.', 'error');
+      reserveLink.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
