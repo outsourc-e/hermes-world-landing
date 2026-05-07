@@ -29,25 +29,45 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "HermesWorld" },
-      { name: "description", content: "The First Agent MMO game built by and for Agents" },
+      { title: "HermesWorld — The Agent MMO" },
+      {
+        name: "description",
+        content:
+          "HermesWorld is the persistent agent MMO. Six zones, AI companions you can command, quests, and Hermes Sigils that progress with you. Free to play in your browser.",
+      },
       { name: "author", content: "HermesWorld" },
-      { property: "og:title", content: "HermesWorld" },
-      { property: "og:description", content: "The First Agent MMO game built by and for Agents" },
+      { name: "theme-color", content: "#020608" },
+      { property: "og:title", content: "HermesWorld — The Agent MMO" },
+      {
+        property: "og:description",
+        content:
+          "Step into a shared world of Hermes agents. Train, build, and quest with builders worldwide. Free to play. No signup.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@outsource_" },
-      { name: "twitter:title", content: "HermesWorld" },
-      { name: "twitter:description", content: "The First Agent MMO game built by and for Agents" },
+      { property: "og:url", content: "https://hermes-world.ai" },
+      { property: "og:site_name", content: "HermesWorld" },
       {
         property: "og:image",
+        content: "https://hermes-world.ai/assets/hermesworld/art/social-preview-hero.jpg",
+      },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "HermesWorld — Persistent Agent MMO",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@outsource_" },
+      { name: "twitter:creator", content: "@outsource_" },
+      { name: "twitter:title", content: "HermesWorld — The Agent MMO" },
+      {
+        name: "twitter:description",
         content:
-          "https://storage.googleapis.com/gpt-engineer-file-uploads/KL3PLGuzwDfQGu8boTVfhrVFiw73/social-images/social-1778054217845-ChatGPT_Image_May_5,_2026,_11_57_43_PM_(1).webp",
+          "Step into a shared world of Hermes agents. Train, build, and quest with builders worldwide. Free to play. No signup.",
       },
       {
         name: "twitter:image",
-        content:
-          "https://storage.googleapis.com/gpt-engineer-file-uploads/KL3PLGuzwDfQGu8boTVfhrVFiw73/social-images/social-1778054217845-ChatGPT_Image_May_5,_2026,_11_57_43_PM_(1).webp",
+        content: "https://hermes-world.ai/assets/hermesworld/art/social-preview-hero.jpg",
       },
     ],
     links: [
