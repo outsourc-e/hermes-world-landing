@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>HermesWorld - Coming Soon</title>
+<meta name="description" content="HermesWorld V1 - the full Unity client launches soon. Download the Windows preview build today." />
+<meta name="theme-color" content="#03080c" />
+<link rel="icon" href="/assets/hermesworld/art/hermesworld-logo-h.png" />
+<style>
+  :root{--gold:#f4c66d;--gold-soft:rgba(244,198,109,.5);--bg:#020608;--bg2:#03080c;}
+  html,body{margin:0;background:var(--bg);color:#fff4dc;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;}
+  .container{max-width:760px;margin:0 auto;padding:80px 28px 60px;text-align:center;}
+  .crest{width:128px;height:128px;margin:0 auto 28px;background:url('/assets/hermesworld/art/hermesworld-logo-h.png') center/cover;border-radius:24px;box-shadow:0 0 80px rgba(244,198,109,.35);}
+  h1{font-size:clamp(28px,6vw,52px);letter-spacing:-.02em;color:var(--gold);font-weight:900;margin:0 0 12px;}
+  .sub{color:rgba(255,244,220,.6);font-size:14px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:36px;}
+  .lede{font-size:18px;line-height:1.6;color:#e6ddc1;margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto;}
+  .actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+  .btn{padding:14px 24px;border-radius:10px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:900;text-decoration:none;display:inline-flex;align-items:center;gap:10px;border:1px solid transparent;}
+  .btn-primary{background:var(--gold);color:#1a1108;}
+  .btn-primary:hover{background:#ffd97a;}
+  .btn-ghost{background:rgba(244,198,109,.1);color:var(--gold);border-color:rgba(244,198,109,.3);}
+  .btn-ghost:hover{background:rgba(244,198,109,.18);}
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;text-align:left;margin-bottom:48px;}
+  .feature{background:rgba(255,244,220,.04);border:1px solid rgba(244,198,109,.12);border-radius:14px;padding:18px 18px 16px;}
+  .feature h3{color:var(--gold);font-size:14px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 8px;}
+  .feature p{margin:0;font-size:14px;line-height:1.5;color:#d4cba8;}
+  .status{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:99px;background:rgba(244,198,109,.1);color:var(--gold);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;}
+  .dot{width:8px;height:8px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold);animation:pulse 1.5s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+  footer{margin-top:40px;color:rgba(255,244,220,.35);font-size:12px;}
+  .hw-back{position:fixed;top:14px;left:14px;color:var(--gold);background:rgba(244,198,109,.12);border:1px solid rgba(244,198,109,.3);border-radius:8px;padding:6px 12px;text-decoration:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;}
+  .hw-back:hover{background:rgba(244,198,109,.22);}
+</style>
+</head>
+<body>
+<a href="/" class="hw-back">← Back</a>
+<div class="container">
+  <div class="crest"></div>
+  <div class="status"><span class="dot"></span>V1 Now Shipping</div>
+  <h1 style="margin-top:24px;">HermesWorld</h1>
+  <div class="sub">Greek-myth MMO · Unity 6 · Public Preview</div>
+  <p class="lede">
+    Walk into AgoraTown. Speak with Hermes, Apollo, Athena, Artemis, and the rest of the pantheon.
+    Train under Master Kheiron. Reach level 3 to unlock the kingdom map.
+  </p>
+  <div class="actions">
+    <a href="https://github.com/outsourc-e/hermes-world-landing/releases" class="btn btn-primary">⬇ Download Windows Build</a>
+    <a href="/" class="btn btn-ghost">Reserve your name</a>
+  </div>
+  <div class="features">
+    <div class="feature">
+      <h3>Training Grounds</h3>
+      <p>Spawn in the vanilla Atavism world. Train with Lykos, fight Bomber Bugs, talk to Master Kheiron.</p>
+    </div>
+    <div class="feature">
+      <h3>The Portal</h3>
+      <p>Reach level 3 and walk through the portal to AgoraTown - the home of the gods of HermesWorld.</p>
+    </div>
+    <div class="feature">
+      <h3>14 Deities</h3>
+      <p>Pick your god at character creation. Hermes for speed, Athena for wisdom, Artemis for the hunt.</p>
+    </div>
+    <div class="feature">
+      <h3>Open Quests</h3>
+      <p>15 deity-oath quests plus the First Steps tutorial. Earn your place in the pantheon.</p>
+    </div>
+  </div>
+  <p style="font-size:13px;color:rgba(255,244,220,.5);line-height:1.5;">
+    WebGL preview cooking. The Windows build is the full experience for now.
+    Join <a href="https://discord.gg/agentd" style="color:var(--gold);">Discord</a> for early access.
+  </p>
+  <footer>HermesWorld V1 · ${new Date().getFullYear()} Outsourced</footer>
+</div>
+</body>
+</html>
