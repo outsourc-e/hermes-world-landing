@@ -53,7 +53,7 @@ export function Footer() {
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-gold/40 blur-2xl opacity-80 group-hover:opacity-100 transition-opacity" />
               <img
-                src="/assets/hermesworld/art/hermesworld-logo-h.png"
+                src="/assets/hermesworld/art/hermesworld-crest.png"
                 alt="HermesWorld"
                 width={48}
                 height={48}
