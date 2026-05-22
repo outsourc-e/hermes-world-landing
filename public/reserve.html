@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Reserve your HermesWorld name</title>
+<meta name="description" content="Claim your HermesWorld username before launch. Founders get exclusive starter gear, sigil drops, and early access." />
+<meta name="theme-color" content="#03080c" />
+<link rel="icon" href="/assets/hermesworld/art/hermesworld-logo-h.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/hermesworld/art/hermesworld-logo-h.png" />
+<meta property="og:title" content="Reserve your HermesWorld name" />
+<meta property="og:description" content="Claim your username before HermesWorld launches. Limited founder rewards for early reservers." />
+<meta property="og:image" content="/assets/hermesworld/art/social-preview-hero.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://hermes-world.ai/reserve" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Reserve your HermesWorld name" />
+<meta name="twitter:description" content="Claim your username before HermesWorld launches. Founder gear for early reservers." />
+<style>
+:root{--bg:#03080c;--panel:#071318;--panel2:#0b1820;--gold:#f4c66d;--gold2:#b97825;--gold3:#ffe5a8;--cyan:#78f0ff;--text:#fff4dc;--muted:#aab9b2;--faint:#61736f;--line:rgba(244,198,109,.24)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 52% -6%,rgba(244,198,109,.16),transparent 31%),radial-gradient(circle at 83% 14%,rgba(120,240,255,.13),transparent 28%),radial-gradient(circle at 8% 48%,rgba(166,133,255,.09),transparent 34%),linear-gradient(180deg,#020509 0%,#061117 45%,#020608 100%)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.16;background-image:linear-gradient(rgba(244,198,109,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(120,240,255,.09) 1px,transparent 1px);background-size:82px 82px;mask-image:linear-gradient(to bottom,black,transparent 76%)}
+.wrap{width:100%;max-width:560px}
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:13px;margin-bottom:32px;transition:color .2s}
+.back:hover{color:var(--text)}
+.head{text-align:center;margin-bottom:36px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid rgba(244,198,109,.3);background:rgba(244,198,109,.1);color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
+h1{font-family:"Cinzel","Trajan Pro","Cormorant Garamond",Georgia,serif;font-weight:900;font-size:clamp(40px,7vw,64px);line-height:.95;letter-spacing:.02em;margin:0 0 16px;background:linear-gradient(180deg,#fffbe9 0%,#f5d97a 52%,#c89c2a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 38px rgba(245,217,122,.2)}
+.sub{color:var(--muted);font-size:16px;line-height:1.6;max-width:440px;margin:0 auto}
+.counter{margin-top:18px;font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted)}
+.counter strong{color:var(--gold3);font-weight:900}
+form{background:var(--panel);border:1px solid rgba(244,198,109,.2);border-radius:18px;padding:28px}
+.field{margin-bottom:18px}
+.field:last-of-type{margin-bottom:24px}
+.field label{display:block;font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#c19c55;margin-bottom:8px}
+.field label .opt{text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted);margin-left:6px;font-size:11px}
+.field input{width:100%;background:#03080c;border:1px solid rgba(244,198,109,.2);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+.field input::placeholder{color:rgba(170,185,178,.5)}
+.field input:focus{outline:none;border-color:rgba(244,198,109,.6);box-shadow:0 0 0 3px rgba(244,198,109,.15)}
+.field .hint{margin-top:6px;font-size:11px;color:rgba(170,185,178,.8)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;height:50px;border:1px solid rgba(255,229,168,.75);border-radius:12px;background:linear-gradient(180deg,#ffe6a4 0%,#e9aa3c 48%,#a95d18 100%);color:#160f07;font-size:14px;font-weight:900;letter-spacing:.03em;cursor:pointer;box-shadow:0 22px 60px rgba(244,166,54,.25),inset 0 1px 0 rgba(255,255,255,.38);transition:filter .2s,transform .2s}
+.btn:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.foot{text-align:center;margin-top:14px;font-size:11px;color:rgba(170,185,178,.7);line-height:1.5}
+.error{padding:12px 14px;background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.3);color:#ffa9a0;border-radius:10px;font-size:13px;margin-bottom:16px}
+.success{text-align:center;padding:32px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid rgba(244,198,109,.4);border-radius:18px}
+.success .moon{font-size:48px;margin-bottom:12px;display:block}
+.success h2{font-family:"Cinzel",Georgia,serif;font-weight:900;font-size:32px;line-height:1;margin:0 0 16px;background:linear-gradient(180deg,#fffbe9 0%,#c89c2a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.success p{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 24px}
+.success strong{color:var(--text);font-weight:700}
+.success .btn{text-decoration:none;height:48px}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(22,15,7,.3);border-top-color:#160f07;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:520px){h1{font-size:36px}form{padding:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to HermesWorld</a>
+  <div class="head">
+    <div class="pill">Founder Reservations Open</div>
+    <h1>Claim your name.</h1>
+    <p class="sub">HermesWorld launches soon. First reservers get founder gear, sigil drops, and early access to the world.</p>
+    <div class="counter" id="counter">loading reservations…</div>
+  </div>
+
+  <div id="form-wrapper">
+    <form id="reserve-form">
+      <div id="error-box"></div>
+      <div class="field">
+        <label for="desiredName">Username</label>
+        <input id="desiredName" name="desiredName" type="text" required minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" placeholder="Hermes_Trader" autocomplete="off" autocapitalize="off" autocorrect="off" />
+        <div class="hint">3-20 characters. Letters, numbers, underscores only.</div>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="wallet">Wallet <span class="opt">(optional)</span></label>
+        <input id="wallet" name="wallet" type="text" maxlength="120" placeholder="ETH or SOL address" autocomplete="off" autocapitalize="off" autocorrect="off" />
+        <div class="hint">Optional. Used for in-world prize drops.</div>
+      </div>
+      <button class="btn" id="submit-btn" type="submit">Reserve my name</button>
+      <p class="foot">No password required. We'll email you when HermesWorld opens.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  var counterEl = document.getElementById('counter');
+  var form = document.getElementById('reserve-form');
+  var errorBox = document.getElementById('error-box');
+  var btn = document.getElementById('submit-btn');
+  var wrapper = document.getElementById('form-wrapper');
+
+  function loadCounter(){
+    fetch('/api/hermesworld/reservations', { cache: 'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d && d.ok) {
+          var n = d.count || 0;
+          counterEl.innerHTML = '<strong>' + n.toLocaleString() + '</strong> ' + (n === 1 ? 'name' : 'names') + ' reserved so far';
+        } else {
+          counterEl.style.opacity = '0.4';
+          counterEl.textContent = '';
+        }
+      })
+      .catch(function(){
+        counterEl.style.opacity = '0.4';
+        counterEl.textContent = '';
+      });
+  }
+
+  function showError(msg){
+    errorBox.innerHTML = '<div class="error">' + msg + '</div>';
+  }
+  function clearError(){ errorBox.innerHTML = ''; }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    clearError();
+    var desiredName = document.getElementById('desiredName').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var wallet = document.getElementById('wallet').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Reserving…';
+
+    fetch('/api/hermesworld/reservations', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        desiredName: desiredName,
+        email: email,
+        wallet: wallet || null
+      })
+    })
+    .then(function(r){
+      return r.json().catch(function(){ return { ok: false, error: 'Server error.' }; })
+        .then(function(data){ return { status: r.status, data: data }; });
+    })
+    .then(function(res){
+      if (res.status >= 200 && res.status < 300 && res.data.ok) {
+        wrapper.innerHTML =
+          '<div class="success">' +
+            '<span class="moon">🌙</span>' +
+            "<h2>You're in.</h2>" +
+            '<p><strong>' + escapeHtml(res.data.reservation.desiredName) + '</strong> is reserved for you. ' +
+            "We'll email you when HermesWorld opens for founders.</p>" +
+            '<a class="btn" href="/" style="text-decoration:none">Back to HermesWorld</a>' +
+          '</div>';
+        return;
+      }
+      var msg = (res.data && res.data.error) ? res.data.error : 'Reservation failed. Try again.';
+      showError(msg);
+      btn.disabled = false;
+      btn.innerHTML = 'Reserve my name';
+    })
+    .catch(function(){
+      showError('Network error. Try again.');
+      btn.disabled = false;
+      btn.innerHTML = 'Reserve my name';
+    });
+  });
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  loadCounter();
+})();
+</script>
+</body>
+</html>
