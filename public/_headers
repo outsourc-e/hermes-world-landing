@@ -2,5 +2,28 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=15552000; includeSubDomains
+  Content-Security-Policy: frame-ancestors 'self'
+
+# /play/ is the embeddable playable demo. Unset the inherited frame-ancestors 'self'
+# and replace with frame-ancestors *. Cloudflare Pages _headers requires explicit
+# unset (! prefix) before re-setting because rules are additive across path matches.
+/play
+  ! Content-Security-Policy
+  Content-Security-Policy: frame-ancestors *
+/play/*
+  ! Content-Security-Policy
+  Content-Security-Policy: frame-ancestors *
+/play/index.html
+  ! Content-Security-Policy
+  Content-Security-Policy: frame-ancestors *
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=3600

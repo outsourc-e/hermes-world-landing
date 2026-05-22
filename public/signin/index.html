@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>HermesWorld — Sign in</title>
+  <meta name="theme-color" content="#03080c" />
+  <style>
+    :root{--bg:#03080c;--panel:#09161d;--panel2:#0f2028;--gold:#f4c66d;--gold2:#ffebba;--cyan:#78f0ff;--text:#fff4dc;--muted:#9bb0a9;--line:rgba(244,198,109,.22);--danger:#ff8d73;--success:#7dffad}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 20% 0%,rgba(244,198,109,.18),transparent 25%),radial-gradient(circle at 80% 10%,rgba(120,240,255,.12),transparent 30%),linear-gradient(180deg,#020608 0%,#071319 45%,#020608 100%);color:var(--text);display:grid;place-items:center;padding:24px}
+    a{color:inherit;text-decoration:none}
+    .shell{width:min(100%,520px)}
+    .card{border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(9,22,29,.94),rgba(3,9,12,.96));padding:32px 24px 24px;box-shadow:0 40px 120px rgba(0,0,0,.5),0 0 80px rgba(244,198,109,.08)}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .brand img{width:42px;height:42px;border-radius:50%;box-shadow:0 0 24px rgba(244,198,109,.22)}
+    .brand b{font-size:18px}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;border:1px solid rgba(244,198,109,.24);background:rgba(244,198,109,.08);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+    .title{font-family:Georgia,serif;font-size:clamp(34px,7vw,48px);line-height:1;letter-spacing:-.04em;margin:18px 0 10px}
+    .copy{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 22px}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:6px;margin-bottom:18px}
+    .tab{height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--muted);cursor:pointer;border:0;background:transparent}
+    .tab.active{background:rgba(244,198,109,.12);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(244,198,109,.28)}
+    .form{display:grid;gap:14px}
+    .label{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+    .input{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:#050d12;color:var(--text);padding:14px 16px;font-size:16px;outline:none}
+    .input:focus{border-color:rgba(120,240,255,.5);box-shadow:0 0 0 4px rgba(120,240,255,.08)}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .link{color:var(--cyan);font-size:13px;font-weight:700;cursor:pointer;background:none;border:0;padding:0}
+    .link:hover{filter:brightness(1.2)}
+    .btn{width:100%;min-height:52px;border-radius:14px;border:1px solid rgba(255,255,255,.12);display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 18px;font-size:14px;font-weight:900;letter-spacing:.03em;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer}
+    .btn.primary{background:linear-gradient(180deg,#ffe6a4 0%,#e9aa3c 48%,#a95d18 100%);border-color:rgba(255,229,168,.75);color:#160f07;box-shadow:0 22px 60px rgba(244,166,54,.22),inset 0 1px 0 rgba(255,255,255,.38)}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .btn svg{width:18px;height:18px}
+    .divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#6b7d77;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+    .divider:before,.divider:after{content:"";flex:1;height:1px;background:rgba(255,255,255,.08)}
+    .status{margin-top:14px;font-size:13px;line-height:1.55;color:var(--muted);min-height:18px}
+    .status[data-tone="error"]{color:var(--danger)}
+    .status[data-tone="success"]{color:var(--success)}
+    .meta{margin-top:18px;font-size:12px;color:#7c928b;text-align:center}
+    .hidden{display:none!important}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="card">
+      <div class="brand">
+        <img src="/assets/hermesworld/art/hermesworld-logo-h.png" alt="HermesWorld">
+        <b>HermesWorld</b>
+      </div>
+      <div class="eyebrow">Enter the world</div>
+      <h1 class="title" id="title">Sign in to HermesWorld</h1>
+      <p class="copy" id="subtitle">Use email or Google. Either way, you'll reserve a name on the next screen.</p>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="signin" role="tab" aria-selected="true">Sign in</button>
+        <button class="tab" data-tab="signup" role="tab" aria-selected="false">Create account</button>
+      </div>
+
+      <form id="email-form" class="form" autocomplete="on" novalidate>
+        <div>
+          <div class="label">Email</div>
+          <input id="email" class="input" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+        </div>
+        <div>
+          <div class="row">
+            <div class="label">Password</div>
+            <button type="button" id="forgot" class="link" data-mode="signin">Forgot password?</button>
+          </div>
+          <input id="password" class="input" name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters" />
+        </div>
+        <button id="email-submit" class="btn primary" type="submit">Sign in</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <button id="google-btn" class="btn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#EA4335" d="M12 10.2v4.05h5.64c-.25 1.3-.98 2.4-2.03 3.14l3.28 2.54c1.91-1.76 3.01-4.35 3.01-7.43 0-.72-.06-1.41-.19-2.08H12Z"/>
+          <path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.43l-3.28-2.54c-.91.61-2.08.97-3.34.97-2.57 0-4.75-1.73-5.53-4.07H3.08v2.62A9.99 9.99 0 0 0 12 22Z"/>
+          <path fill="#4A90E2" d="M6.47 13.93A5.99 5.99 0 0 1 6.16 12c0-.67.11-1.33.31-1.93V7.45H3.08A9.99 9.99 0 0 0 2 12c0 1.61.39 3.13 1.08 4.55l3.39-2.62Z"/>
+          <path fill="#FBBC05" d="M12 6c1.47 0 2.78.51 3.81 1.51l2.86-2.86C16.95 3.03 14.69 2 12 2A9.99 9.99 0 0 0 3.08 7.45l3.39 2.62C7.25 7.73 9.43 6 12 6Z"/>
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <div id="status" class="status" aria-live="polite"></div>
+      <div class="meta"><a href="/">← Back to landing</a></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import {
+      getCurrentProfile,
+      getDestination,
+      signInWithGoogle,
+      signInWithEmail,
+      signUpWithEmail,
+      sendPasswordReset,
+    } from '/assets/hermesworld/auth/supabase-client.js';
+
+    const titleEl = document.getElementById('title');
+    const subtitleEl = document.getElementById('subtitle');
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const form = document.getElementById('email-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const submitBtn = document.getElementById('email-submit');
+    const googleBtn = document.getElementById('google-btn');
+    const forgotBtn = document.getElementById('forgot');
+    const statusEl = document.getElementById('status');
+
+    let mode = 'signin';
+
+    function setStatus(message, tone = 'muted') {
+      statusEl.textContent = message || '';
+      statusEl.dataset.tone = tone;
+    }
+
+    function setMode(next) {
+      mode = next;
+      tabs.forEach((tab) => {
+        const active = tab.dataset.tab === mode;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      if (mode === 'signin') {
+        titleEl.textContent = 'Sign in to HermesWorld';
+        subtitleEl.textContent = "Use email or Google. Either way, you'll reserve a name on the next screen.";
+        submitBtn.textContent = 'Sign in';
+        passwordInput.autocomplete = 'current-password';
+        passwordInput.placeholder = 'Your password';
+        forgotBtn.classList.remove('hidden');
+      } else {
+        titleEl.textContent = 'Create your HermesWorld account';
+        subtitleEl.textContent = "We'll send a confirmation email if your project requires verification, then send you to reserve your name.";
+        submitBtn.textContent = 'Create account';
+        passwordInput.autocomplete = 'new-password';
+        passwordInput.placeholder = 'At least 8 characters';
+        forgotBtn.classList.add('hidden');
+      }
+      setStatus('');
+    }
+
+    tabs.forEach((tab) => tab.addEventListener('click', () => setMode(tab.dataset.tab)));
+
+    async function continueAfterAuth() {
+      const { user, profile } = await getCurrentProfile();
+      if (!user) return false;
+      if (profile?.username) {
+        const dest = await getDestination();
+        window.location.replace(dest);
+      } else {
+        window.location.replace('/auth/callback/');
+      }
+      return true;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      if (!email || !password) {
+        setStatus('Email and password are required.', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        setStatus('Password must be at least 8 characters.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+      submitBtn.textContent = mode === 'signin' ? 'Signing in…' : 'Creating account…';
+      setStatus(mode === 'signin' ? 'Checking your credentials…' : 'Creating your account…');
+
+      try {
+        const fn = mode === 'signin' ? signInWithEmail : signUpWithEmail;
+        const { data, error } = await fn(email, password);
+        if (error) throw error;
+
+        if (mode === 'signup' && data?.user && !data.session) {
+          setStatus('Check your inbox to confirm your email, then come back here to sign in.', 'success');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+          return;
+        }
+
+        setStatus('Signed in. Continuing…', 'success');
+        const continued = await continueAfterAuth();
+        if (!continued) {
+          window.location.replace('/auth/callback/');
+        }
+      } catch (error) {
+        console.error(error);
+        const message = error?.message || 'Could not complete sign-in.';
+        setStatus(message, 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    });
+
+    googleBtn.addEventListener('click', async () => {
+      googleBtn.disabled = true;
+      setStatus('Redirecting to Google…');
+      try {
+        const { error } = await signInWithGoogle();
+        if (error) throw error;
+      } catch (error) {
+        console.error(error);
+        setStatus(error?.message || 'Could not start Google sign-in.', 'error');
+        googleBtn.disabled = false;
+      }
+    });
+
+    forgotBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      if (!email) {
+        setStatus('Type your email above first, then tap Forgot password.', 'error');
+        emailInput.focus();
+        return;
+      }
+      forgotBtn.disabled = true;
+      setStatus('Sending password reset email…');
+      try {
+        const { error } = await sendPasswordReset(email);
+        if (error) throw error;
+        setStatus(`Password reset link sent to ${email}.`, 'success');
+      } catch (error) {
+        console.error(error);
+        setStatus(error?.message || 'Could not send reset email.', 'error');
+      } finally {
+        forgotBtn.disabled = false;
+      }
+    });
+
+    // If they're already signed in, jump straight ahead.
+    continueAfterAuth().catch((error) => {
+      console.error(error);
+    });
+  </script>
+</body>
+</html>

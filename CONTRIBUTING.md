@@ -1,40 +1,43 @@
 # Contributing to hermes-world.ai
 
-## Quick start
+## Workflow
+
+1. Branch from `main`.
+2. Make changes in the Lovable/TanStack source under `src/`.
+3. Run local checks:
 
 ```bash
-git clone https://github.com/outsourc-e/hermes-world-landing.git
-cd hermes-world-landing
-cd public && python3 -m http.server 5173
+npm install
+npm run lint
+npm run build
+```
+
+4. Push your branch and open a PR against `outsourc-e/hermes-world-landing:main`.
+5. Use the Cloudflare Pages PR preview for visual review.
+6. Merge only after review/approval. Do not push directly to `main`.
+
+## Local development
+
+```bash
+npm install
+npm run dev
 # open http://localhost:5173
 ```
 
-## Workflow
-
-1. Branch from `main`: `git checkout -b feat/your-change`
-2. Edit `public/index.html` and/or assets in `public/assets/hermesworld/`
-3. Push branch: `git push -u origin feat/your-change`
-4. Open a PR. Cloudflare Pages auto-deploys a preview URL on every PR.
-5. After 1 approval → merge → live in ~30s.
-
 ## Style system
 
-- Palette + typography in `README.md`.
 - Vibe: premium dark fantasy MMO, warm golden-hour, verdigris glow.
-- Avoid neon, pure black, generic SaaS dashboards, off-palette accents.
+- Avoid generic SaaS visuals, off-palette neon, and pure flat black.
+- Keep the landing-page CTAs pointed at the playable world: `https://hermes-world.ai/play/`.
 
-## Asset guidelines
+## Assets
 
-- Use existing assets from `public/assets/hermesworld/art/` when possible.
-- New assets should be optimized: PNG via `pngquant`/`oxipng`, JPEG quality 80-85, video H.264 1-3 Mbps.
-- Hero/preview videos belong in `public/assets/hermesworld/video/`.
+- Lovable-exported section artwork lives in `src/assets/`.
+- Existing production/social/brand assets are retained in `public/assets/hermesworld/` for stable URLs.
+- Optimize new large assets before committing.
 
-## What NOT to do
+## What not to do
 
-- Don't commit secrets or environment URLs.
-- Don't add a build pipeline without proposing in an issue first.
-- Don't refactor `public/index.html` into a framework without alignment.
-
-## Questions
-
-Open an issue with the `question` label or reach out via Discord.
+- Do not commit secrets, private keys, or local environment files.
+- Do not merge your own PR without review.
+- Do not change Cloudflare production settings as part of ordinary content/design changes unless explicitly agreed in review.
