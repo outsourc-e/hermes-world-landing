@@ -1,7 +1,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.8";
 
-// Vanity subdomain — Google OAuth consent now shows "Continue to hermesworld.supabase.co"
-const SUPABASE_URL = 'https://hermesworld.supabase.co';
+// IMPORTANT: vanity domain hermesworld.supabase.co is NOT provisioned (NXDOMAIN). Keep the real project URL.
+// Anon key payload "ref":"gwcdgbbbsykfhgnlfzxs" confirms this is the correct host.
+const SUPABASE_URL = 'https://gwcdgbbbsykfhgnlfzxs.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3Y2RnYmJic3lrZmhnbmxmenhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwMDE2NDcsImV4cCI6MjA4NTU3NzY0N30.LlXFUR2H9SE6SViXLoPQw_yYm2DGBx2zmw0ayZyykbQ';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
