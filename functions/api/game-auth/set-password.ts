@@ -9,7 +9,8 @@ export interface Env {
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
-    const body = await request.json<{ jwt?: string; newPassword?: string }>();
+    let body: { jwt?: string; newPassword?: string } = {};
+    try { body = await request.json(); } catch { /* empty or invalid body */ }
     if (!body?.jwt || !body?.newPassword) {
       return new Response(JSON.stringify({ error: 'missing_fields' }), { status: 400, headers: { 'content-type': 'application/json' } });
     }
