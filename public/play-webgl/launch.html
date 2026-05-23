@@ -148,10 +148,6 @@ async function launchWebGL() {
   // Probe the loader before redirecting (build may not be ready yet)
   $('webgl-status').textContent = 'Checking WebGL build…';
   try {
-    const r = await fetch('/play-webgl/index.unity-loader.html', { method: 'HEAD' });
-    if (!r.ok) throw new Error('loader missing');
-    const r2 = await fetch('/play-webgl/Build/', { method: 'HEAD' });
-    // The Build/ dir HEAD is 404 even when files exist, so probe a specific file
     const loaderJs = await fetch('/play-webgl/Build/hw-build-webgl.loader.js', { method: 'HEAD' });
     if (!loaderJs.ok) {
       $('webgl-status').innerHTML = `<strong>WebGL build is still compiling.</strong><br>The Unity build is being prepared on PC1. Refresh this page in ~10 min, or grab the Windows build below.`;
