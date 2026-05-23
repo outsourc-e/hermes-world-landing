@@ -72,5 +72,9 @@
   </p>
   <footer>HermesWorld V1 · ${new Date().getFullYear()} Outsourced</footer>
 </div>
+<script type="module" id="hw-cs-launch-check">
+import { supabase } from '/assets/hermesworld/auth/supabase-client.js';
+(async()=>{try{const{data:{session}}=await supabase.auth.getSession();if(session?.access_token){location.replace('/play-webgl/launch.html');}}catch(e){}})();
+</script>
 </body>
 </html>
