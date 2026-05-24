@@ -18,6 +18,11 @@
   ! Content-Security-Policy
   Content-Security-Policy: frame-ancestors *
 
+# Auth scripts must NOT be served immutable — credentials/host changes need
+# to reach browsers without manual cache busts.
+/assets/hermesworld/auth/*
+  Cache-Control: public, max-age=60, must-revalidate
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 

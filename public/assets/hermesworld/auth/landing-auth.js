@@ -1,4 +1,4 @@
-import { supabase, getCurrentProfile, getDestination } from '/assets/hermesworld/auth/supabase-client.js';
+import { supabase, getCurrentProfile, getDestination } from '/assets/hermesworld/auth/supabase-client.js?v=20260524a';
 
 const buttons = Array.from(document.querySelectorAll('[data-google-signin]'));
 const feedback = document.querySelector('[data-auth-feedback]');
