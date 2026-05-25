@@ -85,8 +85,20 @@ import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260524
   try{
     const{data:{session}}=await supabase.auth.getSession();
     if(!session?.access_token)return;
-    const ctas=document.querySelectorAll('a.btn.primary[href="/signin/"], a.small-btn.primary[href="/signin/"]');
-    ctas.forEach(a=>{a.setAttribute('href','/play-webgl/launch.html');const lbl=a.querySelector('[data-google-label]');if(lbl)lbl.textContent='Enter HermesWorld';else if(a.textContent.toLowerCase().includes('sign in')||a.textContent.toLowerCase().includes('reserve'))a.textContent='Enter HermesWorld';});
+    // Authed users: rewrite ALL /signin/ CTAs to Enter HermesWorld, and update hero copy.
+    document.querySelectorAll('a[href="/signin/"]').forEach(a=>{
+      a.setAttribute('href','/play-webgl/launch.html');
+      const lbl=a.querySelector('[data-google-label]');
+      const txt=(a.textContent||'').toLowerCase();
+      if(lbl){lbl.textContent='Enter HermesWorld';}
+      else if(txt.includes('sign in')||txt.includes('reserve')){a.textContent='Enter HermesWorld';}
+    });
+    document.querySelectorAll('.hero-note').forEach(n=>{n.textContent='Welcome back. Enter HermesWorld below — your reserved name and game account are linked.';});
+    // Hide the "Sign in" pill in the nav since user is signed in (landing-auth.js shows account chip)
+    document.querySelectorAll('a.small-btn[data-google-signin]').forEach(a=>{
+      const lbl=a.querySelector('[data-google-label]');
+      if(lbl && /sign in/i.test(lbl.textContent||'')){a.style.display='none';}
+    });
   }catch(e){}
 })();
 </script>
