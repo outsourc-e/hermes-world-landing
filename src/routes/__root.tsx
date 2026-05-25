@@ -48,7 +48,7 @@ export const Route = createRootRoute({
       { property: "og:site_name", content: "HermesWorld" },
       {
         property: "og:image",
-        content: "https://hermes-world.ai/assets/hermesworld/art/social-preview-hermes-5-2-v3.jpg",
+        content: "https://hermes-world.ai/assets/hermesworld/art/social-preview-hermes-5-2-v3.jpg?v=2",
       },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -67,7 +67,7 @@ export const Route = createRootRoute({
       },
       {
         name: "twitter:image",
-        content: "https://hermes-world.ai/assets/hermesworld/art/social-preview-hermes-5-2-v3.jpg",
+        content: "https://hermes-world.ai/assets/hermesworld/art/social-preview-hermes-5-2-v3.jpg?v=2",
       },
     ],
     links: [
