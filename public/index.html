@@ -81,26 +81,41 @@ Atlas reported back: found a hidden cache near the Grove.</div><div class="chips
 </main><footer class="wrap foot" data-cleanup-foot="1"><a class="brand" href="/" aria-label="HermesWorld"><img src="/assets/hermesworld/art/hermesworld-crest.png" alt="HermesWorld"><div class="brand-name"><span>Hermes</span><span>World</span></div></a><div class="foot-links"><a href="/signin/">Reserve your name</a><a href="#preview">Watch Preview</a><a href="https://github.com/outsourc-e/hermes-workspace">Hermes Workspace</a><a href="https://github.com/outsourc-e/hermes-workspace">Updates</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/token/">Token</a></div></footer>
 <script type="module" src="/assets/hermesworld/auth/landing-auth.js?v=20260524b"></script><script>(function(){if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){return;}var c=document.getElementById("hero-orbs-canvas");if(!c||!c.getContext)return;var ctx=c.getContext("2d");var w=0,h=0,t=0,raf=0;function resize(){var r=c.getBoundingClientRect();var dpr=Math.min(window.devicePixelRatio||1,2);w=r.width;h=r.height;c.width=Math.floor(w*dpr);c.height=Math.floor(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}resize();window.addEventListener("resize",resize);var stars=[];for(var i=0;i<110;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.2,tw:Math.random()*Math.PI*2});var orbiters=[];var palette=["#facc15","#fbbf24","#fde68a","#22d3ee","#a78bfa","#fb7185","#34d399"];for(var j=0;j<60;j++)orbiters.push({phase:Math.random()*Math.PI*2,orbit:0.18+Math.random()*0.22,speed:0.4+Math.random()*0.5,size:1.5+Math.random()*2.4,color:palette[Math.floor(Math.random()*palette.length)]});var agentColors=["#facc15","#22d3ee","#a78bfa","#34d399","#fb7185","#fbbf24"];var agentNodes=[];for(var k=0;k<6;k++)agentNodes.push({a:(k/6)*Math.PI*2,r:1.0,color:agentColors[k]});function draw(){t+=0.008;var bg=ctx.createRadialGradient(w/2,h*0.5,20,w/2,h*0.5,Math.max(w,h)*0.95);bg.addColorStop(0,"#0d1d2c");bg.addColorStop(0.45,"#0a121e");bg.addColorStop(0.85,"#04090d");bg.addColorStop(1,"#020608");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);for(var s2=0;s2<stars.length;s2++){var st=stars[s2];var x=st.x*w,y=st.y*h;var tw=0.55+(Math.sin(t*2+st.tw)+1)*0.225;ctx.fillStyle="rgba(207,231,240,"+tw+")";ctx.beginPath();ctx.arc(x,y,st.r,0,Math.PI*2);ctx.fill();}var cx=w/2,cy=h*0.5;var baseR=Math.min(w,h)*0.34;ctx.save();ctx.translate(cx,cy);ctx.strokeStyle="rgba(34,211,238,0.22)";ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(0,0,baseR,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="rgba(167,139,250,0.18)";ctx.beginPath();ctx.arc(0,0,baseR*0.78,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="rgba(251,191,36,0.18)";ctx.beginPath();ctx.arc(0,0,baseR*1.18,0,Math.PI*2);ctx.stroke();for(var o2=0;o2<orbiters.length;o2++){var o=orbiters[o2];var aa=t*o.speed+o.phase;var rr=baseR*(0.9+Math.sin(t*0.7+o.phase)*o.orbit);var ox=Math.cos(aa)*rr;var oy=Math.sin(aa)*rr*0.7;var og=ctx.createRadialGradient(ox,oy,0,ox,oy,o.size*6);og.addColorStop(0,o.color);og.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=og;ctx.beginPath();ctx.arc(ox,oy,o.size*6,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff";ctx.globalAlpha=0.85;ctx.beginPath();ctx.arc(ox,oy,o.size*0.55,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}var rot=t*0.08;var pts=[];for(var n2=0;n2<agentNodes.length;n2++){var n=agentNodes[n2];pts.push({x:Math.cos(n.a+rot)*baseR*n.r,y:Math.sin(n.a+rot)*baseR*n.r*0.7,color:n.color});}ctx.lineWidth=0.7;for(var ii=0;ii<pts.length;ii++){for(var jj=ii+1;jj<pts.length;jj++){var pa=pts[ii],pb=pts[jj];var lg=ctx.createLinearGradient(pa.x,pa.y,pb.x,pb.y);lg.addColorStop(0,pa.color+"55");lg.addColorStop(1,pb.color+"55");ctx.strokeStyle=lg;ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(pb.x,pb.y);ctx.stroke();}}for(var pp=0;pp<pts.length;pp++){var nd=pts[pp];var ng=ctx.createRadialGradient(nd.x,nd.y,0,nd.x,nd.y,16);ng.addColorStop(0,nd.color);ng.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=ng;ctx.beginPath();ctx.arc(nd.x,nd.y,16,0,Math.PI*2);ctx.fill();}var orb=ctx.createRadialGradient(0,0,8,0,0,baseR*0.6);orb.addColorStop(0,"rgba(250,204,21,0.62)");orb.addColorStop(0.4,"rgba(250,204,21,0.14)");orb.addColorStop(1,"rgba(250,204,21,0)");ctx.fillStyle=orb;ctx.beginPath();ctx.arc(0,0,baseR*0.6,0,Math.PI*2);ctx.fill();ctx.restore();raf=requestAnimationFrame(draw);} raf=requestAnimationFrame(draw);})();</script><script type="module" id="hw-home-cta-swap">
 import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260524b';
-(async()=>{
+function insertPlayCTAs(){
+  // Inject Enter HermesWorld + Download buttons into every cta-row, before the
+  // landing-auth.js account-chip swallows the hero's primary CTA.
+  document.querySelectorAll('.cta-row').forEach((row)=>{
+    if(row.querySelector('[data-hw-enter]')) return;
+    const enter=document.createElement('a');
+    enter.className='btn primary';
+    enter.href='/play-webgl/launch.html';
+    enter.setAttribute('data-hw-enter','1');
+    enter.textContent='Enter HermesWorld';
+    row.insertBefore(enter, row.firstChild);
+  });
+  document.querySelectorAll('.hero-note').forEach(n=>{
+    n.textContent='Welcome back. Enter HermesWorld below — your reserved name and game account are linked.';
+  });
+  // Hide the dead "Reserve Your Name" CTA in the hero/final that landing-auth.js
+  // already converted into an account chip (href is now '#', class hw-account).
+  document.querySelectorAll('.cta-row a.hw-account').forEach(a=>{ a.style.display='none'; });
+}
+async function checkAndApply(){
   try{
     const{data:{session}}=await supabase.auth.getSession();
-    if(!session?.access_token)return;
-    // Authed users: rewrite ALL /signin/ CTAs to Enter HermesWorld, and update hero copy.
-    document.querySelectorAll('a[href="/signin/"]').forEach(a=>{
-      a.setAttribute('href','/play-webgl/launch.html');
-      const lbl=a.querySelector('[data-google-label]');
-      const txt=(a.textContent||'').toLowerCase();
-      if(lbl){lbl.textContent='Enter HermesWorld';}
-      else if(txt.includes('sign in')||txt.includes('reserve')){a.textContent='Enter HermesWorld';}
-    });
-    document.querySelectorAll('.hero-note').forEach(n=>{n.textContent='Welcome back. Enter HermesWorld below — your reserved name and game account are linked.';});
-    // Hide the "Sign in" pill in the nav since user is signed in (landing-auth.js shows account chip)
-    document.querySelectorAll('a.small-btn[data-google-signin]').forEach(a=>{
-      const lbl=a.querySelector('[data-google-label]');
-      if(lbl && /sign in/i.test(lbl.textContent||'')){a.style.display='none';}
-    });
-  }catch(e){}
-})();
+    if(!session?.access_token) return false;
+    insertPlayCTAs();
+    // Re-apply once more after landing-auth.js renders the chip (handles race).
+    setTimeout(insertPlayCTAs, 250);
+    setTimeout(insertPlayCTAs, 1000);
+    return true;
+  }catch(e){return false;}
+}
+checkAndApply();
+// Also react to future auth state changes (post-OAuth callback hops back).
+try{
+  supabase.auth.onAuthStateChange((_evt, sess)=>{ if(sess) insertPlayCTAs(); });
+}catch(e){}
 </script>
 </body>
 </html>
