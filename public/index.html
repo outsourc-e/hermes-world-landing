@@ -88,7 +88,7 @@ function insertPlayCTAs(){
     if(row.querySelector('[data-hw-enter]')) return;
     const enter=document.createElement('a');
     enter.className='btn primary';
-    enter.href='/play-webgl/launch.html';
+    enter.href='/play/';
     enter.setAttribute('data-hw-enter','1');
     enter.textContent='Enter HermesWorld';
     row.insertBefore(enter, row.firstChild);
