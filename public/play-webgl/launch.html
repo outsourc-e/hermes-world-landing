@@ -69,7 +69,7 @@
   <div id="state-ready" class="card hide">
     <div class="row"><b>HermesWorld Name</b><span id="ready-username">—</span></div>
     <div class="row"><b>Account State</b><span id="ready-action">—</span></div>
-    <div class="row"><b>Atavism Account ID</b><span id="ready-acctid">—</span></div>
+    <div class="row"><b>HermesWorld Account ID</b><span id="ready-acctid">—</span></div>
     <div class="row"><b>Game Password</b><span id="ready-pw">stored locally · used by launcher</span></div>
     <div class="ctas">
       <button id="launch-webgl" class="btn primary" type="button">Enter the World (WebGL)</button>
@@ -148,16 +148,16 @@ async function launchWebGL() {
   // Probe the loader before redirecting (build may not be ready yet)
   $('webgl-status').textContent = 'Checking WebGL build…';
   try {
-    const loaderJs = await fetch('/play-webgl/Build/hw-build-webgl.loader.js', { method: 'HEAD' });
+    const loaderJs = await fetch('https://play.hermes-world.ai/play/web/Build/webgl.loader.js', { method: 'HEAD' });
     if (!loaderJs.ok) {
-      $('webgl-status').innerHTML = `<strong>WebGL build is still compiling.</strong><br>The Unity build is being prepared on PC1. Refresh this page in ~10 min, or grab the Windows build below.`;
+      $('webgl-status').innerHTML = `<strong>WebGL bridge is warming up.</strong><br>The browser bridge is online but the loader did not answer yet. Refresh this page in ~1 min, or grab the Windows build below.`;
       return;
     }
     // Pass credentials via URL hash (not query — never logged in server access logs)
-    const url = `/play-webgl/index.unity-loader.html#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}`;
+    const url = `https://play.hermes-world.ai/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}`;
     window.location.href = url;
   } catch (err) {
-    $('webgl-status').textContent = 'WebGL build not yet available — download the Windows build instead.';
+    $('webgl-status').textContent = 'WebGL bridge not reachable yet — download the Windows build instead.';
   }
 }
 
