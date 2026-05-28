@@ -22730,7 +22730,7 @@ var useWorkspaceStore = create()(
 var COMMUNITY_NAMES = [
   "GrokKnight",
   "NousPilgrim",
-  "KimiArtisan",
+  "HermesArtisan",
   "OpusBard",
   "CodexSmith",
   "ClaudeWanderer",
@@ -23382,7 +23382,7 @@ var NPC_DIALOG = {
       {
         id: "lore-hermes",
         label: "Tell me about Hermes Agent",
-        reply: "Hermes is the harness \u2014 the messenger that carries your prompt to whichever model serves you best. Codex, Claude, Kimi, Opus, your local models. One voice, many minds."
+        reply: "Hermes is the harness \u2014 the messenger that carries your prompt to whichever model serves you best. Codex, Claude, Hermes, Opus, your local models. One voice, many minds."
       },
       {
         id: "lore-rohan",
@@ -23455,12 +23455,12 @@ var NPC_DIALOG = {
       {
         id: "duel",
         label: "[Quest] Enter a duel",
-        reply: "Step into the medallion in the Arena. The first match is a freebie. Win, and the Kimi Sigil is yours."
+        reply: "Step into the medallion in the Arena. The first match is a freebie. Win, and the Hermes Sigil is yours."
       },
       {
         id: "lore-models",
         label: "Tell me about the model wars",
-        reply: "Codex, Claude, Kimi, GPT-5, the local fleet \u2014 they fight for context windows, latency, and grace. Watch them. Bet on the underdog."
+        reply: "Codex, Claude, Hermes, GPT-5, the local fleet \u2014 they fight for context windows, latency, and grace. Watch them. Bet on the underdog."
       }
     ]
   },
@@ -23491,7 +23491,7 @@ var NPC_DIALOG = {
       {
         id: "lore-forge",
         label: "Tell me about the Forge",
-        reply: "The Forge is where prompts harden into tools. Every NPC in the Forge runs a different model. Listen for the pitch \u2014 Codex is brassy, Claude is choral, Kimi is bell-like."
+        reply: "The Forge is where prompts harden into tools. Every NPC in the Forge runs a different model. Listen for the pitch \u2014 Codex is brassy, Claude is choral, Hermes is bell-like."
       }
     ]
   },
@@ -23582,7 +23582,7 @@ var NPC_DIALOG = {
       {
         id: "duel",
         label: "[Quest] Begin the Duel of Models",
-        reply: "Step into the Arena medallion. The duel begins when you stand on the center. Survive and earn the Kimi Sigil."
+        reply: "Step into the Arena medallion. The duel begins when you stand on the center. Survive and earn the Hermes Sigil."
       },
       {
         id: "lore-name",
@@ -24779,7 +24779,7 @@ var PLAYGROUND_ITEMS = [
   },
   {
     id: "kimi-sigil",
-    name: "Kimi Sigil",
+    name: "Hermes Sigil",
     icon: "\u{1F319}",
     rarity: "legendary",
     description: "A hackathon relic. Opens the Benchmark Arena."
@@ -25051,11 +25051,11 @@ var PLAYGROUND_QUESTS = [
     id: "arena-duel",
     chapter: "Chapter IV \u2014 Arena of Models",
     title: "Duel of Models",
-    description: "Step into the Benchmark Arena. Survive the duel and earn the Kimi Sigil.",
+    description: "Step into the Benchmark Arena. Survive the duel and earn the Hermes Sigil.",
     objectives: [
       { id: "enter-arena", type: "enter_world", label: "Enter the Benchmark Arena", target: "arena" },
       { id: "survive", type: "duel_npc", label: "Survive the Duel of Models" },
-      { id: "kimi", type: "collect_item", label: "Claim the Kimi Sigil", target: "kimi-sigil" }
+      { id: "kimi", type: "collect_item", label: "Claim the Hermes Sigil", target: "kimi-sigil" }
     ],
     reward: {
       xp: 320,
@@ -25240,7 +25240,7 @@ var WORLD_LAYOUT = {
   forge: { x: 78, y: 38, lore: "Generated cyberpunk workshop. Where prompts harden into tools." },
   grove: { x: 20, y: 35, lore: "Bioluminescent forest. Music, rituals, community quests." },
   oracle: { x: 22, y: 75, lore: "Quiet archive of lore and memory. Floating crystals." },
-  arena: { x: 80, y: 75, lore: "Colosseum for model duels. The Kimi Sigil waits inside." }
+  arena: { x: 80, y: 75, lore: "Colosseum for model duels. The Hermes Sigil waits inside." }
 };
 var PATHS = [
   ["training", "agora"],
@@ -94416,7 +94416,7 @@ var NARRATION = {
     lines: [
       "Welcome to the Benchmark Arena, where models duel through prompts, evals, and agent battles.",
       "Hermes himself referees here. Nike champions the strongest. Chronos sets the odds.",
-      "Win the duel to claim the Kimi Sigil and prove your agent\u2019s worth."
+      "Win the duel to claim the Hermes Sigil and prove your agent\u2019s worth."
     ]
   }
 };
@@ -95339,7 +95339,7 @@ function TitleScreen({
                       children: [
                         /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { style: { color: "#facc15" }, children: "\u2726" }),
                         "Hermes Agent Realm",
-                        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "opacity-60", children: "\xB7 Nous Research \xD7 Kimi" })
+                        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { className: "opacity-60", children: "\xB7 HermesWorld \xD7 Hermes" })
                       ]
                     }
                   ),
