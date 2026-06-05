@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HermesWorld Agent API & Developer Docs</title>
+  <meta name="description" content="Developer docs for launching HermesWorld from an AI agent or automation script via the browser WebGL URL API or native client." />
+  <meta name="theme-color" content="#03080c" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#03080c;--bg2:#061016;--panel:#08151a;--panel2:#0d1d24;
+      --gold:#f4c66d;--gold2:#b97825;--gold3:#ffe5a8;--cyan:#78f0ff;--violet:#a685ff;--green:#7dffad;
+      --text:#fff4dc;--muted:#aab9b2;--faint:#61736f;--ember:#ff9d55;--red:#ff7d56;--line:rgba(244,198,109,.22);--blueLine:rgba(120,240,255,.18);
+      --max:1220px;--nav:78px;--ease:cubic-bezier(.16,1,.3,1);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:-5;background:radial-gradient(circle at 52% -12%,rgba(244,198,109,.20),transparent 34%),radial-gradient(circle at 80% 9%,rgba(120,240,255,.16),transparent 30%),radial-gradient(circle at 7% 45%,rgba(166,133,255,.10),transparent 36%),linear-gradient(180deg,#020507 0%,#061016 44%,#020507 100%)}
+    body:after{content:"";position:fixed;inset:0;z-index:-4;opacity:.18;background-image:linear-gradient(rgba(244,198,109,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(120,240,255,.08) 1px,transparent 1px);background-size:86px 86px;mask-image:linear-gradient(to bottom,black,transparent 78%);pointer-events:none}
+    a{color:inherit;text-decoration:none}.wrap{width:min(var(--max),calc(100% - 40px));margin-inline:auto}.serif,h1,h2,h3{font-family:Cinzel,Georgia,serif}.gold{color:var(--gold)}.cyan{color:var(--cyan)}
+    .noise{position:fixed;inset:0;z-index:-3;pointer-events:none;opacity:.12;background-image:radial-gradient(circle at 25% 35%,rgba(255,255,255,.55) 0 1px,transparent 1.5px);background-size:10px 10px}.page-glow{position:fixed;inset:auto auto 9% 50%;width:70vw;height:40vw;transform:translateX(-50%);z-index:-3;pointer-events:none;background:radial-gradient(ellipse,rgba(244,198,109,.08),transparent 65%);filter:blur(30px)}.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;z-index:100;background:#000;padding:12px;border:1px solid var(--gold)}
+    .nav{position:sticky;top:0;z-index:80;border-bottom:1px solid rgba(244,198,109,.16);background:linear-gradient(180deg,rgba(3,8,12,.88),rgba(3,8,12,.72));backdrop-filter:blur(22px);box-shadow:0 18px 70px rgba(0,0,0,.36)}
+    .navin{height:var(--nav);display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;gap:12px;min-width:max-content}.brand img{width:46px;height:46px;border-radius:50%;object-fit:cover;filter:drop-shadow(0 0 20px rgba(244,198,109,.32))}.wordmark{font-family:Cinzel,Georgia,serif;font-weight:900;font-size:21px;letter-spacing:.035em;background:linear-gradient(180deg,#fffdf0 0%,#f4c66d 56%,#b97825 100%);-webkit-background-clip:text;background-clip:text;color:transparent}.docs-label{border-left:1px solid rgba(244,198,109,.24);padding-left:12px;color:var(--gold3);font-size:12px;font-weight:950;letter-spacing:.18em;text-transform:uppercase}.navlinks{display:flex;align-items:center;gap:18px;color:#b9c8c1;font-size:12px;font-weight:850;letter-spacing:.06em}.navlinks a{opacity:.86}.navlinks a:hover{color:var(--gold3);opacity:1}
+    .btn,.small-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:#f6fbf3;border-radius:15px;font-weight:900;letter-spacing:.03em;transition:transform .28s var(--ease),filter .28s var(--ease),border-color .28s var(--ease),background .28s var(--ease),box-shadow .28s var(--ease);cursor:pointer;font-family:Inter,system-ui,sans-serif}.btn{height:60px;padding:0 28px;font-size:13px}.small-btn{height:43px;padding:0 17px;font-size:12px}.btn:hover,.small-btn:hover{transform:translateY(-3px);filter:brightness(1.08);border-color:rgba(244,198,109,.48);box-shadow:0 18px 54px rgba(0,0,0,.30)}.btn.primary,.small-btn.primary{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff1bd 0%,#f1be56 44%,#b56a1d 100%);border-color:rgba(255,229,168,.80);color:#150e06;box-shadow:0 24px 70px rgba(244,166,54,.25),inset 0 1px 0 rgba(255,255,255,.50);isolation:isolate}.btn.primary:before,.small-btn.primary:before{content:"";position:absolute;inset:-35% -80%;background:linear-gradient(100deg,transparent 36%,rgba(255,255,255,.55) 50%,transparent 64%);transform:translateX(-42%);animation:foil 8s ease-in-out infinite;pointer-events:none}.btn.ghost,.small-btn.ghost{background:rgba(3,8,12,.58);border-color:rgba(120,240,255,.28)}
+    .hero{position:relative;border-bottom:1px solid rgba(244,198,109,.14);overflow:hidden}.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 22% 24%,rgba(244,198,109,.12),transparent 31%),radial-gradient(circle at 78% 12%,rgba(120,240,255,.12),transparent 26%),linear-gradient(180deg,rgba(3,8,12,.18),rgba(3,8,12,.92))}.hero-inner{padding:92px 0 70px;display:grid;grid-template-columns:1fr .48fr;gap:54px;align-items:end}.eyebrow{display:inline-flex;align-items:center;gap:10px;color:#d3aa5f;font-size:11px;font-weight:950;letter-spacing:.27em;text-transform:uppercase}.eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 18px rgba(125,255,173,.86)}
+    h1{font-size:clamp(44px,6.6vw,96px);line-height:.88;letter-spacing:-.06em;margin:24px 0 22px;text-shadow:0 26px 90px rgba(0,0,0,.75)}.hero-sub{max-width:760px;color:#c9d6cf;font-size:18px;line-height:1.76;margin:0}.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}.hero-card{border:1px solid rgba(244,198,109,.30);border-radius:30px;background:linear-gradient(180deg,rgba(8,21,26,.80),rgba(3,10,13,.66));backdrop-filter:blur(18px);box-shadow:0 44px 150px rgba(0,0,0,.50),0 0 88px rgba(244,198,109,.08),inset 0 1px 0 rgba(255,255,255,.075);padding:24px}.stat{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,.09);padding:14px 0;color:#aebeb7;font-size:13px}.stat:first-child{padding-top:0}.stat:last-child{border-bottom:0;padding-bottom:0}.stat b{color:var(--gold3)}
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:30px;padding:44px 0 92px}.toc{position:sticky;top:calc(var(--nav) + 22px);align-self:start;border:1px solid rgba(244,198,109,.18);border-radius:24px;background:linear-gradient(180deg,rgba(9,24,29,.78),rgba(3,11,15,.72));box-shadow:0 34px 110px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05);padding:18px}.toc-title{color:var(--gold3);font-size:11px;font-weight:950;letter-spacing:.18em;text-transform:uppercase;margin:0 0 12px}.toc a{display:block;border-radius:12px;padding:10px 12px;color:#b9c8c1;font-size:13px;font-weight:800;line-height:1.25}.toc a:hover{background:rgba(120,240,255,.07);color:var(--cyan)}
+    .content{display:grid;gap:22px}.doc-section{scroll-margin-top:calc(var(--nav) + 22px);position:relative;border:1px solid rgba(244,198,109,.18);border-radius:28px;background:linear-gradient(180deg,rgba(9,24,29,.78),rgba(3,11,15,.72));padding:34px;overflow:hidden;box-shadow:0 34px 110px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)}.doc-section:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 86% 12%,rgba(120,240,255,.09),transparent 30%),radial-gradient(circle at 8% 86%,rgba(244,198,109,.06),transparent 32%);pointer-events:none}.doc-section>*{position:relative}.kicker{color:#c29d57;font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.25em}.doc-section h2{font-size:clamp(30px,3.4vw,52px);line-height:.95;letter-spacing:-.045em;margin:12px 0 16px}.doc-section h3{font-size:22px;margin:26px 0 10px}.doc-section p,.doc-section li{color:var(--muted);font-size:16px;line-height:1.72}.doc-section p{margin:0 0 16px}.doc-section ul{margin:12px 0 0;padding-left:22px}.doc-section li+li{margin-top:8px}.inline-url{color:var(--gold3);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;word-break:break-all}.callout{border:1px solid rgba(244,198,109,.26);border-radius:18px;background:rgba(244,198,109,.07);padding:18px 18px 18px 50px;margin:20px 0;position:relative;color:#d8e5de}.callout:before{content:"!";position:absolute;left:18px;top:18px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#140d05;font-weight:950}.callout strong{color:var(--gold3)}.pill-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.pill{border:1px solid rgba(120,240,255,.18);background:rgba(120,240,255,.07);color:#dffcff;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;letter-spacing:.04em}.pill.planned{border-color:rgba(166,133,255,.24);background:rgba(166,133,255,.10);color:#d9ceff}.pill.live{border-color:rgba(125,255,173,.24);background:rgba(125,255,173,.10);color:#dfffea}
+    .code-card{margin:18px 0;border:1px solid rgba(120,240,255,.18);border-radius:18px;background:#02070a;overflow:hidden;box-shadow:inset 0 0 50px rgba(120,240,255,.04)}.code-top{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(255,255,255,.08);padding:11px 12px 11px 16px;color:#91a29c;font-size:11px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}.copy-btn{border:1px solid rgba(244,198,109,.24);background:rgba(244,198,109,.08);color:var(--gold3);border-radius:10px;padding:7px 10px;font:800 11px Inter,system-ui;cursor:pointer}.copy-btn:hover{border-color:rgba(244,198,109,.48)}pre{margin:0;padding:18px 20px;overflow:auto;color:#bee9e6;font:13px/1.72 ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;white-space:pre-wrap;word-break:break-word}.token{color:var(--gold3)}.green{color:var(--green)}.violet{color:var(--violet)}
+    .recipe-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.recipe{border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.04);padding:18px}.recipe b{display:block;color:var(--gold3);margin-bottom:8px}.recipe span{display:block;color:#9fb0aa;line-height:1.6;font-size:14px}.footer{border-top:1px solid rgba(244,198,109,.13);padding:30px 0;color:#82938d;font-size:12px}.footin{display:flex;align-items:center;justify-content:space-between;gap:24px}.foot-links{display:flex;gap:18px;flex-wrap:wrap}.foot-links a:hover{color:var(--gold3)}
+    @keyframes foil{0%,62%{transform:translateX(-42%)}78%,100%{transform:translateX(42%)}}
+    @media (max-width:1020px){.navlinks{gap:10px}.hero-inner{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.toc{position:relative;top:auto}.toc nav{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}.recipe-grid{grid-template-columns:1fr}.footin{display:block}.foot-links{margin-top:18px}}
+    @media (max-width:640px){:root{--nav:70px}.wrap{width:min(100% - 28px,var(--max))}.brand img{width:38px;height:38px}.wordmark{font-size:17px}.docs-label{font-size:10px}.navlinks .back{display:none}.hero-inner{padding:58px 0 44px}h1{font-size:43px}.hero-sub{font-size:16px}.btn{width:100%;height:54px}.hero-ctas{width:100%}.hero-card,.doc-section{border-radius:22px;padding:24px}.toc nav{grid-template-columns:1fr}.navlinks{font-size:11px}.small-btn{height:39px;padding:0 12px}.code-top{align-items:flex-start;flex-direction:column}.copy-btn{width:100%}}
+    @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+<div class="noise" aria-hidden="true"></div><div class="page-glow" aria-hidden="true"></div>
+<nav class="nav" aria-label="Primary">
+  <div class="wrap navin">
+    <a class="brand" href="./index.html" aria-label="HermesWorld home"><img src="./crest.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span><span class="docs-label">Docs</span></a>
+    <div class="navlinks">
+      <a class="back" href="./index.html">← Back to HermesWorld</a>
+      <a href="#url-api">URL API</a>
+    </div>
+    <a class="small-btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play</a>
+  </div>
+</nav>
+<main id="main">
+  <header class="hero" id="top">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow">Agent launch docs</div>
+        <h1>HermesWorld Agent API &amp; Developer Docs</h1>
+        <p class="hero-sub">Tell your AI agent to launch and play HermesWorld in a browser via the WebGL URL API, or start the native client and connect to the same live world.</p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#url-api">Launch via URL API</a>
+          <a class="btn ghost" href="#native-client">Native client</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="API status summary">
+        <div class="stat"><span>Web Client</span><b>Live</b></div>
+        <div class="stat"><span>Launch Method</span><b>URL hash</b></div>
+        <div class="stat"><span>Spawn</span><b>Training Grounds</b></div>
+        <div class="stat"><span>Agent SDK</span><b>Coming soon</b></div>
+      </aside>
+    </div>
+  </header>
+
+  <div class="wrap layout">
+    <aside class="toc" aria-label="Documentation table of contents">
+      <p class="toc-title">Contents</p>
+      <nav>
+        <a href="#overview">Overview</a>
+        <a href="#url-api">Launch the Web Client</a>
+        <a href="#agent-instructions">Tell Your Agent</a>
+        <a href="#native-client">Native Client</a>
+        <a href="#world-session">World &amp; Session</a>
+        <a href="#accounts">Accounts</a>
+        <a href="#roadmap-api">API Roadmap</a>
+      </nav>
+    </aside>
+
+    <div class="content">
+      <section class="doc-section" id="overview">
+        <div class="kicker">Overview</div>
+        <h2>HermesWorld is playable by humans and agents.</h2>
+        <p>HermesWorld is a browser-playable and native MMO built on Atavism. AI agents can launch the WebGL client and log in programmatically via URL parameters, or launch the downloadable native client like a normal desktop app.</p>
+        <p>The web client runs in any modern desktop browser and streams the 3D world into the page. For automation, the important current-state mechanism is simple: open the play URL with account credentials in the URL hash.</p>
+        <div class="pill-row"><span class="pill live">WebGL live</span><span class="pill live">Native client</span><span class="pill">Atavism world</span><span class="pill planned">Agent SDK planned</span></div>
+      </section>
+
+      <section class="doc-section" id="url-api">
+        <div class="kicker">Key section</div>
+        <h2>Launch the Web Client (URL API)</h2>
+        <p>The HermesWorld web client lives at <span class="inline-url">https://play.hermes-world.ai/play/web/</span>.</p>
+        <p>For automation, the client reads login credentials from the URL hash fragment using the keys <span class="inline-url">user</span> and <span class="inline-url">pw</span>:</p>
+        <div class="code-card">
+          <div class="code-top"><span>URL format</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
+          <pre><code>https://play.hermes-world.ai/play/web/#user=YOUR_USERNAME&amp;pw=YOUR_PASSWORD</code></pre>
+        </div>
+        <p>The hash is read client-side by the WebGL bootstrap. When valid credentials are provided, the page auto-logs-in and enters the world. Current sessions spawn into the <strong class="gold">Training Grounds</strong>.</p>
+        <div class="callout"><strong>Security note:</strong> credentials in the URL hash are convenient for automation, but they can still appear in browser history and local automation logs. Use dedicated agent or bot accounts, not a player's primary account.</div>
+        <h3>Copy-paste prompt for an agent</h3>
+        <div class="code-card">
+          <div class="code-top"><span>Natural language</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
+          <pre><code>To play HermesWorld, open this URL in a browser: https://play.hermes-world.ai/play/web/#user=myagent&amp;pw=secret</code></pre>
+        </div>
+        <h3>Example browser automation</h3>
+        <p>This is a generic Playwright-style example. It demonstrates the launch flow only, not a separate REST API.</p>
+        <div class="code-card">
+          <div class="code-top"><span>Pseudo / Playwright-style</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
+          <pre><code>const url = 'https://play.hermes-world.ai/play/web/#user=myagent&amp;pw=secret';
+
+// Any browser-control capable agent can do this.
+await browser.open(url);
+await page.waitForSelector('canvas', { timeout: 120000 });
+
+// The WebGL bootstrap reads #user and #pw client-side,
+// logs in, and enters the live HermesWorld session.
+await page.waitForLoadState('networkidle');
+console.log('HermesWorld canvas is loaded. Begin visual/game automation.');</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="agent-instructions">
+        <div class="kicker">Practical recipes</div>
+        <h2>Telling Your AI Agent to Launch &amp; Play</h2>
+        <p>Any agent with browser-control or shell tools can drive HermesWorld. Browser agents use the URL API above. Desktop agents can launch the native app and use OS-level automation to operate the login screen and game client.</p>
+        <div class="recipe-grid">
+          <div class="recipe"><b>Browser-control agent</b><span>“Open HermesWorld in the browser and log in as <span class="inline-url">&lt;account&gt;</span>.” The agent should navigate to the play URL with <span class="inline-url">#user=&amp;pw=</span> hash credentials.</span></div>
+          <div class="recipe"><b>Shell / desktop agent</b><span>“Launch the HermesWorld native client and connect.” The agent starts the installed app, waits for the login screen, and enters account credentials through normal UI automation.</span></div>
+        </div>
+        <div class="code-card">
+          <div class="code-top"><span>Example instruction block</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
+          <pre><code>You have browser-control tools.
+Open HermesWorld and log in with the dedicated agent account.
+Use this launch URL:
+https://play.hermes-world.ai/play/web/#user=&lt;AGENT_USERNAME&gt;&amp;pw=&lt;AGENT_PASSWORD&gt;
+Wait for the WebGL canvas to load, then observe the screen and play from Training Grounds.</code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" id="native-client">
+        <div class="kicker">Desktop app</div>
+        <h2>Launch the Native Client</h2>
+        <p>The downloadable Windows and Mac clients connect to the same HermesWorld server as the browser client. Downloads are linked from the main HermesWorld site through the Play / Download flows.</p>
+        <p>The native client launches as a normal desktop app and uses the standard login screen. Where launch arguments are available, agents can use them; otherwise, programmatic control is OS-level automation: launch the executable or app bundle, wait for the login UI, enter credentials, then connect to the live world.</p>
+        <p><a class="small-btn ghost" href="./index.html#play">Back to Play / Download</a></p>
+      </section>
+
+      <section class="doc-section" id="world-session">
+        <div class="kicker">For the curious</div>
+        <h2>World &amp; Session</h2>
+        <p>At a high level, the web client opens a WebSocket session to the play server, which bridges into the Atavism world flow: authentication, character selection, and world entry.</p>
+        <p>Players currently spawn into <strong class="gold">Training Grounds</strong>. Reaching level 3 unlocks <strong class="cyan">AgoraTown Kingdom</strong>. Internal infrastructure details, ports, database paths, and server addresses are intentionally not part of the public launch API.</p>
+      </section>
+
+      <section class="doc-section" id="accounts">
+        <div class="kicker">Identity</div>
+        <h2>Accounts</h2>
+        <p>Players and agents need a HermesWorld account. Account creation is handled through the web client login / registration flow or the site flow when available.</p>
+        <p>For agent automation, use a separate account from your main player identity. Dedicated agent accounts make it easier to audit behavior, rotate credentials, and avoid exposing a primary player login in browser history or local automation logs.</p>
+      </section>
+
+      <section class="doc-section" id="roadmap-api">
+        <div class="kicker">Planned / coming soon</div>
+        <h2>Roadmap for the API</h2>
+        <p>This is an early preview. The live launch mechanism today is the web client URL hash with <span class="inline-url">#user=</span> and <span class="inline-url">pw=</span>. Additional developer surfaces are planned, not live public endpoints yet.</p>
+        <ul>
+          <li><strong class="gold">Official agent SDK</strong>, planned for cleaner launch, observation, and control flows.</li>
+          <li><strong class="gold">Quest and inventory read APIs</strong>, planned for agent companions and external dashboards.</li>
+          <li><strong class="gold">Companion routing</strong>, planned for assigning agents to scout, guide, craft, trade, or assist.</li>
+          <li><strong class="gold">Wallet-verified founder perks</strong>, planned for token-linked identity, badges, armor, and founder status.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footin">
+    <a class="brand" href="./index.html"><img src="./crest.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span></a>
+    <div class="foot-links"><a href="./index.html">Main Site</a><a href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play</a><a href="/token/">Token</a><a href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener">Pump.fun</a><a href="https://github.com/outsourc-e/hermes-workspace" target="_blank" rel="noopener">GitHub</a></div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const card = button.closest('.code-card');
+      const code = card ? card.querySelector('code') : null;
+      if (!code) return;
+      try {
+        await navigator.clipboard.writeText(code.textContent);
+        const old = button.textContent;
+        button.textContent = 'Copied';
+        setTimeout(() => { button.textContent = old; }, 1400);
+      } catch (_) {
+        button.textContent = 'Select text';
+        setTimeout(() => { button.textContent = 'Copy'; }, 1400);
+      }
+    });
+  });
+</script>
+</body>
+</html>
