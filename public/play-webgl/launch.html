@@ -154,9 +154,12 @@ async function launchWebGL() {
       return;
     }
     // Pass credentials via URL hash (not query — never logged in server access logs)
-    // autologin=1 tells the WebGL client to auto-submit Login() with the pre-filled
-    // creds (no manual LOGIN click) -> straight to character selection.
-    const url = `https://play.hermes-world.ai/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}&autologin=1`;
+    // charselecttest=1 auto-submits Login() and routes through the real character-select
+    // path WITHOUT forcing world auto-entry. This is the correct SSO flag: new accounts
+    // have 0 characters, and autologin=1 would hang on "Resolving World" trying to enter
+    // the world with no character. charselecttest=1 lands the player at character select
+    // (create/pick a character), which is the right next step.
+    const url = `https://play.hermes-world.ai/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}&charselecttest=1`;
     window.location.href = url;
   } catch (err) {
     $('webgl-status').textContent = 'WebGL bridge not reachable yet — download the Windows build instead.';
