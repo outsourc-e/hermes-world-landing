@@ -21,7 +21,7 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
   <div class="topbar">
     <a class="brand" href="/"><img src="/assets/hermesworld/art/hermesworld-crest.png" alt="HermesWorld"><div class="brand-name"><b>Hermes</b><span>World</span></div></a>
     <div class="top-actions">
-      <a class="small-link" href="/play/">Play</a>
+      <a class="small-link" href="https://play.hermes-world.ai/play/web/">Play</a>
       <a class="small-link" href="/">Landing</a>
       <button class="signout" id="signout">Sign out</button>
     </div>
@@ -42,7 +42,7 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
     getCurrentProfile,
     normalizeUsername,
     signOut,
-  } from '/assets/hermesworld/auth/supabase-client.js?v=20260524b';
+  } from '/assets/hermesworld/auth/supabase-client.js?v=20260606v1';
 
   const contentEl = document.getElementById('content');
   const signoutBtn = document.getElementById('signout');
@@ -164,7 +164,7 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
             <div class="sub">Founder flags/rewards are assigned server-side after verification.</div>
           </div>
           <div class="actions">
-            <a class="btn primary" href="/play/">Enter HermesWorld →</a>
+            <a class="btn primary" href="https://play.hermes-world.ai/play/web/">Enter HermesWorld →</a>
             ${!username ? '<a class="btn" href="/reserve">Claim founder name</a>' : ''}
             <button class="btn" id="secondary-signout" type="button">Sign out</button>
           </div>

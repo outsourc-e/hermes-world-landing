@@ -3,7 +3,7 @@ import {
   getCurrentProfile,
   getDestination,
   signOut,
-} from '/assets/hermesworld/auth/supabase-client.js?v=20260524b';
+} from '/assets/hermesworld/auth/supabase-client.js?v=20260606v1';
 
 const SIGNIN_URL = '/signin/';
 const ACCOUNT_URL = '/account';

@@ -144,18 +144,8 @@ export async function reserveUsername(username) {
 }
 
 export async function getDestination() {
-  const paths = ['/play/', '/dashboard/'];
-
-  for (const path of paths) {
-    try {
-      const response = await fetch(path, { method: 'HEAD', cache: 'no-store' });
-      if (response.ok) return path;
-    } catch (error) {
-      // ignore and continue
-    }
-  }
-
-  return '/play/';
+  // V1 web client (Unity WebGL, real MMO server). v0 prototype retired.
+  return 'https://play.hermes-world.ai/play/web/';
 }
 
 export async function signOut() {
