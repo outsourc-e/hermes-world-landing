@@ -154,7 +154,9 @@ async function launchWebGL() {
       return;
     }
     // Pass credentials via URL hash (not query — never logged in server access logs)
-    const url = `https://play.hermes-world.ai/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}`;
+    // autologin=1 tells the WebGL client to auto-submit Login() with the pre-filled
+    // creds (no manual LOGIN click) -> straight to character selection.
+    const url = `https://play.hermes-world.ai/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}&autologin=1`;
     window.location.href = url;
   } catch (err) {
     $('webgl-status').textContent = 'WebGL bridge not reachable yet — download the Windows build instead.';
