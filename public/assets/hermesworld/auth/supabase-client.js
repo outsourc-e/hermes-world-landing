@@ -144,8 +144,10 @@ export async function reserveUsername(username) {
 }
 
 export async function getDestination() {
-  // V1 web client (Unity WebGL, real MMO server). v0 prototype retired.
-  return 'https://play.hermes-world.ai/play/web/';
+  // Signed-in users go through the SSO launch flow: it provisions their game account
+  // (VPS) and redirects into the V1 web client already logged in -> straight to
+  // character selection, no second login screen. (v0 prototype retired.)
+  return '/play-webgl/launch.html';
 }
 
 export async function signOut() {
