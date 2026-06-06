@@ -3,9 +3,13 @@
 // Bridge updates master.account.password (MD5).
 
 export interface Env {
-  BRIDGE_URL: string;
-  BRIDGE_SHARED_SECRET: string;
+  BRIDGE_URL?: string;
+  BRIDGE_SHARED_SECRET?: string;
 }
+
+// VPS-local endpoint (consolidated onto our ops 2026-06-06).
+const DEFAULT_BRIDGE_URL = 'https://play.hermes-world.ai/play/web';
+const DEFAULT_BRIDGE_SHARED = '2db20ce0d15715ed2c61bbe567410d357e264eba17bddb21';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
@@ -14,11 +18,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (!body?.jwt || !body?.newPassword) {
       return new Response(JSON.stringify({ error: 'missing_fields' }), { status: 400, headers: { 'content-type': 'application/json' } });
     }
-    const r = await fetch(`${env.BRIDGE_URL}/set-password`, {
+    let bridgeBase = env.BRIDGE_URL || DEFAULT_BRIDGE_URL;
+    if (bridgeBase.includes('bridge.hermes-world.ai')) bridgeBase = DEFAULT_BRIDGE_URL;
+    const sharedSecret = env.BRIDGE_SHARED_SECRET || DEFAULT_BRIDGE_SHARED;
+    const r = await fetch(`${bridgeBase}/set-password`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'x-bridge-shared': env.BRIDGE_SHARED_SECRET || '',
+        'x-bridge-shared': sharedSecret,
       },
       body: JSON.stringify({ jwt: body.jwt, newPassword: body.newPassword }),
     });
