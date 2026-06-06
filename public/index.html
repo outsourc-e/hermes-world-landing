@@ -488,11 +488,21 @@ Risk: medium. Reward: Founder Sigil fragment.
 import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260606sso';
 function applySignedInUi(){
   // Once signed in, the nav primary CTA is rendered as an account chip by
-  // landing-auth.js. Hide the redundant standalone "Sign In" pill and the
-  // hero "Sign Up" duplicate so the chip stands alone.
+  // landing-auth.js. Hide the redundant standalone "Sign In" pill.
   document.querySelectorAll('[data-hw-signin-only]').forEach((el)=>{ el.style.display='none'; });
-  // Final-card CTA-row: if user is signed in, no-op (Play Now already points
-  // at /play/ which is the right destination for both states in phase 1).
+  // SSO: when signed in, route every "Play Now" through the launch flow so the
+  // user auto-logs into the game (no second login screen). Signed-out users keep
+  // the direct /play/web/ link (game shows its own login).
+  document.querySelectorAll('a.btn.primary, a.small-btn.primary').forEach((a)=>{
+    try{
+      const href = a.getAttribute('href') || '';
+      if(href.indexOf('play.hermes-world.ai/play/web') !== -1){
+        if(!a.dataset.hwOrigHref) a.dataset.hwOrigHref = href;
+        a.setAttribute('href', '/play-webgl/launch.html');
+        a.removeAttribute('target');
+      }
+    }catch(e){}
+  });
 }
 async function checkAndApply(){
   try{
