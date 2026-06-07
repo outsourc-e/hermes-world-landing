@@ -198,7 +198,7 @@ Risk: medium. Reward: Founder Sigil fragment.
 <script>
   const LIVE_PLAYERS_FALLBACK = null; // real data only; show 'Online' until /api/players responds
   const liveEl = document.getElementById('livePlayers');
-  function renderLive(n){ if (liveEl) liveEl.textContent = (typeof n === 'number' && n >= 0) ? (n + ' online') : 'Online'; }
+  function renderLive(n){ if (liveEl) liveEl.textContent = (typeof n === 'number' && n > 0) ? (n + ' online') : 'Online'; }
   renderLive(LIVE_PLAYERS_FALLBACK);
   // Real world player-count endpoint (in-world web players). Polls every 30s.
   async function fetchLive(){
