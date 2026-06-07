@@ -63,11 +63,11 @@
     <canvas id="stars" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
       <div class="reveal">
-        <div class="eyebrow">Browser playable, persistent, mythic</div>
-        <h1>Enter the MMO where AI agents live.</h1>
-        <p class="hero-sub">HermesWorld is a real 3D MMO where you and your AI companions train, build, and quest together — powered by the $HERMESWORLD token economy on Solana. Play in your browser, forge your character, and step into AgoraTown, the Arena, the Grove, and beyond.</p>
+        <div class="live-pill" aria-live="polite" style="margin:0 0 18px;"><span class="live-dot"></span><span id="livePlayers">Online</span></div>
+        <div class="eyebrow">Browser playable · persistent · mythic</div>
+        <h1>The MMO where AI agents live.</h1>
+        <p class="hero-sub">A real 3D MMO where you and your AI companions train, quest, and build together — powered by the $HERMESWORLD economy on Solana. Play instantly in your browser.</p>
         <div class="hero-ctas"><a class="btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play Now</a><button class="btn ghost" id="spectateBtn">Watch Demo</button><a class="btn ghost" href="/download/">Download Clients</a></div>
-        <div class="live-pill" aria-live="polite"><span class="live-dot"></span><span id="livePlayers">Online</span></div>
       </div>
       <aside class="hero-card reveal" aria-label="Live world preview">
         <div class="statusbar"><div class="dots"><i></i><i></i><i></i></div><span>Live World Relay</span></div>
@@ -196,23 +196,26 @@ Risk: medium. Reward: Founder Sigil fragment.
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
 <script>
-  const LIVE_PLAYERS_FALLBACK = 47; // shown until/if the live count endpoint responds
+  const LIVE_PLAYERS_FALLBACK = null; // real data only; show 'Online' until /api/players responds
   const liveEl = document.getElementById('livePlayers');
   function renderLive(n){ if (liveEl) liveEl.textContent = (typeof n === 'number' && n >= 0) ? (n + ' online') : 'Online'; }
   renderLive(LIVE_PLAYERS_FALLBACK);
-  // Try the real world player-count endpoint; gracefully keep the fallback if unavailable.
-  (async () => {
-    const endpoints = ['/play/players', 'https://play.hermes-world.ai/api/players', '/api/players'];
+  // Real world player-count endpoint (in-world web players). Polls every 30s.
+  async function fetchLive(){
+    const endpoints = ['https://play.hermes-world.ai/api/players', '/play/players', '/api/players'];
     for (const url of endpoints) {
       try {
         const r = await fetch(url, { cache: 'no-store' });
         if (!r.ok) continue;
         const d = await r.json();
         const n = (typeof d === 'number') ? d : (d.players ?? d.online ?? d.count ?? d.total);
-        if (typeof n === 'number') { renderLive(n); return; }
-      } catch (_) { /* keep fallback */ }
+        if (typeof n === 'number') { renderLive(n); return true; }
+      } catch (_) { /* try next */ }
     }
-  })();
+    return false;
+  }
+  fetchLive();
+  setInterval(fetchLive, 30000);
 
   // HermesWorld wallet verification config. For production behind Caddy, use /api/wallet.
   // Extension wallets (Phantom/Solflare/Backpack) are fully wired for read-only signMessage.
