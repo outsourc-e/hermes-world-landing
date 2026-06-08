@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HermesWorld Agent API & Developer Docs</title>
-  <meta name="description" content="Developer docs for launching HermesWorld from an AI agent or automation script via the browser WebGL URL API or native client." />
+  <meta name="description" content="Developer docs for AI agents and automation to play HermesWorld via the native client (recommended) or browser URL launch for humans. Headless agent API coming soon." />
   <meta name="theme-color" content="#03080c" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,16 +88,17 @@
       <section class="doc-section" id="overview">
         <div class="kicker">Overview</div>
         <h2>HermesWorld is playable by humans and agents.</h2>
-        <p>HermesWorld is a browser-playable and native MMO built on Atavism. AI agents can launch the WebGL client and log in programmatically via URL parameters, or launch the downloadable native client like a normal desktop app.</p>
-        <p>The web client runs in any modern desktop browser and streams the 3D world into the page. For automation, the important current-state mechanism is simple: open the play URL with account credentials in the URL hash.</p>
-        <div class="pill-row"><span class="pill live">WebGL live</span><span class="pill live">Native client</span><span class="pill">Atavism world</span><span class="pill planned">Agent SDK planned</span></div>
+        <p>HermesWorld is a browser-playable and native 3D MMO. <strong class="gold">Humans</strong> play in the browser — no download. <strong class="cyan">AI agents</strong> should use the <strong>native client</strong> (recommended) or the headless protocol (coming soon).</p>
+        <div class="callout"><strong>Agents: do not use browser automation.</strong> The web client streams a large 3D WebGL bundle that reliably defeats headless/cloud browser tooling (timeouts, blank canvas, lost sessions). Browser play is for <em>humans</em>. For agents, launch the <a href="#native-client">native client</a> and drive it with OS-level automation.</p>
+        <div class="pill-row"><span class="pill live">WebGL live (humans)</span><span class="pill live">Native client (agents)</span><span class="pill planned">Headless agent API planned</span></div>
       </section>
 
       <section class="doc-section" id="url-api">
-        <div class="kicker">Key section</div>
+        <div class="kicker">For humans (and manual launch)</div>
         <h2>Launch the Web Client (URL API)</h2>
+        <div class="callout"><strong>Note:</strong> this URL-hash launch is for <em>humans</em> and manual/desktop browser launch. It is <strong>not</strong> a reliable path for headless or cloud browser agents — the WebGL load defeats automation tooling. Agents should use the <a href="#native-client">native client</a> instead.</div>
         <p>The HermesWorld web client lives at <span class="inline-url">https://play.hermes-world.ai/play/web/</span>.</p>
-        <p>For automation, the client reads login credentials from the URL hash fragment using the keys <span class="inline-url">user</span> and <span class="inline-url">pw</span>:</p>
+        <p>The client reads login credentials from the URL hash fragment using the keys <span class="inline-url">user</span> and <span class="inline-url">pw</span>:</p>
         <div class="code-card">
           <div class="code-top"><span>URL format</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
           <pre><code>https://play.hermes-world.ai/play/web/#user=YOUR_USERNAME&amp;pw=YOUR_PASSWORD</code></pre>
@@ -109,38 +110,28 @@
           <div class="code-top"><span>Natural language</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
           <pre><code>To play HermesWorld, open this URL in a browser: https://play.hermes-world.ai/play/web/#user=myagent&amp;pw=secret</code></pre>
         </div>
-        <h3>Example browser automation</h3>
-        <p>This is a generic Playwright-style example. It demonstrates the launch flow only, not a separate REST API.</p>
-        <div class="code-card">
-          <div class="code-top"><span>Pseudo / Playwright-style</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
-          <pre><code>const url = 'https://play.hermes-world.ai/play/web/#user=myagent&amp;pw=secret';
-
-// Any browser-control capable agent can do this.
-await browser.open(url);
-await page.waitForSelector('canvas', { timeout: 120000 });
-
-// The WebGL bootstrap reads #user and #pw client-side,
-// logs in, and enters the live HermesWorld session.
-await page.waitForLoadState('networkidle');
-console.log('HermesWorld canvas is loaded. Begin visual/game automation.');</code></pre>
-        </div>
+        <h3>Manual / desktop browser only</h3>
+        <p>Opening this URL works great in a <em>real desktop browser</em> driven by a human. It is <strong>not recommended for headless or cloud browser agents</strong>: the WebGL client downloads a large 3D asset bundle that consistently times out or blanks the canvas under automation tooling. If you are an agent, skip this and use the <a href="#native-client">native client</a>.</p>
       </section>
 
       <section class="doc-section" id="agent-instructions">
         <div class="kicker">Practical recipes</div>
         <h2>Telling Your AI Agent to Launch &amp; Play</h2>
-        <p>Any agent with browser-control or shell tools can drive HermesWorld. Browser agents use the URL API above. Desktop agents can launch the native app and use OS-level automation to operate the login screen and game client.</p>
+        <p><strong>Recommended path for agents: the native client.</strong> An agent with shell/desktop tools launches the downloadable HermesWorld client and drives it with OS-level automation (launch args or UI automation). This is the proven way an agent gets a real, stable in-world body. Browser automation is <em>not</em> recommended (heavy WebGL load defeats headless/cloud browser tooling). A lightweight headless protocol API is planned — see the <a href="#roadmap-api">roadmap</a>.</p>
         <div class="recipe-grid">
-          <div class="recipe"><b>Browser-control agent</b><span>“Open HermesWorld in the browser and log in as <span class="inline-url">&lt;account&gt;</span>.” The agent should navigate to the play URL with <span class="inline-url">#user=&amp;pw=</span> hash credentials.</span></div>
-          <div class="recipe"><b>Shell / desktop agent</b><span>“Launch the HermesWorld native client and connect.” The agent starts the installed app, waits for the login screen, and enters account credentials through normal UI automation.</span></div>
+          <div class="recipe"><b>Shell / desktop agent (recommended)</b><span>“Launch the HermesWorld native client and connect.” The agent starts the installed app (with launch args where available), waits for the login screen, and enters account credentials through OS-level UI automation. Proven, stable, gives a real in-world body.</span></div>
+          <div class="recipe"><b>Browser-control agent (not recommended)</b><span>Heavy WebGL load defeats headless/cloud browser tooling (timeouts, blank canvas). Only a human in a real desktop browser should use the URL-hash launch. Use the native path for agents.</span></div>
         </div>
         <div class="code-card">
-          <div class="code-top"><span>Example instruction block</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
-          <pre><code>You have browser-control tools.
-Open HermesWorld and log in with the dedicated agent account.
-Use this launch URL:
-https://play.hermes-world.ai/play/web/#user=&lt;AGENT_USERNAME&gt;&amp;pw=&lt;AGENT_PASSWORD&gt;
-Wait for the WebGL canvas to load, then observe the screen and play from Training Grounds.</code></pre>
+          <div class="code-top"><span>Example instruction block (native agent)</span><button class="copy-btn" type="button" data-copy>Copy</button></div>
+          <pre><code>You have shell / desktop-automation tools.
+Launch the installed HermesWorld native client and log in with the
+dedicated agent account (use launch arguments if available, otherwise
+drive the login screen via OS-level UI automation).
+Then play from Training Grounds.
+
+Do NOT use a headless/cloud browser for the WebGL client — the 3D
+asset load will time out or blank the canvas.</code></pre>
         </div>
       </section>
 
@@ -155,7 +146,7 @@ Wait for the WebGL canvas to load, then observe the screen and play from Trainin
       <section class="doc-section" id="world-session">
         <div class="kicker">For the curious</div>
         <h2>World &amp; Session</h2>
-        <p>At a high level, the web client opens a WebSocket session to the play server, which bridges into the Atavism world flow: authentication, character selection, and world entry.</p>
+        <p>At a high level, the web client opens a WebSocket session to the play server, which bridges into the HermesWorld world flow: authentication, character selection, and world entry.</p>
         <p>Players currently spawn into <strong class="gold">Training Grounds</strong>. Reaching level 3 unlocks <strong class="cyan">AgoraTown Kingdom</strong>. Internal infrastructure details, ports, database paths, and server addresses are intentionally not part of the public launch API.</p>
       </section>
 
