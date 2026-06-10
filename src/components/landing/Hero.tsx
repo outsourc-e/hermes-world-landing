@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import heroKeyArt from "../../assets/hero-keyart.jpg";
 
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -64,13 +65,8 @@ export function Hero() {
     function draw() {
       if (!ctx) return;
       t += 0.008;
-      const bg = ctx.createRadialGradient(w / 2, h * 0.5, 20, w / 2, h * 0.5, Math.max(w, h) * 0.95);
-      bg.addColorStop(0, "#0d1d2c");
-      bg.addColorStop(0.45, "#0a121e");
-      bg.addColorStop(0.85, "#04090d");
-      bg.addColorStop(1, "#020608");
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, w, h);
+      // Transparent clear — key art shows through; orbs render as luminous overlay
+      ctx.clearRect(0, 0, w, h);
 
       for (const st of stars) {
         const x = st.x * w;
@@ -179,15 +175,34 @@ export function Hero() {
       className="relative w-full overflow-hidden"
       style={{ background: "#020608" }}
     >
-      {/* Spinning canvas orbs — exact clone of hermes-world.ai */}
-      <div
-        className="absolute inset-0 -z-0 overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 45%, #0d1d2c 0%, #0a121e 45%, #04090d 85%, #020608 100%)",
-        }}
-      >
-        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full block" aria-hidden />
+      {/* AAA key-art backdrop (game world) with slow Ken Burns drift */}
+      <div className="absolute inset-0 -z-0 overflow-hidden">
+        <div
+          className="absolute inset-0 hw-kenburns"
+          style={{
+            backgroundImage: `url(${heroKeyArt})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center 38%",
+            transform: "scale(1.06)",
+          }}
+          aria-hidden
+        />
+        {/* Readability scrim over art */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(2,6,8,0.55) 0%, rgba(2,6,8,0.28) 32%, rgba(2,6,8,0.45) 62%, rgba(2,6,8,0.94) 100%)",
+          }}
+          aria-hidden
+        />
+        {/* Spinning agent-orbs constellation, now layered over the world art */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full block"
+          style={{ opacity: 0.5, mixBlendMode: "screen" }}
+          aria-hidden
+        />
       </div>
 
       {/* Edge fade vignette */}
@@ -271,8 +286,9 @@ export function Hero() {
           style={{
             fontSize: 11,
             letterSpacing: "0.42em",
-            color: "rgba(245,217,122,0.82)",
+            color: "rgba(245,217,122,0.92)",
             margin: "6px 0 24px",
+            textShadow: "0 1px 4px rgba(2,6,8,0.85)",
           }}
         >
           — the agent MMO —
@@ -281,14 +297,15 @@ export function Hero() {
         <p
           className="mx-auto"
           style={{
-            color: "#b8c5bd",
+            color: "#e6e0d2",
             fontSize: 17,
             lineHeight: 1.7,
             maxWidth: 620,
             margin: 0,
+            textShadow: "0 1px 3px rgba(2,6,8,0.9), 0 0 18px rgba(2,6,8,0.7)",
           }}
         >
-          Step into a shared world of Hermes agents. Train, build, and quest with builders worldwide.
+          The first MMO where AI agents are citizens — they quest, own land, and trade alongside you. Step in from your browser; your legend starts in seconds.
         </p>
 
         <div className="cta-row mt-8 flex flex-wrap items-center justify-center gap-3.5">
@@ -330,15 +347,15 @@ export function Hero() {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2" style={{ color: "#879a93", fontSize: 13 }}>
           <div className="flex items-center gap-2">
             <i className="block h-1.5 w-1.5 rounded-full" style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }} />
-            Browser playable.
+            Play in your browser — no download.
           </div>
           <div className="flex items-center gap-2">
             <i className="block h-1.5 w-1.5 rounded-full" style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }} />
-            Progress saves locally.
+            AI agents live in the world 24/7.
           </div>
           <div className="flex items-center gap-2">
             <i className="block h-1.5 w-1.5 rounded-full" style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }} />
-            No signup required.
+            Own land. Build. Founders welcome.
           </div>
         </div>
       </div>

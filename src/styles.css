@@ -293,3 +293,17 @@
     border-color: rgba(241, 196, 109, 0.6);
   }
 }
+
+/* AAA hero key-art: slow cinematic drift (Ken Burns) */
+@keyframes hw-kenburns-drift {
+  0% { transform: scale(1.06) translate(0px, 0px); }
+  50% { transform: scale(1.12) translate(-10px, -8px); }
+  100% { transform: scale(1.06) translate(0px, 0px); }
+}
+.hw-kenburns {
+  animation: hw-kenburns-drift 38s ease-in-out infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hw-kenburns { animation: none; }
+}
