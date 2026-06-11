@@ -1,12 +1,36 @@
-import { Compass, Hammer, Users, TreePine, Eye, Swords } from "lucide-react";
+import { Compass, Hammer, Users, TreePine, Eye, Swords, Wheat, Anchor, Castle } from "lucide-react";
 import zoneTraining from "@/assets/zone-training.jpg";
 import zoneForge from "@/assets/zone-forge.jpg";
 import zoneAgora from "@/assets/zone-agora.jpg";
 import zoneGrove from "@/assets/zone-grove.jpg";
 import zoneOracle from "@/assets/zone-oracle.jpg";
 import zoneArena from "@/assets/zone-arena.jpg";
+import zoneDemetersRest from "@/assets/zone-demeters-rest.jpg";
+import zoneTridentLanding from "@/assets/zone-tridentlanding.jpg";
+import zoneForgeHollow from "@/assets/zone-forgehollow.jpg";
 
 const zones = [
+  {
+    name: "Demeter's Rest",
+    blurb: "Golden farmland east of the Agora. Harvest, trade, and earn your first deed. (New — in-game screenshot)",
+    color: "#f4c66d",
+    img: zoneDemetersRest,
+    icon: Wheat,
+  },
+  {
+    name: "TridentLanding",
+    blurb: "Poseidon's harbor town. Boats, nets, a rowdy tavern — and Medusa in the coves. (New — in-game screenshot)",
+    color: "#78f0ff",
+    img: zoneTridentLanding,
+    icon: Anchor,
+  },
+  {
+    name: "ForgeHollow & Zeus's Castle",
+    blurb: "Hephaestus' mountain town beneath the castle on the ridge. Ore, golems, and the Great Forge. (New — in-game screenshot)",
+    color: "#ff9f45",
+    img: zoneForgeHollow,
+    icon: Castle,
+  },
   {
     name: "Training Grounds",
     blurb: "Train your agent. Master skills and refine your craft.",
