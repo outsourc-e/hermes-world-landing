@@ -39,7 +39,51 @@ export function suggestUsername(user) {
     if (normalized.length >= 3) return normalized;
   }
 
-  return "";
+  return "traveler";
+}
+
+function trimForSuffix(base, suffix) {
+  return normalizeUsername(base || "traveler").slice(0, Math.max(3, 24 - suffix.length));
+}
+
+export async function isUsernameAvailable(username, currentUserId = null) {
+  const normalized = normalizeUsername(username);
+  if (normalized.length < 3) return false;
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, username')
+    .eq('username', normalized)
+    .maybeSingle();
+
+  if (error && error.code !== 'PGRST116') throw error;
+  return !data || (currentUserId && data.id === currentUserId);
+}
+
+export async function generateUniqueUsername(base, currentUserId = null) {
+  const normalizedBase = normalizeUsername(base || "traveler") || "traveler";
+  if (await isUsernameAvailable(normalizedBase, currentUserId)) return normalizedBase;
+
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const suffix = `_${Math.floor(1000 + Math.random() * 9000)}`;
+    const candidate = `${trimForSuffix(normalizedBase, suffix)}${suffix}`;
+    if (await isUsernameAvailable(candidate, currentUserId)) return candidate;
+  }
+
+  const cryptoObj = globalThis.crypto;
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    let n = Math.floor(100000 + Math.random() * 900000);
+    if (cryptoObj?.getRandomValues) {
+      const arr = new Uint32Array(1);
+      cryptoObj.getRandomValues(arr);
+      n = 100000 + (arr[0] % 900000);
+    }
+    const suffix = `_${n}`;
+    const candidate = `${trimForSuffix(normalizedBase, suffix)}${suffix}`;
+    if (await isUsernameAvailable(candidate, currentUserId)) return candidate;
+  }
+
+  throw new Error('Could not find an available username.');
 }
 
 export function authRedirectTo() {
@@ -141,6 +185,28 @@ export async function reserveUsername(username) {
 
   if (error) throw error;
   return data;
+}
+
+export async function reserveUniqueUsername(preferredUsername) {
+  const { user } = await getCurrentProfile();
+  if (!user) throw new Error('No authenticated user');
+
+  const preferred = normalizeUsername(preferredUsername || suggestUsername(user));
+  let lastError = null;
+
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const candidate = attempt === 0
+      ? await generateUniqueUsername(preferred, user.id)
+      : await generateUniqueUsername(`${preferred}_${Math.floor(1000 + Math.random() * 9000)}`, user.id);
+    try {
+      return await reserveUsername(candidate);
+    } catch (error) {
+      lastError = error;
+      if (error?.code !== '23505') throw error;
+    }
+  }
+
+  throw lastError || new Error('Could not reserve a unique username.');
 }
 
 export async function getDestination() {

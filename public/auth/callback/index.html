@@ -39,7 +39,7 @@
     </div>
   </main>
   <script type="module">
-    import { exchangeCodeFromCurrentUrl, getCurrentProfile, getDestination, normalizeUsername, reserveUsername, signInWithGoogle, suggestUsername } from '/assets/hermesworld/auth/supabase-client.js?v=20260606sso';
+    import { exchangeCodeFromCurrentUrl, generateUniqueUsername, getCurrentProfile, getDestination, normalizeUsername, reserveUniqueUsername, signInWithGoogle, suggestUsername } from '/assets/hermesworld/auth/supabase-client.js?v=20260616unique';
 
     const loadingPanel = document.getElementById('loading-panel');
     const reservePanel = document.getElementById('reserve-panel');
@@ -137,8 +137,10 @@
         return;
       }
 
-      usernameInput.value = suggestUsername(user);
-      setStatus(loadingStatus, `Signed in as ${user.email || 'your account'}. Pick your HermesWorld username.`, 'success');
+      const suggested = await generateUniqueUsername(suggestUsername(user), user.id);
+      usernameInput.value = suggested;
+      setStatus(loadingStatus, `Signed in as ${user.email || 'your account'}. We found an available name for you.`, 'success');
+      setStatus(reserveStatus, `${suggested} is available. You can change it or continue.`, 'success');
       showReserve();
     }
 
@@ -162,14 +164,15 @@
       setStatus(reserveStatus, 'Claiming your handle…');
 
       try {
-        const profile = await reserveUsername(username);
-        setStatus(reserveStatus, `Locked in. ${profile.username} is yours.`, 'success');
+        const profile = await reserveUniqueUsername(username);
+        const suffixNote = profile.username !== username ? ` ${username} was taken, so we reserved ${profile.username} instead.` : '';
+        setStatus(reserveStatus, `Locked in. ${profile.username} is yours.${suffixNote}`, 'success');
         submitButton.textContent = 'Reserved';
         await continueToDestination();
       } catch (error) {
         console.error(error);
         const message = error?.code === '23505'
-          ? 'That username is taken. Try another.'
+          ? 'That username was taken; we could not auto-resolve it. Try another.'
           : (error?.message || 'Could not reserve that username.');
         setStatus(reserveStatus, message, 'error');
         submitButton.disabled = false;

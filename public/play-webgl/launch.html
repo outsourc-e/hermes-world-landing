@@ -97,8 +97,9 @@
 <script type="module">
 import {
   supabase,
+  reserveUniqueUsername,
   signOut as supaSignOut,
-} from '/assets/hermesworld/auth/supabase-client.js?v=20260606sso';
+} from '/assets/hermesworld/auth/supabase-client.js?v=20260616unique';
 
 const $ = (id) => document.getElementById(id);
 const show = (id) => {
@@ -106,7 +107,7 @@ const show = (id) => {
   $(id).classList.remove('hide');
 };
 
-async function provisionGameAccount() {
+async function provisionGameAccount(autoReservedName = false) {
   show('state-loading');
   const { data: { session }, error: sErr } = await supabase.auth.getSession();
   if (sErr || !session?.access_token) {
@@ -121,6 +122,12 @@ async function provisionGameAccount() {
     });
     const body = await r.json();
     if (!r.ok) {
+      if (body?.error === 'no_reserved_name' && !autoReservedName) {
+        $('loading-msg').textContent = 'Choosing an available HermesWorld name…';
+        const profile = await reserveUniqueUsername();
+        $('loading-msg').textContent = `Reserved ${profile.username}. Preparing game account…`;
+        return provisionGameAccount(true);
+      }
       if (body?.error === 'no_reserved_name') {
         return show('state-noname');
       }
@@ -176,6 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
 provisionGameAccount();
 </script>
 <a class="hw-account-fixed" data-google-signin href="/signin/" style="position:fixed;top:14px;right:14px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(244,198,109,.12);border:1px solid rgba(244,198,109,.45);color:#f4c66d;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.04em;font-family:Inter,ui-sans-serif,system-ui,sans-serif;"><span data-google-label>Sign in</span></a>
-<script type="module" src="/assets/hermesworld/auth/landing-auth.js?v=20260606sso"></script>
+<script type="module" src="/assets/hermesworld/auth/landing-auth.js?v=20260616unique"></script>
 </body>
 </html>
