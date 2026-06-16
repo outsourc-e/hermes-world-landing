@@ -81,15 +81,47 @@ async function usernameAvailable(env: Env, username: string, currentUserId: stri
   return rows.length === 0 || rows[0]?.id === currentUserId;
 }
 
-async function uniqueUsername(env: Env, base: string, currentUserId: string) {
+async function uniqueUsername(env: Env, base: string, currentUserId: string, skipExact = false) {
   const normalizedBase = normalizeUsername(base || 'traveler') || 'traveler';
-  if (await usernameAvailable(env, normalizedBase, currentUserId)) return normalizedBase;
+  if (!skipExact && await usernameAvailable(env, normalizedBase, currentUserId)) return normalizedBase;
   for (let i = 0; i < 30; i += 1) {
     const suffix = `_${Math.floor(1000 + Math.random() * 900000)}`;
     const candidate = `${trimForSuffix(normalizedBase, suffix)}${suffix}`;
     if (await usernameAvailable(env, candidate, currentUserId)) return candidate;
   }
   throw new Error('unique_username_failed');
+}
+
+
+async function setProfileUsername(env: Env, user: any, username: string) {
+  const payload = {
+    id: user.id,
+    username,
+    display_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email || username,
+    avatar_url: user.user_metadata?.avatar_url || null,
+  };
+  const upsertRes = await supabaseRest(env, 'profiles?on_conflict=id', {
+    method: 'POST',
+    headers: { prefer: 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify(payload),
+  });
+  if (!upsertRes.ok) throw new Error(`profile_username_failed:${await upsertRes.text()}`);
+}
+
+async function rotateProfileUsername(env: Env, jwt: string) {
+  if (!env.HERMESWORLD_SUPABASE_URL || !env.HERMESWORLD_SUPABASE_SERVICE_ROLE_KEY) return false;
+  const user = await getSupabaseUser(env, jwt);
+  if (!user?.id) return false;
+  const currentRes = await supabaseRest(
+    env,
+    `profiles?select=id,username&id=eq.${encodeURIComponent(user.id)}&limit=1`,
+    { headers: { accept: 'application/json' } },
+  );
+  const currentRows = currentRes.ok ? await currentRes.json() as any[] : [];
+  const base = currentRows[0]?.username || candidateBase(user);
+  const username = await uniqueUsername(env, base, user.id, true);
+  await setProfileUsername(env, user, username);
+  return true;
 }
 
 async function ensureProfileUsername(env: Env, jwt: string) {
@@ -106,18 +138,7 @@ async function ensureProfileUsername(env: Env, jwt: string) {
   if (currentRows[0]?.username) return;
 
   const username = await uniqueUsername(env, candidateBase(user), user.id);
-  const payload = {
-    id: user.id,
-    username,
-    display_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email || username,
-    avatar_url: user.user_metadata?.avatar_url || null,
-  };
-  const upsertRes = await supabaseRest(env, 'profiles?on_conflict=id', {
-    method: 'POST',
-    headers: { prefer: 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify(payload),
-  });
-  if (!upsertRes.ok) throw new Error(`profile_username_failed:${await upsertRes.text()}`);
+  await setProfileUsername(env, user, username);
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
@@ -135,7 +156,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     let bridgeBase = env.BRIDGE_URL || DEFAULT_BRIDGE_URL;
     if (bridgeBase.includes('bridge.hermes-world.ai')) bridgeBase = DEFAULT_BRIDGE_URL; // retire old Studio->PC1 bridge
     const sharedSecret = env.BRIDGE_SHARED_SECRET || DEFAULT_BRIDGE_SHARED;
-    const r = await fetch(`${bridgeBase}/provision`, {
+    const provision = () => fetch(`${bridgeBase}/provision`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -143,7 +164,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       },
       body: JSON.stringify({ jwt: body.jwt }),
     });
-    const txt = await r.text();
+
+    let r = await provision();
+    let txt = await r.text();
+    if (!r.ok && /username .*already taken/i.test(txt)) {
+      const rotated = await rotateProfileUsername(env, body.jwt);
+      if (rotated) {
+        r = await provision();
+        txt = await r.text();
+      }
+    }
     return new Response(txt, {
       status: r.status,
       headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' },
