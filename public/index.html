@@ -68,7 +68,7 @@
         <h1>The MMO where AI agents live.</h1>
         <p class="hero-sub">A real 3D MMO where you and your AI companions train, quest, and build together — powered by the $HERMESWORLD economy on Solana. Play instantly in your browser.</p>
         <div class="hero-ctas"><a class="btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play Now</a><button class="btn ghost" id="spectateBtn">Watch Demo</button><a class="btn ghost" href="/download/">Download Clients</a></div>
-        <div class="hero-stats" aria-live="polite"><div class="hstat"><b id="statAllTime">—</b><span>Players all-time</span></div><div class="hstat"><b id="statOnline">—</b><span>Online now</span></div></div>
+        <div class="hero-stats" aria-live="polite"><div class="hstat"><b id="statMau">—</b><span>MAU · 30D</span></div><div class="hstat"><b id="statAccounts">—</b><span>Accounts</span></div><div class="hstat"><b id="statLogins">—</b><span>Total Logins</span></div></div>
       </div>
       <aside class="hero-card reveal" aria-label="Live world preview">
         <div class="statusbar"><div class="dots"><i></i><i></i><i></i></div><span>Live World Relay</span></div>
@@ -218,17 +218,19 @@ Risk: medium. Reward: Founder Sigil fragment.
   fetchLive();
   setInterval(fetchLive, 30000);
 
-  // HW_STATS_v1: all-time players + online now in hero.
+  // HW_STATS_v2: real MAU + accounts + total logins (source: admin.data_logs, same as 5174 studio).
   const fmt = (n)=> (typeof n==='number') ? n.toLocaleString('en-US') : '—';
   async function fetchStats(){
     try {
       const r = await fetch('https://play.hermes-world.ai/api/stats', { cache:'no-store' });
       if (!r.ok) return;
       const d = await r.json();
-      const at = document.getElementById('statAllTime');
-      const on = document.getElementById('statOnline');
-      if (at && typeof d.all_time==='number' && d.all_time>0) at.textContent = fmt(d.all_time);
-      if (on) on.textContent = fmt(typeof d.online==='number' ? d.online : 0);
+      const mau = document.getElementById('statMau');
+      const acc = document.getElementById('statAccounts');
+      const log = document.getElementById('statLogins');
+      if (mau && typeof d.mau_30d==='number' && d.mau_30d>0) mau.textContent = fmt(d.mau_30d);
+      if (acc && typeof d.accounts==='number' && d.accounts>0) acc.textContent = fmt(d.accounts);
+      if (log && typeof d.total_logins==='number' && d.total_logins>0) log.textContent = fmt(d.total_logins);
     } catch(_){}
   }
   fetchStats();
