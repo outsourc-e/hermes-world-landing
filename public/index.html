@@ -43,6 +43,14 @@
   .sigils-head{text-align:center;display:flex;flex-direction:column;align-items:center}.sigil-hero-logo{width:96px;height:96px;border-radius:20px;margin:0 auto 18px;box-shadow:0 0 40px rgba(244,198,109,.4);border:1px solid rgba(244,198,109,.28)}.sigils-compact .pillar{align-items:center;text-align:center}.sigils-compact .pillar i.sigil-ico{margin:0 auto}
   .agent-docs-link{display:flex;align-items:center;gap:14px;margin-top:18px;padding:14px 16px;border:1px solid rgba(120,240,255,.2);border-radius:14px;background:rgba(120,240,255,.05);transition:border-color .25s,transform .25s}.agent-docs-link:hover{border-color:rgba(120,240,255,.42);transform:translateY(-2px)}.agent-docs-link .agent-docs-ico{width:42px;height:42px;border-radius:10px;overflow:hidden;flex:0 0 auto;display:grid;place-items:center;background:#06141a}.agent-docs-link .agent-docs-ico img{width:100%;height:100%;object-fit:cover}.agent-docs-link b{display:block;font-size:15px}.agent-docs-link span span{color:#9fb0aa;font-size:13px;line-height:1.4}.agent-docs-link .arrow{margin-left:auto;color:var(--cyan);font-weight:800;font-size:13px;white-space:nowrap}.guide-credit-inline{display:block;margin-top:6px;font-size:11px;color:#7c8d87}
   .guide-banner{display:flex;align-items:center;gap:16px;margin-top:22px;padding:18px 22px;border:1px solid rgba(244,198,109,.22);border-radius:18px;background:linear-gradient(180deg,rgba(244,198,109,.07),rgba(3,11,15,.4));cursor:pointer;transition:border-color .25s,transform .25s}.guide-banner:hover{border-color:rgba(244,198,109,.45);transform:translateY(-2px)}.guide-banner-ico{width:52px;height:52px;border-radius:13px;overflow:hidden;flex:0 0 auto;display:grid;place-items:center;background:#06141a}.guide-banner-ico img{width:100%;height:100%;object-fit:cover}.guide-banner-txt b{display:block;font-size:16px}.guide-banner-txt span{color:#9fb0aa;font-size:13px;line-height:1.5}.guide-banner-arrow{margin-left:auto;color:var(--gold3);font-weight:850;font-size:13px;white-space:nowrap}@media(max-width:640px){.guide-banner{flex-direction:column;text-align:center;align-items:center}.guide-banner-arrow{margin-left:0}}
+
+  .play-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+  .play-steps .step{min-height:236px;padding:28px 24px}
+  .play-steps .step h3{font-size:24px;line-height:1.02;margin:0 0 12px}
+  .play-steps .step p{margin:0;color:#aebeb7;font-size:14px;line-height:1.58}
+  .play-steps .step .arrow{margin-top:18px;font-size:13px;font-weight:900;color:var(--cyan)}
+  @media(max-width:1020px){.play-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:640px){.play-steps{grid-template-columns:1fr}.play-steps .step{min-height:auto;padding:24px}.play-steps .icon{margin-bottom:18px}}
   </style>
 </head>
 <body>
@@ -78,12 +86,13 @@
 
   <section id="play" class="section">
     <div class="wrap">
-      <div class="section-head reveal"><div class="kicker">Zero install</div><h2>How it works</h2><p>Three steps from browser to in-world founder. No download required for the web client — launch instantly, or use the native downloads below for best performance.</p></div>
-      <a class="guide-banner reveal" data-guide-open role="button" tabindex="0"><span class="guide-banner-ico"><img src="./logos/guide-sm.png" alt=""></span><span class="guide-banner-txt"><b>New here? Read the Beginner Guide</b><span>Controls, your first quest, character setup, and what to do in your first hour.</span></span><span class="guide-banner-arrow">Read guide →</span></a>
-      <div class="cards3">
-        <article class="step reveal" data-step="01"><div class="icon icon-img"><img src="./logos/launch-web-sm.png" alt="" loading="lazy"></div><h3>Launch web</h3><p>Launch HermesWorld from any modern desktop browser. The world streams straight into the page.</p><div class="arrow"><a href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Open web client →</a></div></article>
-        <article class="step reveal" data-step="02"><div class="icon icon-img"><img src="./logos/create-character-sm.png" alt="" loading="lazy"></div><h3>Create your character</h3><p>Choose your mythic avatar, reserve your founder identity, and step into AgoraTown.</p></article>
-        <article class="step reveal" data-step="03"><div class="icon icon-img"><img src="./logos/enter-ai-sm.png" alt="" loading="lazy"></div><h3>Enter with AI companions</h3><p>Bring agents that can follow, chat, quest, scout, craft, and eventually progress while you are away.</p></article>
+      <div class="section-head reveal"><div class="kicker">How to play</div><h2>Get into the world in four clicks.</h2><p>Dead simple: sign in, pick a character, join the world, then quest and build with AI companions. No launcher required for the browser client.</p></div>
+      <a class="guide-banner reveal" data-guide-open role="button" tabindex="0"><span class="guide-banner-ico"><img src="./logos/guide-sm.png" alt=""></span><span class="guide-banner-txt"><b>Need the full tour?</b><span>Controls, first quest, character setup, and what to do in your first hour.</span></span><span class="guide-banner-arrow">Read guide →</span></a>
+      <div class="play-steps">
+        <article class="step reveal" data-step="01"><div class="icon icon-img"><img src="./logos/launch-web-sm.png" alt="" loading="lazy"></div><h3>Sign in</h3><p>Create or use your HermesWorld account. The browser client opens instantly — no install ceremony.</p><div class="arrow"><a href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Open web client →</a></div></article>
+        <article class="step reveal" data-step="02"><div class="icon icon-img"><img src="./logos/create-character-sm.png" alt="" loading="lazy"></div><h3>Pick a character</h3><p>Choose your mythic avatar, reserve your founder identity, and land at character select.</p></article>
+        <article class="step reveal" data-step="03"><div class="icon icon-img"><img src="./logos/enter-ai-sm.png" alt="" loading="lazy"></div><h3>Join the world</h3><p>Spawn into AgoraTown or Training Grounds and start moving, fighting, trading, and exploring.</p></article>
+        <article class="step reveal" data-step="04"><div class="icon">⚒</div><h3>Quest &amp; build</h3><p>Take quests, progress with companions, earn sigils, and help shape the persistent world.</p></article>
       </div>
     </div>
   </section>
