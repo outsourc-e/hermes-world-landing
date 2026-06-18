@@ -59,6 +59,13 @@
     .btn{min-height:54px}.section{padding:72px 0}.section h2{font-size:clamp(34px,10.5vw,44px);letter-spacing:-.045em}.section-head p,.section-copy{font-size:15px;line-height:1.62}
     .guide-banner{padding:16px}.play-steps .step{padding:22px}.zone{min-height:330px}.foot-links{gap:12px}
   }
+
+  .spectate-placeholder{position:relative;aspect-ratio:16/9;border:1px solid rgba(120,240,255,.34);border-top:0;border-radius:0 0 18px 18px;background:#061218;overflow:hidden;isolation:isolate}
+  .spectate-placeholder iframe,.spectate-placeholder img{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+  .spectate-placeholder img{filter:saturate(1.08) contrast(1.06) brightness(.68)}
+  .spectate-placeholder iframe{display:none;background:#02070a}.spectate-placeholder.is-live iframe{display:block}.spectate-placeholder.is-live img,.spectate-placeholder.is-live .spectate-copy{display:none}
+  .spectate-copy{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:26px;background:radial-gradient(circle at 50% 30%,rgba(120,240,255,.18),transparent 34%),linear-gradient(180deg,rgba(2,7,10,.22),rgba(2,7,10,.82));z-index:2}
+  .spectate-copy b{display:block;font-family:Cinzel,Georgia,serif;font-size:28px;color:var(--gold3);letter-spacing:-.03em}.spectate-copy span{display:block;margin-top:8px;color:#cde2dc;font-size:12px;line-height:1.5}.spectate-copy code{display:inline-block;margin-top:12px;border:1px solid rgba(120,240,255,.20);border-radius:999px;background:rgba(2,7,10,.72);color:var(--cyan);padding:7px 10px;font:800 10px ui-monospace,SFMono-Regular,Menlo,monospace}
   </style>
 </head>
 <body>
@@ -87,7 +94,17 @@
       </div>
       <aside class="hero-card reveal" aria-label="Live world preview">
         <div class="statusbar"><div class="dots"><i></i><i></i><i></i></div><span>Live World Relay</span></div>
-        <div class="mini-screen"><video autoplay muted loop playsinline preload="metadata" aria-label="Live world gameplay relay"><source src="./relay-gameplay.mp4" type="video/mp4"></video><div class="hud-line"><span><b>Zone</b> AgoraTown Plaza</span><span><b>Party</b> Player + 2 AI companions</span><span><b>Status</b> Browser client ready</span></div></div>
+        <div class="spectate-placeholder" id="spectateHero" aria-label="HermesWorld spectate hero placeholder" data-default-src="https://play.hermes-world.ai/play/web/?spectate=1">
+          <img src="./assets/hermesworld/video/world-demo-poster.jpg" alt="HermesWorld spectate placeholder poster" loading="lazy">
+          <iframe id="spectateFrame" title="HermesWorld live spectate" loading="lazy" allow="fullscreen; gamepad; autoplay"></iframe>
+          <div class="spectate-copy"><div><b>Spectate Hero Slot</b><span>Local-reviewable 16:9 embed area. Shows this poster until the real <code>?spectate=1</code> client ships.</span><code id="spectateSrcLabel">spectate iframe disabled</code></div></div>
+        </div>
+        <!-- Future live spectate iframe is intentionally disabled by default.
+             Config surface for local/staging review:
+             - default iframe src: https://play.hermes-world.ai/play/web/?spectate=1
+             - override before this script with window.HW_SPECTATE_IFRAME_SRC = 'http://127.0.0.1:PORT/play/web/?spectate=1'
+             - or add ?spectateSrc=<encoded-url>&spectateIframe=1 on the local :8899 preview URL.
+        -->
       </aside>
     </div>
   </section>
@@ -213,6 +230,22 @@ Risk: medium. Reward: Founder Sigil fragment.
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
 <script>
+
+  // Spectate hero staging: visible poster now, iframe opt-in for local/staging review.
+  (function spectateHeroConfig(){
+    const box = document.getElementById('spectateHero');
+    const frame = document.getElementById('spectateFrame');
+    const label = document.getElementById('spectateSrcLabel');
+    if (!box || !frame) return;
+    const params = new URLSearchParams(location.search);
+    const fallback = box.dataset.defaultSrc || 'https://play.hermes-world.ai/play/web/?spectate=1';
+    const src = params.get('spectateSrc') || window.HW_SPECTATE_IFRAME_SRC || fallback;
+    frame.src = src;
+    if (label) label.textContent = new URL(src, location.href).href;
+    const enabled = params.get('spectateIframe') === '1' || window.HW_ENABLE_SPECTATE_IFRAME === true;
+    if (enabled) box.classList.add('is-live');
+  })();
+
   const LIVE_PLAYERS_FALLBACK = null; // real data only; show 'Online' until /api/players responds
   const liveEl = document.getElementById('livePlayers');
   function renderLive(n){ if (liveEl) liveEl.textContent = (typeof n === 'number' && n > 0) ? (n + ' online') : 'Online'; }
