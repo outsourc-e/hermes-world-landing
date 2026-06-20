@@ -365,6 +365,26 @@ Risk: medium. Reward: Founder Sigil fragment.
     walletMeta.innerHTML = lines.map(([label,value])=>`<span><b>${escapeHtml(label)}:</b> ${escapeHtml(value)}</span>`).join('');
   }
   function escapeHtml(value){ return String(value).replace(/[&<>"]/g,(ch)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+  // Turn raw wallet sign errors into clear, actionable messages. Ledger hardware wallets can't sign
+  // off-chain messages unless 'Blind signing' is enabled in the Solana app -> error 0x6a81a / 6a81a /
+  // 'unknown'/'cancelled'. Detect that and tell the user exactly how to fix it.
+  function classifyWalletSignError(err){
+    const raw = (err && (err.message || err.toString())) || '';
+    const s = raw.toLowerCase();
+    const isLedger = s.includes('6a81a') || s.includes('0x6a81a') || s.includes('ledger') ||
+                     s.includes('blind sign') || s.includes('not allowed') || s.includes('0x6985') ||
+                     s.includes('unknown error') || (s.includes('cancel') && s.includes('sign'));
+    if (isLedger) {
+      return new Error('Ledger can\u2019t sign verification messages unless Blind Signing is on. On your Ledger: open the Solana app \u2192 Settings \u2192 enable \u201cBlind signing\u201d (or \u201cAllow blind signing\u201d), then try again. Or verify with a software wallet (Phantom/Solflare without Ledger).');
+    }
+    if (s.includes('user rejected') || s.includes('rejected') || s.includes('declined') || s.includes('denied')) {
+      return new Error('You declined the signature. Approve the read-only verification message to finish \u2014 it costs nothing and sends no transaction.');
+    }
+    if (s.includes('timeout') || s.includes('timed out')) {
+      return new Error('The wallet didn\u2019t respond in time. Reopen your wallet and try again.');
+    }
+    return err instanceof Error ? err : new Error(raw || 'Wallet signature failed.');
+  }
   function walletProviderHint(){
     const providers = detectWallets().filter((w)=>w.available).map((w)=>w.label);
     if (!providers.length) return 'No extension wallet detected. Install Phantom, Solflare, or Backpack, or scan the QR to open in a mobile wallet browser.';
@@ -474,7 +494,12 @@ Risk: medium. Reward: Founder Sigil fragment.
       const message = `Verify HermesWorld founder status for account ${accountLabel} at ${timestamp} nonce ${nonce}`;
       if (typeof provider.signMessage !== 'function') throw new Error('This wallet does not support signMessage.');
       setWalletStatus('info', `You hold ${balance} $HERMESWORLD. Sign the read-only verification message…`);
-      const signed = await provider.signMessage(textEncoder.encode(message), 'utf8');
+      let signed;
+      try {
+        signed = await provider.signMessage(textEncoder.encode(message), 'utf8');
+      } catch (sigErr) {
+        throw classifyWalletSignError(sigErr);
+      }
       const signatureBytes = normalizeSignature(signed);
       if (!signatureBytes) throw new Error('Wallet did not return a signature.');
       const signature = bytesToBase64(Array.from(signatureBytes));
@@ -569,7 +594,12 @@ Risk: medium. Reward: Founder Sigil fragment.
       const accountLabel = path === 'existing' ? username : `signup-${walletAddress.slice(0,8)}`;
       const message = `Verify HermesWorld founder status for account ${accountLabel} at ${timestamp} nonce ${nonce}`;
       setWalletStatus('info', `You hold ${balance} $HERMESWORLD. Approve the read-only signature on your phone…`);
-      const signatureBytes = await window.HWWallet.signMessage(message);
+      let signatureBytes;
+      try {
+        signatureBytes = await window.HWWallet.signMessage(message);
+      } catch (sigErr) {
+        throw classifyWalletSignError(sigErr);
+      }
       const signature = bytesToBase64(Array.from(signatureBytes));
 
       if (path === 'signup') {
