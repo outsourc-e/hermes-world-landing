@@ -423,7 +423,9 @@ Risk: medium. Reward: Founder Sigil fragment.
   }
   async function connectAndVerify(kind){
     const path = walletPath();
-    const username = walletUsername?.value.trim() || '';
+    let username = walletUsername?.value.trim() || '';
+    // If empty, the auth fill may not have run yet (deep-link / late session) — re-pull before failing.
+    if (path === 'existing' && !username) { try{ await window.hwRefreshWalletAuth?.(); }catch(_){ } username = walletUsername?.value.trim() || ''; }
     if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
     const provider = getProvider(kind);
     if (!provider) { setWalletStatus('error', `Install ${kind === 'phantom' ? 'Phantom' : kind === 'solflare' ? 'Solflare' : 'Backpack'} or open this page in its mobile wallet browser.`); return; }
@@ -516,7 +518,8 @@ Risk: medium. Reward: Founder Sigil fragment.
   const connectWalletConnect = document.getElementById('connectWalletConnect');
   async function connectAndVerifyWalletConnect(){
     const path = walletPath();
-    const username = walletUsername?.value.trim() || '';
+    let username = walletUsername?.value.trim() || '';
+    if (path === 'existing' && !username) { try{ await window.hwRefreshWalletAuth?.(); }catch(_){ } username = walletUsername?.value.trim() || ''; }
     if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
     if (!window.HWWallet || typeof window.HWWallet.connect !== 'function') { setWalletStatus('error', 'WalletConnect is still loading… try again in a second.'); return; }
     walletSignupCta?.classList.remove('show');
