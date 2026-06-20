@@ -326,6 +326,10 @@ Risk: medium. Reward: Founder Sigil fragment.
   function openWalletModal(){ modal?.classList.add('open'); refreshWalletUi(); renderWalletQr(); setWalletStatus('info', walletProviderHint()); setTimeout(()=>walletUsername?.focus(), 60); }
   function closeWalletModal(){ modal?.classList.remove('open'); }
   document.querySelectorAll('[data-wallet]').forEach((btn)=>btn.addEventListener('click',openWalletModal));
+  // Auto-open the wallet verify modal when arriving with #verify or #wallet (from the Play gate).
+  function maybeAutoOpenWallet(){ const h=(location.hash||'').toLowerCase(); if(h==='#verify'||h==='#wallet'){ openWalletModal(); } }
+  maybeAutoOpenWallet();
+  window.addEventListener('hashchange', maybeAutoOpenWallet);
   if (closeModal && modal) closeModal.addEventListener('click',closeWalletModal);
   if (modal) modal.addEventListener('click',(e)=>{ if(e.target === modal) closeWalletModal(); });
   document.addEventListener('keydown',(e)=>{ if(e.key === 'Escape' && modal?.classList.contains('open')) closeWalletModal(); });
