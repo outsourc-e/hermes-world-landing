@@ -353,6 +353,17 @@ Risk: medium. Reward: Founder Sigil fragment.
     ];
   }
   function getProvider(kind){ return detectWallets().find((w)=>w.kind === kind && w.available)?.provider || null; }
+  // Poll until the deferred Reown/WalletConnect bundle has defined window.HWWallet.connect.
+  function waitForHWWallet(timeoutMs){
+    return new Promise((resolve)=>{
+      if (window.HWWallet && typeof window.HWWallet.connect === 'function') return resolve(true);
+      const start = Date.now();
+      const t = setInterval(()=>{
+        if (window.HWWallet && typeof window.HWWallet.connect === 'function'){ clearInterval(t); resolve(true); }
+        else if (Date.now() - start > (timeoutMs||10000)){ clearInterval(t); resolve(false); }
+      }, 150);
+    });
+  }
   function bytesToBase64(bytes){
     let binary = '';
     bytes.forEach((b)=>{ binary += String.fromCharCode(b); });
@@ -411,7 +422,13 @@ Risk: medium. Reward: Founder Sigil fragment.
     // If empty, the auth fill may not have run yet (deep-link / late session) — re-pull before failing.
     if (path === 'existing' && !username) { try{ await window.hwRefreshWalletAuth?.(); }catch(_){ } username = walletUsername?.value.trim() || ''; }
     if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
-    const provider = getProvider(kind);
+    let provider = getProvider(kind);
+    // Browser-extension wallets can inject after load — wait briefly before declaring "not installed".
+    if (!provider) {
+      setWalletStatus('info', `Looking for ${kind === 'phantom' ? 'Phantom' : kind === 'solflare' ? 'Solflare' : 'Backpack'}…`);
+      const start = Date.now();
+      while (!provider && Date.now() - start < 2500) { await new Promise(r=>setTimeout(r,150)); provider = getProvider(kind); }
+    }
     if (!provider) { setWalletStatus('error', `Install ${kind === 'phantom' ? 'Phantom' : kind === 'solflare' ? 'Solflare' : 'Backpack'} or open this page in its mobile wallet browser.`); return; }
     walletSignupCta?.classList.remove('show');
     try {
@@ -505,7 +522,12 @@ Risk: medium. Reward: Founder Sigil fragment.
     let username = walletUsername?.value.trim() || '';
     if (path === 'existing' && !username) { try{ await window.hwRefreshWalletAuth?.(); }catch(_){ } username = walletUsername?.value.trim() || ''; }
     if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
-    if (!window.HWWallet || typeof window.HWWallet.connect !== 'function') { setWalletStatus('error', 'WalletConnect is still loading… try again in a second.'); return; }
+    // The Reown/WalletConnect bundle is large + deferred; instead of failing instantly, WAIT for it.
+    if (!window.HWWallet || typeof window.HWWallet.connect !== 'function') {
+      setWalletStatus('info', 'Loading WalletConnect…');
+      const ready = await waitForHWWallet(10000);
+      if (!ready) { setWalletStatus('error', 'WalletConnect failed to load. Refresh the page and try again.'); return; }
+    }
     walletSignupCta?.classList.remove('show');
     try {
       setWalletStatus('info', 'Opening WalletConnect — scan the QR with your phone wallet…');
