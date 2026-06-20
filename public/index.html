@@ -43,7 +43,13 @@
   .sigils-head{text-align:center;display:flex;flex-direction:column;align-items:center}.sigil-hero-logo{width:96px;height:96px;border-radius:20px;margin:0 auto 18px;box-shadow:0 0 40px rgba(244,198,109,.4);border:1px solid rgba(244,198,109,.28)}.sigils-compact .pillar{align-items:center;text-align:center}.sigils-compact .pillar i.sigil-ico{margin:0 auto}
   .agent-docs-link{display:flex;align-items:center;gap:14px;margin-top:18px;padding:14px 16px;border:1px solid rgba(120,240,255,.2);border-radius:14px;background:rgba(120,240,255,.05);transition:border-color .25s,transform .25s}.agent-docs-link:hover{border-color:rgba(120,240,255,.42);transform:translateY(-2px)}.agent-docs-link .agent-docs-ico{width:42px;height:42px;border-radius:10px;overflow:hidden;flex:0 0 auto;display:grid;place-items:center;background:#06141a}.agent-docs-link .agent-docs-ico img{width:100%;height:100%;object-fit:cover}.agent-docs-link b{display:block;font-size:15px}.agent-docs-link span span{color:#9fb0aa;font-size:13px;line-height:1.4}.agent-docs-link .arrow{margin-left:auto;color:var(--cyan);font-weight:800;font-size:13px;white-space:nowrap}.guide-credit-inline{display:block;margin-top:6px;font-size:11px;color:#7c8d87}
   .guide-banner{display:flex;align-items:center;gap:16px;margin-top:22px;padding:18px 22px;border:1px solid rgba(244,198,109,.22);border-radius:18px;background:linear-gradient(180deg,rgba(244,198,109,.07),rgba(3,11,15,.4));cursor:pointer;transition:border-color .25s,transform .25s}.guide-banner:hover{border-color:rgba(244,198,109,.45);transform:translateY(-2px)}.guide-banner-ico{width:52px;height:52px;border-radius:13px;overflow:hidden;flex:0 0 auto;display:grid;place-items:center;background:#06141a}.guide-banner-ico img{width:100%;height:100%;object-fit:cover}.guide-banner-txt b{display:block;font-size:16px}.guide-banner-txt span{color:#9fb0aa;font-size:13px;line-height:1.5}.guide-banner-arrow{margin-left:auto;color:var(--gold3);font-weight:850;font-size:13px;white-space:nowrap}@media(max-width:640px){.guide-banner{flex-direction:column;text-align:center;align-items:center}.guide-banner-arrow{margin-left:0}}
-  </style>
+  
+    /* Fix: signed-in account menu / hero CTAs must sit above the hero-card stacking context */
+    .hero-center, .hero-ctas, .hero-ctas-center { position: relative; z-index: 30; }
+    .hero .nav-actions, .nav-actions { position: relative; z-index: 60; }
+    .hw-account-menu { z-index: 99999 !important; }
+    .hero-card { z-index: 1; }
+</style>
 </head>
 <body>
 <a href="#main" class="skip">Skip to content</a>
@@ -54,7 +60,7 @@
     <div class="navlinks">
       <a href="/world/">World</a><a href="/agents/">Agents</a><a href="/token/">Token</a><a href="/roadmap/">Roadmap</a><a href="/download/">Download</a><a href="./docs.html">Docs</a><a href="/guide/">Guide</a>
     </div>
-    <div class="nav-actions"><a class="small-btn" href="/signin/" data-google-signin><span data-google-label>Sign In</span></a><button class="small-btn primary btn-play" id="navPlay">▶ Play</button></div>
+    <div class="nav-actions"><a class="small-btn" href="/signin/" data-google-signin data-hw-signin-only><span data-google-label>Sign in / Sign up</span></a><button class="small-btn primary btn-play" id="navPlay">▶ Play</button></div>
   </div>
 </nav>
 <main id="main">
@@ -69,14 +75,13 @@
       <p class="hero-tag reveal">The first AI-agent-native mythic MMO. Forge your character, bring your AI companions, and step into a living world of gods and gold — powered by $HERMESWORLD on Solana.</p>
       <div class="hero-ctas hero-ctas-center cta-row reveal">
         <button class="btn primary btn-play" id="heroPlay">▶ Play</button>
-        <a class="btn ghost" href="/signin/" data-google-signin><span data-google-label>Sign Up with Google</span></a>
+        <a class="btn ghost" href="/signin/" data-google-signin><span data-google-label>Sign in / Sign up with Google</span></a>
       </div>
       <div class="hero-gate reveal"><b>$HERMESWORLD</b> holders access only · connect your wallet to play</div>
       <div class="hero-ca reveal">
         <span class="ca-label">CA</span>
-        <code id="heroCa">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</code>
-        <button class="ca-copy" id="heroCaCopy" type="button" title="Copy contract address">Copy</button>
-        <a class="ca-link" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener">pump.fun ↗</a>
+        <code id="heroCa" role="button" tabindex="0" title="Click to copy contract address" style="cursor:pointer">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</code>
+        <a class="ca-link ca-pump" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" title="View on pump.fun" aria-label="View on pump.fun"><img src="./logos/pumpfun.svg" alt="pump.fun" style="height:20px;width:auto;display:block"></a>
       </div>
     </div>
     <audio id="heroAudio" loop autoplay muted preload="auto"><source src="./audio/hermesworld-hero-loop.mp3" type="audio/mpeg"></audio>
@@ -237,11 +242,20 @@ Risk: medium. Reward: Founder Sigil fragment.
 
   // --- Hero: CA copy + audio toggle (music muted by default, fade-in on first interaction, persisted) ---
   (function heroExtras(){
-    const caCopy = document.getElementById('heroCaCopy');
     const ca = document.getElementById('heroCa');
-    if (caCopy && ca) caCopy.addEventListener('click', async ()=>{
-      try { await navigator.clipboard.writeText(ca.textContent.trim()); caCopy.textContent='Copied'; caCopy.classList.add('copied'); setTimeout(()=>{caCopy.textContent='Copy'; caCopy.classList.remove('copied');},1600); } catch(e){}
-    });
+    if (ca) {
+      const origCa = ca.textContent.trim();
+      const doCopy = async ()=>{
+        try {
+          await navigator.clipboard.writeText(origCa);
+          ca.textContent='✓ Copied';
+          ca.classList.add('copied');
+          setTimeout(()=>{ ca.textContent=origCa; ca.classList.remove('copied'); },1400);
+        } catch(e){}
+      };
+      ca.addEventListener('click', doCopy);
+      ca.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); doCopy(); } });
+    }
     const audio = document.getElementById('heroAudio');
     if (!audio) return;
     // Autoplay starts MUTED (browser policy). Unmute + fade in on the FIRST user interaction
@@ -274,6 +288,18 @@ Risk: medium. Reward: Founder Sigil fragment.
   }
   document.getElementById('heroPlay')?.addEventListener('click', heroPlayFlow);
   document.getElementById('navPlay')?.addEventListener('click', heroPlayFlow);
+
+  // GATE: block ALL direct entry to the web client without wallet verification.
+  // Any <a> pointing at the web client is intercepted -> wallet gate first.
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a[href*="play.hermes-world.ai/play/web"], a[href*="/play-webgl/launch"]');
+    if (!a) return;
+    let verified = false;
+    try { verified = !!sessionStorage.getItem('hw_wallet_verified'); } catch(_){}
+    if (verified) return; // already verified this session -> allow
+    e.preventDefault();
+    heroPlayFlow();
+  }, true);
 
   const modal = document.getElementById('walletModal');
   const closeModal = document.getElementById('closeModal');
@@ -436,7 +462,11 @@ Risk: medium. Reward: Founder Sigil fragment.
       if (!resp.ok || !result.ok) { setWalletStatus('error', result.message || 'Verification failed.'); return; }
       if (!result.holder) { setWalletStatus('error', result.message || 'This wallet holds 0 $HERMESWORLD.'); return; }
       setWalletMeta([['Wallet', walletAddress], ['$HERMESWORLD balance', result.balance || balance], ['Founder grant', result.granted ? 'Granted' : 'Already granted']]);
-      setWalletStatus('success', `✓ ${result.message || 'Verified Holder — Founder Badge granted (claim in-game)'}`);
+      setWalletStatus('success', `✓ ${result.message || 'Verified Holder'} — entering HermesWorld…`);
+      // GATE PASSED: verified holder -> mark verified + route into the game.
+      try { sessionStorage.setItem('hw_wallet_verified', walletAddress); } catch(e){}
+      const enterUrl = (window.HWAuth ? '/play-webgl/launch.html' : 'https://play.hermes-world.ai/play/web/');
+      setTimeout(()=>{ window.location.href = enterUrl; }, 1200);
     } catch (err) {
       setWalletStatus('error', err?.message || 'Wallet verification failed.');
     }
