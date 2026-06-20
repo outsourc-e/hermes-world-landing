@@ -66,5 +66,20 @@
   </section>
 </main>
 <footer class="footer"><div class="wrap footin"><a class="brand" href="#top"><img src="/crest.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span></a><div class="foot-links"><a href="/token/">Token</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://github.com/outsourc-e/hermes-workspace" target="_blank" rel="noopener">GitHub</a><a href="#play">Guide</a><a href="/download/">Download</a></div></div></footer>
+<script>
+(function(){
+  var items = document.querySelectorAll('.reveal');
+  if(!items.length) return;
+  if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    items.forEach(function(el){ el.classList.add('in'); }); return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.08, rootMargin:'0px 0px -4% 0px'});
+  items.forEach(function(el){ io.observe(el); });
+  // Safety: reveal anything still hidden after 1.2s (e.g. above-fold content already in view).
+  setTimeout(function(){ items.forEach(function(el){ el.classList.add('in'); }); }, 1200);
+})();
+</script>
 </body>
 </html>
