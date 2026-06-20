@@ -49,6 +49,22 @@
     .hero .nav-actions, .nav-actions { position: relative; z-index: 60; }
     .hw-account-menu { z-index: 99999 !important; }
     .hero-card { z-index: 1; }
+    /* Holder tiers */
+    .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left;max-width:1040px;margin:0 auto}
+    .tier{position:relative;border:1px solid rgba(244,198,109,.20);border-radius:26px;background:linear-gradient(180deg,rgba(9,24,29,.82),rgba(3,11,15,.76));padding:30px 28px;box-shadow:0 30px 100px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.05);transition:transform .28s var(--ease),border-color .28s var(--ease)}
+    .tier:hover{transform:translateY(-4px);border-color:rgba(244,198,109,.42)}
+    .tier-top{border-color:rgba(166,133,255,.42);background:linear-gradient(180deg,rgba(20,14,34,.86),rgba(7,5,16,.80))}
+    .tier-top:hover{border-color:rgba(166,133,255,.66)}
+    .tier-badge{font-size:42px;line-height:1;margin-bottom:14px;filter:drop-shadow(0 8px 22px rgba(244,198,109,.28))}
+    .tier-name{font-family:Cinzel,Georgia,serif;font-size:24px;font-weight:900;letter-spacing:-.02em;color:#fffdf0;margin-bottom:4px}
+    .tier-amt{color:var(--gold3);font-size:14px;font-weight:850;letter-spacing:.02em;margin-bottom:14px}
+    .tier-tag{display:inline-block;font-size:11px;font-weight:850;letter-spacing:.04em;color:#9fb0aa;text-transform:none;margin-bottom:14px}
+    .tier-tag-access{color:var(--green);border:1px solid rgba(125,255,173,.28);background:rgba(125,255,173,.08);border-radius:999px;padding:4px 12px;text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:950}
+    .tier-perks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+    .tier-perks li{position:relative;padding-left:24px;color:#c9d6d0;font-size:14px;line-height:1.5}
+    .tier-perks li:before{content:"✓";position:absolute;left:0;top:0;color:var(--gold3);font-weight:900}
+    .tier-top .tier-perks li:before{color:#cbbcff}
+    @media (max-width:860px){.tiers{grid-template-columns:1fr;max-width:460px}}
 </style>
 
 </head>
@@ -62,19 +78,19 @@
 </nav>
 <main class="subpage" style="padding-top:calc(var(--nav,70px) + 28px);padding-bottom:40px">
 
-<section class="section"><div class="wrap">
+<section class="section"><div class="wrap" style="text-align:center">
   <div class="section-head reveal"><div class="kicker">Community-Launched Token</div>
     <h2>$HERMESWORLD</h2>
-    <p>The community token that powers access and the player economy. Fees fund the build. Holding
-    $HERMESWORLD is your key to play and to founder identity.</p></div>
+    <p>The community token that powers access and the player economy. Fees fund the build, and holding
+    $HERMESWORLD is your key to play and to your founder identity.</p></div>
 
-  <div class="hero-ca reveal" style="margin:22px 0">
+  <div class="hero-ca reveal" style="margin:22px auto 0">
     <span class="ca-label">CA</span>
-    <code id="tokenCa" role="button" tabindex="0" title="Click to copy" style="cursor:pointer">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</code>
-    <a class="ca-link" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener"><img src="/logos/pumpfun.svg" alt="pump.fun" style="height:26px;width:auto;display:block;vertical-align:middle"></a>
+    <a id="tokenCa" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" title="View $HERMESWORLD on pump.fun" style="color:#cfe0d8;font-size:13px;word-break:break-all;font-family:ui-monospace,Menlo,monospace;text-decoration:none">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</a>
+    <a class="ca-link" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" style="display:inline-flex;align-items:center"><img src="/logos/pumpfun.svg" alt="pump.fun" style="height:24px;width:auto;display:block"></a>
   </div>
 
-  <div class="cards3" style="margin-top:26px">
+  <div class="cards3" style="margin-top:30px;text-align:left">
     <article class="panel reveal"><h3>Access</h3><p>Hold $HERMESWORLD and connect your wallet to enter
       the game. Token-verified accounts get in; the hold-to-play gate is server-enforced for every client.</p></article>
     <article class="panel reveal"><h3>Player economy</h3><p>Time-poor players buy in-game gold from other
@@ -84,16 +100,54 @@
       perks. Your wallet links to your account once and proves your standing in the world.</p></article>
   </div>
 
-  <div class="disclaimer reveal" style="margin-top:26px;color:#8fa09a;font-size:13px">Community-launched token on
-  Solana (Token-2022). Not financial advice. Token utility is access + player-to-player settlement, not a
-  promise of returns.</div>
+  <!-- Holder tiers: hold more, unlock more. Thresholds are token holdings. -->
+  <div class="section-head reveal" style="margin-top:64px;margin-bottom:28px"><div class="kicker">Holder Tiers</div>
+    <h2>Hold more. Unlock more.</h2>
+    <p>Every tier stacks on the one before it. Whoever holds the token gets the rewards — verified on-chain, granted in-game.</p></div>
+  <div class="tiers">
+    <article class="tier reveal">
+      <div class="tier-badge">🛡️</div>
+      <div class="tier-name">Holder</div>
+      <div class="tier-amt">1,000+ $HERMESWORLD</div>
+      <div class="tier-tag tier-tag-access">Access</div>
+      <ul class="tier-perks">
+        <li>Enter the world (hold-to-play)</li>
+        <li>Founder Badge</li>
+        <li>Exclusive founder armor</li>
+      </ul>
+    </article>
+    <article class="tier reveal">
+      <div class="tier-badge">🐎</div>
+      <div class="tier-name">Charioteer</div>
+      <div class="tier-amt">100,000+ $HERMESWORLD</div>
+      <div class="tier-tag">Everything in Holder, plus…</div>
+      <ul class="tier-perks">
+        <li>A rideable war horse mount</li>
+        <li>Elevated founder status</li>
+      </ul>
+    </article>
+    <article class="tier reveal tier-top">
+      <div class="tier-badge">🐉</div>
+      <div class="tier-name">Dragonlord</div>
+      <div class="tier-amt">1,000,000+ $HERMESWORLD</div>
+      <div class="tier-tag">Everything above, plus…</div>
+      <ul class="tier-perks">
+        <li>A legendary dragon mount</li>
+        <li>Top-tier founder identity</li>
+      </ul>
+    </article>
+  </div>
+  <p class="reveal" style="margin:18px auto 0;max-width:620px;color:#8fa09a;font-size:13px">Tiers and rewards are
+  rolling out as the world grows. Hold the token and your status is recognized automatically when each reward goes live.</p>
 
-  <div class="cta-row reveal" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap">
+  <div class="disclaimer reveal" style="margin-top:40px;color:#8fa09a;font-size:13px">A community-launched Solana
+  token (Token-2022). $HERMESWORLD is used for access and player-to-player settlement inside the game.</div>
+
+  <div class="cta-row reveal" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
     <a class="btn primary" href="/#top">&#9654; Play</a>
     <a class="btn ghost" href="/economy/">How the economy works &rarr;</a>
     <a class="btn ghost" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener">Buy on pump.fun &rarr;</a>
   </div>
-  <script>(function(){var c=document.getElementById('tokenCa');if(!c)return;var o=c.textContent.trim();c.addEventListener('click',function(){navigator.clipboard.writeText(o).then(function(){c.textContent='✓ Copied';setTimeout(function(){c.textContent=o;},1400);});});})();</script>
 </div></section>
 
 </main>
