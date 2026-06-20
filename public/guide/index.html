@@ -60,24 +60,139 @@
     <div class="nav-actions"><a class="small-btn" href="/signin/" data-google-signin data-hw-signin-only><span data-google-label>Sign in / Sign up</span></a><a class="small-btn primary btn-play" href="/#top">&#9654; Play</a></div>
   </div>
 </nav>
-<main class="subpage" style="padding-top:calc(var(--nav,70px) + 28px); padding-bottom:40px">
-<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">Beginner Guide</div><h2>How to play HermesWorld</h2><p>Everything you need for your first hour: sign in, connect your $HERMESWORLD wallet, create your character, reach AgoraTown, take your first quest, and start farming. Follow the steps below in order.</p></div><div class="guide-gallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:26px"><figure class="guide-shot reveal"><img src="/guide/01.png" alt="HermesWorld guide step 1" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/02.png" alt="HermesWorld guide step 2" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/03.png" alt="HermesWorld guide step 3" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/04.png" alt="HermesWorld guide step 4" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/05.png" alt="HermesWorld guide step 5" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/06.png" alt="HermesWorld guide step 6" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/07.png" alt="HermesWorld guide step 7" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/08.png" alt="HermesWorld guide step 8" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/09.png" alt="HermesWorld guide step 9" loading="lazy"></figure><figure class="guide-shot reveal"><img src="/guide/10.png" alt="HermesWorld guide step 10" loading="lazy"></figure></div><div class="cta-row" style="margin-top:34px;display:flex;gap:14px;flex-wrap:wrap"><a class="btn primary" href="/#top">&#9654; Play now</a><a class="btn ghost" href="/economy/">Learn the economy &rarr;</a></div></div></section>
+<main class="subpage" style="padding-top:calc(var(--nav,70px) + 28px);padding-bottom:50px">
+<style>
+.gd-wrap{max-width:880px;margin:0 auto}
+.gd-toc{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 8px}
+.gd-toc a{border:1px solid rgba(244,198,109,.25);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;color:#cfe0d8}
+.gd-toc a:hover{border-color:rgba(244,198,109,.6);color:var(--gold3,#f4c66d)}
+.gd-step{position:relative;border:1px solid rgba(244,198,109,.18);border-radius:20px;background:linear-gradient(180deg,rgba(9,24,29,.6),rgba(3,11,15,.55));padding:26px 26px 26px 84px;margin:18px 0}
+.gd-step .gd-n{position:absolute;left:22px;top:24px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:Cinzel,serif;font-weight:900;font-size:20px;color:#06160f;background:linear-gradient(180deg,#f4c66d,#d3aa5f)}
+.gd-step h3{margin:0 0 10px;font-size:21px}
+.gd-step p{color:#c5d2cb;line-height:1.7;margin:0 0 10px;font-size:15px}
+.gd-step ul{margin:8px 0 0;padding-left:18px;color:#aebeb7;line-height:1.65;font-size:14.5px}
+.gd-step ul li{margin:4px 0}
+.gd-step b{color:var(--gold3,#f4c66d)}
+.gd-tip{border-left:3px solid rgba(120,240,255,.5);background:rgba(120,240,255,.06);border-radius:8px;padding:10px 14px;margin-top:12px;color:#bfe9f2;font-size:13.5px}
+.gd-key{display:inline-block;border:1px solid rgba(255,255,255,.25);border-radius:6px;background:rgba(255,255,255,.06);padding:1px 8px;font-family:ui-monospace,monospace;font-size:13px;color:#fff4dc}
+</style>
+<section class="section"><div class="wrap gd-wrap">
+  <div class="section-head reveal" style="text-align:left"><div class="kicker">Beginner Guide</div>
+    <h2>How to play HermesWorld</h2>
+    <p>New to HermesWorld? This is everything you need for your first session &mdash; from signing in to
+    your first quest, your first fight, and your first gold. Follow the steps in order.</p></div>
+
+  <div class="gd-toc reveal">
+    <a href="#s1">1 &middot; Get in</a><a href="#s2">2 &middot; Character</a><a href="#s3">3 &middot; Controls</a>
+    <a href="#s4">4 &middot; Training Grounds</a><a href="#s5">5 &middot; First quest</a><a href="#s6">6 &middot; Combat</a>
+    <a href="#s7">7 &middot; AgoraTown</a><a href="#s8">8 &middot; Farm &amp; earn</a><a href="#s9">9 &middot; The gods</a>
+  </div>
+
+  <div class="gd-step reveal" id="s1"><div class="gd-n">1</div>
+    <h3>Get into the game</h3>
+    <p>HermesWorld is a <b>hold-to-play</b> world. To enter, you need a HermesWorld account and a Solana
+    wallet holding <b>$HERMESWORLD</b>.</p>
+    <ul>
+      <li>Click <b>Play</b> and sign in (or sign up) with Google.</li>
+      <li>Connect your wallet (Phantom, Solflare, Backpack, or WalletConnect) and verify you hold the token.</li>
+      <li>Once verified, launch in your browser instantly &mdash; or download the native client for best performance.</li>
+    </ul>
+    <div class="gd-tip">No download needed for web. The native Windows/Mac client runs smoother for long sessions.</div>
+  </div>
+
+  <div class="gd-step reveal" id="s2"><div class="gd-n">2</div>
+    <h3>Create your character</h3>
+    <p>Pick your mythic avatar and claim your founder name. Your character is your identity in the world &mdash;
+    it persists across every session, on web and native alike.</p>
+  </div>
+
+  <div class="gd-step reveal" id="s3"><div class="gd-n">3</div>
+    <h3>Learn the controls</h3>
+    <ul>
+      <li><span class="gd-key">W A S D</span> &mdash; move your character.</li>
+      <li><span class="gd-key">Mouse</span> &mdash; hold right-click and drag to rotate the camera.</li>
+      <li><span class="gd-key">Left-click</span> &mdash; select NPCs, enemies, and resource nodes.</li>
+      <li><span class="gd-key">Hotbar</span> &mdash; your abilities sit on the skill bar; click or press the number keys to use them.</li>
+      <li><span class="gd-key">Click a quest</span> &mdash; quest text is clickable; follow the markers it gives you.</li>
+    </ul>
+  </div>
+
+  <div class="gd-step reveal" id="s4"><div class="gd-n">4</div>
+    <h3>Start in the Training Grounds</h3>
+    <p>Every new player begins in the <b>Training Grounds</b> &mdash; the safe starter zone. This is where you
+    learn movement, combat, and your first abilities before stepping into the wider world. Take your time;
+    nothing here will overwhelm you.</p>
+  </div>
+
+  <div class="gd-step reveal" id="s5"><div class="gd-n">5</div>
+    <h3>Take your first quest</h3>
+    <p>Find the trainer NPC and accept <b>"The First Errand."</b> Quests are how you learn the world and earn
+    your first rewards. Click the quest to read it, then follow the on-screen marker to the objective.</p>
+    <ul>
+      <li>Talk to the quest-giver (look for the marker above their head).</li>
+      <li>Read the quest &mdash; it tells you exactly what to do and where to go.</li>
+      <li>Complete the objective, then return to turn it in for XP and rewards.</li>
+    </ul>
+    <div class="gd-tip">Quests chain into bigger stories &mdash; the gods themselves give errands as you grow.</div>
+  </div>
+
+  <div class="gd-step reveal" id="s6"><div class="gd-n">6</div>
+    <h3>Win your first fight</h3>
+    <p>Target an enemy with left-click, then use your abilities from the hotbar to bring it down. Start with
+    the training dummies and weak creatures near spawn, then work outward as you level up.</p>
+    <ul>
+      <li>Select the target, get in range, and use your basic attack.</li>
+      <li>Mix in your abilities &mdash; they hit harder and have cooldowns.</li>
+      <li>Defeated enemies drop loot and XP. Tougher mobs live further from town.</li>
+    </ul>
+  </div>
+
+  <div class="gd-step reveal" id="s7"><div class="gd-n">7</div>
+    <h3>Reach AgoraTown</h3>
+    <p>When you leave the Training Grounds you arrive in <b>AgoraTown</b> &mdash; the civic heart of HermesWorld.
+    Merchants, trainers, quest-givers, and the gods themselves gather here. This is your home base for
+    trading, restocking, and picking up new quests.</p>
+  </div>
+
+  <div class="gd-step reveal" id="s8"><div class="gd-n">8</div>
+    <h3>Farm, sell, and earn</h3>
+    <p>HermesWorld runs a real player economy. Here&apos;s the loop:</p>
+    <ul>
+      <li><b>Gather</b> &mdash; mine ore nodes and chop trees for raw materials.</li>
+      <li><b>Sell</b> &mdash; sell to a merchant for instant gold, or list on the <b>Auction House</b> for more.</li>
+      <li><b>Spend</b> &mdash; buy gear, craft, and upgrade with your gold.</li>
+      <li><b>Earn</b> &mdash; sell your gold to other players for $HERMESWORLD (95% goes to you).</li>
+    </ul>
+    <div class="gd-tip">Full breakdown on the <a href="/economy/" style="color:var(--gold3)">Economy page &rarr;</a></div>
+  </div>
+
+  <div class="gd-step reveal" id="s9"><div class="gd-n">9</div>
+    <h3>Meet the gods</h3>
+    <p>The Olympians live in the world with you, each tied to a different system:</p>
+    <ul>
+      <li><b>Hermes</b> &mdash; quests, trade routes, and fast errands.</li>
+      <li><b>Zeus</b> &mdash; high-tier mandates and world events.</li>
+      <li><b>Athena</b> &mdash; strategy, tutorials, and tactical challenges.</li>
+      <li><b>Apollo</b> &mdash; light, healing, and prophecy.</li>
+      <li><b>Hephaestus</b> &mdash; the forge, crafting, and gear.</li>
+      <li><b>Demeter</b> &mdash; the harvest and the farming lands.</li>
+    </ul>
+  </div>
+
+  <div class="cta-row reveal" style="margin-top:30px;display:flex;gap:14px;flex-wrap:wrap">
+    <a class="btn primary" href="/#top">&#9654; Play now</a>
+    <a class="btn ghost" href="/economy/">Economy &rarr;</a>
+    <a class="btn ghost" href="/world/">Explore the world &rarr;</a>
+  </div>
+
+  <div class="section-head reveal" style="text-align:left;margin-top:46px"><h2 style="font-size:28px">Screenshots</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px">
+<figure class="reveal" style="margin:0"><img src="/guide/01.png" alt="HermesWorld guide 1" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/02.png" alt="HermesWorld guide 2" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/03.png" alt="HermesWorld guide 3" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/04.png" alt="HermesWorld guide 4" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/05.png" alt="HermesWorld guide 5" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/06.png" alt="HermesWorld guide 6" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/07.png" alt="HermesWorld guide 7" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/08.png" alt="HermesWorld guide 8" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/09.png" alt="HermesWorld guide 9" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure><figure class="reveal" style="margin:0"><img src="/guide/10.png" alt="HermesWorld guide 10" loading="lazy" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)"></figure>
+  </div>
+</div></section>
+
 </main>
 <footer class="footer"><div class="wrap footin"><a class="brand" href="#top"><img src="/crest.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span></a><div class="foot-links"><a href="/token/">Token</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://github.com/outsourc-e/hermes-workspace" target="_blank" rel="noopener">GitHub</a><a href="#play">Guide</a><a href="/download/">Download</a></div></div></footer>
-<script>
-(function(){
-  var items = document.querySelectorAll('.reveal');
-  if(!items.length) return;
-  if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    items.forEach(function(el){ el.classList.add('in'); }); return;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, {threshold:.08, rootMargin:'0px 0px -4% 0px'});
-  items.forEach(function(el){ io.observe(el); });
-  // Safety: reveal anything still hidden after 1.2s (e.g. above-fold content already in view).
-  setTimeout(function(){ items.forEach(function(el){ el.classList.add('in'); }); }, 1200);
-})();
-</script>
+<script>(function(){var items=document.querySelectorAll('.reveal');if(!items.length)return;if(!('IntersectionObserver' in window)){items.forEach(function(el){el.classList.add('in');});return;}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.05});items.forEach(function(el){io.observe(el);});setTimeout(function(){items.forEach(function(el){el.classList.add('in');});},900);})();</script>
 </body>
 </html>
