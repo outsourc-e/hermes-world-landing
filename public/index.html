@@ -49,6 +49,11 @@
     .hero .nav-actions, .nav-actions { position: relative; z-index: 60; }
     .hw-account-menu { z-index: 99999 !important; }
     .hero-card { z-index: 1; }
+    /* Hero CA: address itself is the pump.fun link; small Copy button beside it */
+    #heroCa{color:#cfe0d8;font-size:12px;word-break:break-all;font-family:ui-monospace,Menlo,monospace;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .18s}
+    #heroCa:hover{color:var(--gold3);text-decoration:underline}
+    #heroCa .ca-ext{color:var(--gold3);font-size:11px;text-decoration:none;display:inline-block}
+    @media (max-width:640px){#heroCa{font-size:10px}}
 </style>
 </head>
 <body>
@@ -80,8 +85,8 @@
       <div class="hero-gate reveal"><b>$HERMESWORLD</b> holders access only · connect your wallet to play</div>
       <div class="hero-ca reveal">
         <span class="ca-label">CA</span>
-        <code id="heroCa" role="button" tabindex="0" title="Click to copy contract address" style="cursor:pointer">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</code>
-        <a class="ca-link" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" title="View on pump.fun" style="display:inline-flex;align-items:center;gap:6px;font-weight:800">View on pump.fun <span aria-hidden="true">&#8599;</span></a>
+        <a id="heroCa" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" title="View $HERMESWORLD on pump.fun" data-ca="2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9 <span class="ca-ext" aria-hidden="true">&#8599;</span></a>
+        <button id="heroCaCopy" class="ca-copy" type="button" title="Copy contract address" aria-label="Copy contract address">Copy</button>
       </div>
     </div>
     <audio id="heroAudio" loop autoplay muted preload="auto"><source src="./audio/hermesworld-hero-loop.mp3" type="audio/mpeg"></audio>
@@ -242,18 +247,19 @@ Risk: medium. Reward: Founder Sigil fragment.
   // --- Hero: CA copy + audio toggle (music muted by default, fade-in on first interaction, persisted) ---
   (function heroExtras(){
     const ca = document.getElementById('heroCa');
-    if (ca) {
-      const origCa = ca.textContent.trim();
-      const doCopy = async ()=>{
+    const caCopy = document.getElementById('heroCaCopy');
+    if (ca && caCopy) {
+      const addr = ca.getAttribute('data-ca') || ca.textContent.trim();
+      caCopy.addEventListener('click', async (e)=>{
+        e.preventDefault(); e.stopPropagation();
         try {
-          await navigator.clipboard.writeText(origCa);
-          ca.textContent='✓ Copied';
-          ca.classList.add('copied');
-          setTimeout(()=>{ ca.textContent=origCa; ca.classList.remove('copied'); },1400);
-        } catch(e){}
-      };
-      ca.addEventListener('click', doCopy);
-      ca.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); doCopy(); } });
+          await navigator.clipboard.writeText(addr);
+          const orig = caCopy.textContent;
+          caCopy.textContent='✓ Copied';
+          caCopy.classList.add('copied');
+          setTimeout(()=>{ caCopy.textContent=orig; caCopy.classList.remove('copied'); },1400);
+        } catch(err){}
+      });
     }
     const audio = document.getElementById('heroAudio');
     if (!audio) return;
