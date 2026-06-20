@@ -96,8 +96,22 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
     const avatarUrl = profile?.avatar_url || meta.avatar_url || '';
     const discordId = profile?.discord_id || '';
     const xHandle = profile?.x_handle || '';
-    const isFounder = !!profile?.is_founder;
+    let isFounder = !!profile?.is_founder;
     const founderRank = profile?.founder_rank;
+    let founderTier = null;
+    // LIVE founder status: the wallet gate writes to the game DB (VPS), not Supabase. Ask the
+    // game-auth endpoint whether THIS account is wallet-verified, and reflect it here.
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        const r = await fetch('/api/game-auth/launch', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ jwt: session.access_token }) });
+        const body = await r.json().catch(()=>({}));
+        if (r.ok && body && body.walletVerified === true) {
+          isFounder = true;
+          founderTier = body.tier || body.founderTier || null;
+        }
+      }
+    } catch (e) { /* keep Supabase value as fallback */ }
 
     contentEl.innerHTML = `
       <div class="head">
@@ -160,8 +174,9 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
           </div>
           <div class="card">
             <div class="card-label">Founder status</div>
-            <div class="card-value">${isFounder ? `Founder${founderRank ? ` #${founderRank}` : ''}` : 'Not assigned yet'}</div>
-            <div class="sub">Founder flags/rewards are assigned server-side after verification.</div>
+            <div class="card-value">${isFounder ? `★ ${founderTier ? ({holder:'Founder (Holder)',cavalier:'Founder — Cavalier',dragonlord:'Founder — Dragonlord'}[founderTier] || 'Founder') : 'Founder'}${founderRank ? ` #${founderRank}` : ''}` : 'Not assigned yet'}</div>
+            <div class="sub">${isFounder ? 'Verified holder — your rewards are in your in-game shop.' : 'Verify your wallet to unlock Founder status + rewards.'}</div>
+            ${isFounder ? '' : '<a class="btn" style="margin-top:12px" href="/#verify">Verify wallet</a>'}
           </div>
           <div class="actions">
             <a class="btn primary" href="https://play.hermes-world.ai/play/web/">Enter HermesWorld →</a>
