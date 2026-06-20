@@ -25,15 +25,15 @@
     .navin{height:var(--nav);display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;gap:12px;min-width:max-content}.brand img{width:46px;height:46px;border-radius:50%;object-fit:cover;filter:drop-shadow(0 0 20px rgba(244,198,109,.32))}.wordmark{font-family:Cinzel,Georgia,serif;font-weight:900;font-size:21px;letter-spacing:.035em;background:linear-gradient(180deg,#fffdf0 0%,#f4c66d 56%,#b97825 100%);-webkit-background-clip:text;background-clip:text;color:transparent}.navlinks{display:flex;align-items:center;gap:28px;color:#b9c8c1;font-size:12px;font-weight:850;letter-spacing:.06em}.navlinks a{opacity:.86}.navlinks a:hover{color:var(--gold3);opacity:1}.nav-actions{display:flex;gap:10px;align-items:center}
     .btn,.small-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:#f6fbf3;border-radius:15px;font-weight:900;letter-spacing:.03em;transition:transform .28s var(--ease),filter .28s var(--ease),border-color .28s var(--ease),background .28s var(--ease),box-shadow .28s var(--ease);cursor:pointer;font-family:Inter,system-ui,sans-serif}.btn{height:60px;padding:0 28px;font-size:13px}.small-btn{height:43px;padding:0 17px;font-size:12px}.btn:hover,.small-btn:hover{transform:translateY(-3px);filter:brightness(1.08);border-color:rgba(244,198,109,.48);box-shadow:0 18px 54px rgba(0,0,0,.30)}.btn.primary,.small-btn.primary{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff1bd 0%,#f1be56 44%,#b56a1d 100%);border-color:rgba(255,229,168,.80);color:#150e06;box-shadow:0 24px 70px rgba(244,166,54,.25),inset 0 1px 0 rgba(255,255,255,.50);isolation:isolate}.btn.primary:before,.small-btn.primary:before{content:"";position:absolute;inset:-35% -80%;background:linear-gradient(100deg,transparent 36%,rgba(255,255,255,.55) 50%,transparent 64%);transform:translateX(-42%);animation:foil 8s ease-in-out infinite;pointer-events:none}.btn.ghost{background:rgba(3,8,12,.58);border-color:rgba(120,240,255,.28)}
     .hero{position:relative;min-height:calc(100svh - var(--nav));display:grid;align-items:center;overflow:hidden;border-bottom:1px solid rgba(244,198,109,.14)}
-    .hero-video{position:absolute;inset:0;z-index:-5}.hero-video video{width:100%;height:100%;object-fit:cover;filter:saturate(1.14) contrast(1.08) brightness(.76)}.hero-video:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 40%,rgba(120,240,255,.10),transparent 24%),radial-gradient(circle at 32% 28%,rgba(244,198,109,.10),transparent 30%),linear-gradient(90deg,rgba(2,6,8,.94) 0%,rgba(2,6,8,.76) 38%,rgba(2,6,8,.35) 64%,rgba(2,6,8,.72) 100%),linear-gradient(180deg,rgba(3,8,12,.26) 0%,rgba(3,8,12,.22) 42%,#03080c 100%)}
+    .hero-video{position:absolute;inset:0;z-index:-5}.hero-video video{width:100%;height:100%;object-fit:cover}.hero-scrim{position:absolute;inset:0;z-index:-3;background:radial-gradient(ellipse at 50% 38%,rgba(3,9,12,.30),rgba(3,9,12,.72) 70%),linear-gradient(180deg,rgba(3,9,12,.55),rgba(3,9,12,.30) 30%,rgba(3,9,12,.78))}.hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}.hero-center{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding:90px 0 70px}.hero-crest{width:clamp(120px,17vw,200px);height:auto;filter:drop-shadow(0 18px 60px rgba(244,198,109,.35));animation:floaty 6s ease-in-out infinite}@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}.hero-title{font-size:clamp(52px,9vw,128px);line-height:.9;letter-spacing:-.04em;margin:0;text-shadow:0 22px 80px rgba(0,0,0,.7),0 0 50px rgba(244,198,109,.12)}.hero-tag{max-width:620px;color:#d6e2db;font-size:clamp(15px,1.6vw,19px);line-height:1.7;margin:4px 0 8px}.hero-ctas-center{justify-content:center;gap:16px}.hero-ctas .btn-play{font-size:18px;padding:0 42px;height:62px;box-shadow:0 16px 50px rgba(244,198,109,.30),0 0 0 1px rgba(244,198,109,.4) inset;animation:playpulse 2.6s ease-in-out infinite}.nav-actions .btn-play{padding:0 18px;height:40px;font-size:13px}@keyframes playpulse{0%,100%{box-shadow:0 16px 50px rgba(244,198,109,.30),0 0 0 1px rgba(244,198,109,.4) inset}50%{box-shadow:0 16px 64px rgba(244,198,109,.52),0 0 0 1px rgba(244,198,109,.7) inset}}.hero-gate{font-size:13px;color:#c7b283;letter-spacing:.01em}.hero-gate b{color:var(--gold3)}.hero-ca{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;border:1px solid rgba(244,198,109,.26);background:rgba(2,7,10,.62);backdrop-filter:blur(12px);border-radius:999px;padding:8px 8px 8px 16px;max-width:94vw}.hero-ca .ca-label{color:var(--gold3);font-weight:950;font-size:11px;letter-spacing:.16em}.hero-ca code{color:#cfe0d8;font-size:12px;word-break:break-all;font-family:ui-monospace,Menlo,monospace}.ca-copy{border:1px solid rgba(120,240,255,.3);background:rgba(120,240,255,.08);color:#dffcff;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:800;cursor:pointer}.ca-copy:hover{background:rgba(120,240,255,.16)}.ca-copy.copied{background:rgba(125,255,173,.18);border-color:rgba(125,255,173,.4);color:#dfffea}.ca-link{color:var(--gold3);font-size:12px;font-weight:800;white-space:nowrap}.ca-link:hover{color:var(--gold)}.audio-toggle{position:absolute;top:88px;right:22px;z-index:6;width:46px;height:46px;border-radius:50%;border:1px solid rgba(244,198,109,.3);background:rgba(2,7,10,.6);backdrop-filter:blur(10px);color:#dffcff;font-size:18px;cursor:pointer;transition:transform .2s,border-color .2s}.audio-toggle:hover{transform:scale(1.08);border-color:rgba(244,198,109,.6)}@media (max-width:640px){.hero-center{padding:70px 0 56px;gap:14px}.audio-toggle{top:74px;right:14px;width:40px;height:40px}.hero-ca code{font-size:10px}}.hero-video video{width:100%;height:100%;object-fit:cover;filter:saturate(1.14) contrast(1.08) brightness(.76)}.hero-video:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 40%,rgba(120,240,255,.10),transparent 24%),radial-gradient(circle at 32% 28%,rgba(244,198,109,.10),transparent 30%),linear-gradient(90deg,rgba(2,6,8,.94) 0%,rgba(2,6,8,.76) 38%,rgba(2,6,8,.35) 64%,rgba(2,6,8,.72) 100%),linear-gradient(180deg,rgba(3,8,12,.26) 0%,rgba(3,8,12,.22) 42%,#03080c 100%)}
     #stars{position:absolute;inset:0;z-index:-4;opacity:.7}.hero-inner{position:relative;padding:96px 0 108px;display:grid;grid-template-columns:1.02fr .72fr;gap:54px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:10px;color:#d3aa5f;font-size:11px;font-weight:950;letter-spacing:.27em;text-transform:uppercase}.eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 18px rgba(125,255,173,.86)}
-    h1{font-size:clamp(58px,8.6vw,132px);line-height:.84;letter-spacing:-.067em;margin:24px 0 22px;text-shadow:0 26px 90px rgba(0,0,0,.75)}.hero-sub{max-width:680px;color:#c9d6cf;font-size:18px;line-height:1.76;margin:0}.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}.live-pill{margin-top:24px;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(125,255,173,.25);background:rgba(4,18,15,.72);backdrop-filter:blur(14px);color:#dfffea;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:900}.pill-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.mau-pill{border-color:rgba(244,198,109,.30)!important;background:rgba(20,14,4,.72)!important;color:#f6e9c8!important}.mau-pill b{color:var(--gold3);font-weight:950}.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 16px rgba(125,255,173,.9);animation:pulse 1.8s ease-in-out infinite}.hero-card{position:relative;border:1px solid rgba(244,198,109,.30);border-radius:30px;background:linear-gradient(180deg,rgba(8,21,26,.80),rgba(3,10,13,.66));backdrop-filter:blur(18px);box-shadow:0 44px 150px rgba(0,0,0,.50),0 0 88px rgba(244,198,109,.08),inset 0 1px 0 rgba(255,255,255,.075);padding:20px;align-self:end}.hero-card:before{content:"";position:absolute;inset:-1px;border-radius:30px;background:linear-gradient(135deg,rgba(255,229,168,.30),transparent 27%,rgba(120,240,255,.18) 66%,transparent);opacity:.38;pointer-events:none}.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.08);border-radius:16px 16px 0 0;background:rgba(2,7,10,.78);padding:0 14px;color:#dffcff;font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.dots{display:flex;gap:7px}.dots i{width:9px;height:9px;border-radius:50%;display:block}.dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#ffbd2e}.dots i:nth-child(3){background:#28c840}.mini-screen{position:relative;aspect-ratio:16/11;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-top:0;border-radius:0 0 18px 18px;background:#050b0f}.mini-screen video,.mini-screen img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) brightness(.82)}.mini-screen:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(2,7,10,.84));}.hud-line{position:absolute;z-index:2;left:18px;right:18px;bottom:18px;display:grid;gap:8px}.hud-line span{display:flex;justify-content:space-between;border:1px solid rgba(255,255,255,.11);border-radius:12px;background:rgba(2,7,10,.64);padding:10px 12px;color:#d2dfd8;font-size:12px}.hud-line b{color:var(--gold3)}
+    h1{font-size:clamp(58px,8.6vw,132px);line-height:.84;letter-spacing:-.067em;margin:24px 0 22px;text-shadow:0 26px 90px rgba(0,0,0,.75)}.hero-sub{max-width:680px;color:#c9d6cf;font-size:18px;line-height:1.76;margin:0}.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}.live-pill{margin-top:24px;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(125,255,173,.25);background:rgba(4,18,15,.72);backdrop-filter:blur(14px);color:#dfffea;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:900}.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 16px rgba(125,255,173,.9);animation:pulse 1.8s ease-in-out infinite}.hero-card{position:relative;border:1px solid rgba(244,198,109,.30);border-radius:30px;background:linear-gradient(180deg,rgba(8,21,26,.80),rgba(3,10,13,.66));backdrop-filter:blur(18px);box-shadow:0 44px 150px rgba(0,0,0,.50),0 0 88px rgba(244,198,109,.08),inset 0 1px 0 rgba(255,255,255,.075);padding:20px;align-self:end}.hero-card:before{content:"";position:absolute;inset:-1px;border-radius:30px;background:linear-gradient(135deg,rgba(255,229,168,.30),transparent 27%,rgba(120,240,255,.18) 66%,transparent);opacity:.38;pointer-events:none}.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.08);border-radius:16px 16px 0 0;background:rgba(2,7,10,.78);padding:0 14px;color:#dffcff;font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.dots{display:flex;gap:7px}.dots i{width:9px;height:9px;border-radius:50%;display:block}.dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#ffbd2e}.dots i:nth-child(3){background:#28c840}.mini-screen{position:relative;aspect-ratio:16/11;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-top:0;border-radius:0 0 18px 18px;background:#050b0f}.mini-screen video,.mini-screen img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) brightness(.82)}.mini-screen:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(2,7,10,.84));}.hud-line{position:absolute;z-index:2;left:18px;right:18px;bottom:18px;display:grid;gap:8px}.hud-line span{display:flex;justify-content:space-between;border:1px solid rgba(255,255,255,.11);border-radius:12px;background:rgba(2,7,10,.64);padding:10px 12px;color:#d2dfd8;font-size:12px}.hud-line b{color:var(--gold3)}
     .section{padding:112px 0;position:relative}.section:before{content:"";position:absolute;top:0;left:50%;width:min(960px,80vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(244,198,109,.38),rgba(120,240,255,.18),transparent)}.section-head{max-width:820px;margin:0 auto 44px;text-align:center}.kicker{color:#c29d57;font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.25em}.section h2{font-size:clamp(40px,5.2vw,78px);line-height:.90;letter-spacing:-.058em;margin:14px 0}.section-head p,.section-copy{margin:0 auto;max-width:720px;color:var(--muted);font-size:17px;line-height:1.72}.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.reveal.in{opacity:1;transform:translateY(0)}.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.step{position:relative;border:1px solid rgba(244,198,109,.18);border-radius:26px;background:linear-gradient(180deg,rgba(9,24,29,.78),rgba(3,11,15,.72));padding:32px;min-height:260px;overflow:hidden;box-shadow:0 34px 110px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)}.step:before{content:attr(data-step);position:absolute;right:22px;top:12px;font-family:Cinzel,Georgia,serif;font-size:82px;font-weight:900;color:rgba(244,198,109,.075)}.step:after{content:"";position:absolute;inset:auto 20px 0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.35}.icon{width:50px;height:50px;border-radius:16px;border:1px solid rgba(120,240,255,.23);background:rgba(120,240,255,.07);display:grid;place-items:center;color:var(--cyan);font-size:22px;margin-bottom:24px}.icon-img{width:74px;height:74px;border:1px solid rgba(244,198,109,.28);background:radial-gradient(circle at 50% 38%,rgba(244,198,109,.12),rgba(120,240,255,.05) 60%,transparent);border-radius:20px;overflow:hidden;box-shadow:0 14px 44px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06)}.icon-img img{width:100%;height:100%;object-fit:cover}.step h3,.doc-card h3{font-size:23px;line-height:1.02;margin:0 0 12px;letter-spacing:-.025em}.step p,.doc-card p{color:#9fb0aa;line-height:1.62;margin:0;font-size:14px}
     .zones{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}.zone{position:relative;min-height:380px;border:1px solid color-mix(in srgb,var(--zone) 42%,transparent);border-radius:28px;overflow:hidden;background:#091319;box-shadow:0 38px 120px rgba(0,0,0,.38);isolation:isolate}.zone.wide{grid-column:span 2}.zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.06) brightness(.70);transition:transform .75s var(--ease),filter .75s var(--ease)}.zone:hover img{transform:scale(1.06);filter:saturate(1.16) contrast(1.08) brightness(.78)}.zone:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.18) 36%,rgba(1,6,9,.92))}.zone:after{content:"";position:absolute;inset:0;z-index:2;border:1px solid rgba(255,255,255,.08);border-radius:inherit;pointer-events:none}.zone-content{position:absolute;z-index:3;left:20px;right:20px;bottom:22px}.zone-badge{display:inline-flex;border:1px solid color-mix(in srgb,var(--zone) 68%,transparent);background:rgba(3,10,13,.70);backdrop-filter:blur(10px);color:var(--zone);border-radius:999px;padding:7px 11px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.15em}.zone h3{font-size:30px;line-height:.98;margin:16px 0 10px;letter-spacing:-.045em}.zone p{margin:0;color:#cad7d0;font-size:12px;line-height:1.58}.sigil{position:absolute;z-index:3;right:20px;top:20px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:1px solid color-mix(in srgb,var(--zone) 58%,transparent);color:var(--zone);background:rgba(3,10,13,.58);backdrop-filter:blur(10px)}
     .agents{display:grid;grid-template-columns:.95fr 1.05fr;gap:24px;align-items:stretch}.panel{border:1px solid rgba(244,198,109,.19);border-radius:30px;background:linear-gradient(180deg,rgba(9,24,29,.82),rgba(3,11,15,.76));box-shadow:0 38px 120px rgba(0,0,0,.33),inset 0 1px 0 rgba(255,255,255,.058);padding:38px;position:relative;overflow:hidden}.panel:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 84% 18%,rgba(120,240,255,.11),transparent 34%),radial-gradient(circle at 10% 80%,rgba(244,198,109,.08),transparent 34%);pointer-events:none}.panel>*{position:relative}.panel h2{font-size:clamp(38px,4.4vw,62px)}.bullet{display:flex;gap:15px;margin:22px 0}.mark{width:42px;height:42px;flex:0 0 auto;display:grid;place-items:center;border-radius:14px;border:1px solid rgba(244,198,109,.25);color:var(--gold);background:rgba(244,198,109,.07)}.bullet b{display:block;color:#f9efd8}.bullet span{display:block;margin-top:5px;color:#91a29c;font-size:13px;line-height:1.55}.comparison{display:grid;gap:12px;margin-top:20px}.compare-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:14px 16px;color:#c9d6d0;font-size:14px}.compare-row strong{color:var(--gold3)}.tag{border-radius:999px;padding:6px 10px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.13em}.tag.good{background:rgba(125,255,173,.12);color:var(--green);border:1px solid rgba(125,255,173,.22)}.tag.flat{background:rgba(166,133,255,.12);color:#cbbcff;border:1px solid rgba(166,133,255,.22)}.console{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;border-radius:20px;border:1px solid rgba(120,240,255,.18);background:#02070a;padding:22px;color:#bee9e6;font-size:13px;line-height:1.72;min-height:380px;box-shadow:inset 0 0 50px rgba(120,240,255,.04)}.prompt{color:var(--gold3)}
     .token-panel{position:relative;border:1px solid rgba(244,198,109,.33);border-radius:36px;padding:46px;background:radial-gradient(circle at 85% 28%,rgba(244,198,109,.19),transparent 28%),radial-gradient(circle at 12% 65%,rgba(166,133,255,.11),transparent 34%),linear-gradient(135deg,rgba(244,198,109,.08),rgba(5,18,23,.88));box-shadow:0 52px 160px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden}.token-panel:before{content:"Hold $HERMESWORLD → unlock Founder perks.";position:absolute;right:22px;top:22px;border:1px solid rgba(255,229,168,.26);border-radius:999px;background:rgba(2,8,11,.58);backdrop-filter:blur(12px);padding:9px 13px;color:var(--gold3);font-size:11px;font-weight:950;letter-spacing:.08em}.token-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:34px;align-items:start}.ca{display:flex;gap:10px;align-items:center;max-width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;border:1px solid rgba(120,240,255,.18);border-radius:14px;background:#02070a;color:var(--gold3);padding:14px 16px;word-break:break-all;font-size:13px}.ca span:first-child{color:#8fa09a;font-family:Inter,system-ui;font-size:11px;font-weight:950;letter-spacing:.14em;text-transform:uppercase;flex:0 0 auto}.utility{display:grid;gap:14px;margin:0;padding:0}.utility li{list-style:none;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(2,9,12,.50);padding:15px 16px;color:#bdcbc4;line-height:1.5}.utility b{color:var(--gold3)}.token-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
     .timeline{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.timeline:before{content:"";position:absolute;left:8%;right:8%;top:34px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),var(--cyan),transparent);opacity:.45}.mile{position:relative;border:1px solid rgba(244,198,109,.17);border-radius:20px;background:linear-gradient(180deg,rgba(9,24,29,.76),rgba(3,11,15,.70));padding:62px 18px 20px;min-height:210px}.mile:before{content:"";position:absolute;top:25px;left:20px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);box-shadow:0 0 20px rgba(244,198,109,.45)}.mile.now:before{background:var(--green);border-color:var(--green);box-shadow:0 0 22px rgba(125,255,173,.75)}.mile b{display:block;color:var(--gold3);font-size:14px;margin-bottom:8px}.mile span{color:#96a69f;font-size:13px;line-height:1.55}.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.docs-2{grid-template-columns:repeat(2,minmax(0,360px));justify-content:center}.doc-card{border:1px solid rgba(120,240,255,.16);border-radius:26px;background:linear-gradient(180deg,rgba(9,24,29,.77),rgba(3,11,15,.71));padding:30px;min-height:226px;box-shadow:0 32px 100px rgba(0,0,0,.26);transition:transform .28s var(--ease),border-color .28s var(--ease)}.doc-card:hover{border-color:rgba(244,198,109,.35);transform:translateY(-2px)}.doc-card .arrow{margin-top:18px;color:var(--cyan);font-weight:900}.guide-credit{margin-top:14px;font-size:12px;color:#8aa39a}.guide-credit a{color:var(--gold3);font-weight:800}.guide-credit a:hover{color:var(--gold);text-decoration:underline}.guide-byline{margin-top:4px;font-size:12px;color:#8aa39a}.guide-byline a{color:var(--gold3);font-weight:800}.guide-byline a:hover{text-decoration:underline}.final{position:relative;padding:110px 0 78px;background:transparent;border-top:1px solid rgba(244,198,109,.14);text-align:center}.final-card{border:1px solid rgba(255,229,168,.28);border-radius:30px;background:linear-gradient(180deg,rgba(7,18,22,.92),rgba(3,9,12,.88));backdrop-filter:blur(18px);padding:44px 34px;box-shadow:0 40px 120px rgba(0,0,0,.56),0 0 80px rgba(244,198,109,.08)}.final-card h2{font-size:clamp(38px,5vw,72px)}.final-card p{color:#aebeb7;line-height:1.68;max-width:680px;margin:0 auto}.final .hero-ctas{justify-content:center}.footer{border-top:1px solid rgba(244,198,109,.13);padding:30px 0;color:#82938d;font-size:12px}.footin{display:flex;align-items:center;justify-content:space-between;gap:24px}.foot-links{display:flex;gap:18px;flex-wrap:wrap}.foot-links a:hover{color:var(--gold3)}
-    [data-wallet-soon]{opacity:.55;cursor:not-allowed;position:relative}[data-wallet-soon]:hover{transform:none}.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.68);backdrop-filter:blur(10px)}.modal.open{display:grid}.modal-card{width:min(520px,100%);border:1px solid rgba(244,198,109,.36);border-radius:24px;background:linear-gradient(180deg,#0b1a20,#03090d);padding:28px;box-shadow:0 40px 140px rgba(0,0,0,.65)}.modal-card h3{margin:0 0 10px;font-size:28px}.modal-card p{color:#aebeb7;line-height:1.65}.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}.wallet-form{display:grid;gap:14px;margin-top:18px}.wallet-field label{display:block;color:var(--gold3);font-size:11px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}.wallet-field input{width:100%;height:48px;border:1px solid rgba(120,240,255,.20);border-radius:14px;background:rgba(2,7,10,.72);color:var(--text);font:800 14px Inter,system-ui,sans-serif;padding:0 14px;outline:none}.wallet-field input:focus{border-color:rgba(244,198,109,.56);box-shadow:0 0 0 3px rgba(244,198,109,.10)}.wallet-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wallet-status{min-height:48px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);color:#b9cbc3;padding:12px 14px;line-height:1.45;font-size:13px}.wallet-status.success{border-color:rgba(125,255,173,.32);color:#dfffea;background:rgba(125,255,173,.08)}.wallet-status.error{border-color:rgba(255,125,86,.36);color:#ffd8cb;background:rgba(255,125,86,.08)}.wallet-status.info{border-color:rgba(120,240,255,.24);color:#dffcff}.wallet-meta{display:grid;gap:6px;color:#8fa09a;font-size:12px;line-height:1.45}.wallet-meta b{color:var(--gold3)}@media (max-width:640px){.wallet-buttons{grid-template-columns:1fr}}.guide-modal{z-index:110}.guide-card{width:min(960px,100%);max-height:min(92svh,980px);display:grid;grid-template-rows:auto 1fr auto;gap:18px}.guide-top{display:flex;align-items:center;justify-content:space-between;gap:16px}.guide-top h3{margin:0;font-size:26px}.guide-frame{display:grid;place-items:center;min-height:0;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:rgba(2,7,10,.52);overflow:hidden;padding:14px}.guide-frame img{display:block;width:100%;max-width:760px;max-height:68svh;height:auto;object-fit:contain;border-radius:14px;box-shadow:0 22px 70px rgba(0,0,0,.42)}.guide-controls{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.guide-count{color:var(--gold3);font-weight:950;letter-spacing:.08em}.guide-caption{color:#aebeb7;line-height:1.5;font-size:13px;flex:1 1 260px;text-align:center}.guide-nav{display:flex;gap:10px}.doc-card[data-guide-open]{display:block}.doc-card[data-guide-open]:focus-visible,.guide-card button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+    [data-wallet-soon]{opacity:.55;cursor:not-allowed;position:relative}[data-wallet-soon]:hover{transform:none}.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.68);backdrop-filter:blur(10px)}.modal.open{display:grid}.modal-card{width:min(520px,100%);border:1px solid rgba(244,198,109,.36);border-radius:24px;background:linear-gradient(180deg,#0b1a20,#03090d);padding:28px;box-shadow:0 40px 140px rgba(0,0,0,.65)}.modal-card h3{margin:0 0 10px;font-size:28px}.modal-card p{color:#aebeb7;line-height:1.65}.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}.wallet-form{display:grid;gap:14px;margin-top:18px}.wallet-field label{display:block;color:var(--gold3);font-size:11px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}.wallet-field input{width:100%;height:48px;border:1px solid rgba(120,240,255,.20);border-radius:14px;background:rgba(2,7,10,.72);color:var(--text);font:800 14px Inter,system-ui,sans-serif;padding:0 14px;outline:none}.wallet-field input:focus{border-color:rgba(244,198,109,.56);box-shadow:0 0 0 3px rgba(244,198,109,.10)}.wallet-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wallet-status{min-height:48px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);color:#b9cbc3;padding:12px 14px;line-height:1.45;font-size:13px;text-align:center}.wallet-signup{display:none;margin-top:12px;padding:12px 14px;border:1px solid rgba(125,255,173,.28);border-radius:14px;background:rgba(125,255,173,.07);color:#dfffea;font-size:13px;line-height:1.5;text-align:center}.wallet-signup.show{display:block}.wallet-card{position:relative;text-align:center;max-width:440px}.wallet-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#cfe0d8;font-size:15px;cursor:pointer;transition:background .2s,border-color .2s}.wallet-close:hover{background:rgba(255,255,255,.12);border-color:rgba(244,198,109,.4)}.wallet-crest{width:72px;height:72px;object-fit:contain;margin:4px auto 10px;filter:drop-shadow(0 8px 26px rgba(244,198,109,.3))}.wallet-card h3{margin:0 0 8px;font-size:26px}.wallet-sub{color:#aebeb7;font-size:14px;line-height:1.6;margin:0 auto 6px;max-width:360px}.wallet-sub b{color:var(--gold3)}.wallet-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.wallet-choice label{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px;font-size:13px;font-weight:800;color:#cfe0d8;cursor:pointer;transition:border-color .2s,background .2s}.wallet-choice label:has(input:checked){border-color:rgba(244,198,109,.5);background:rgba(244,198,109,.08);color:var(--gold3)}.wallet-choice input{accent-color:var(--gold)}.wallet-path-note{font-size:12px;color:#8fa09a;text-align:center}.wallet-or{display:flex;align-items:center;gap:12px;color:#7c8d86;font-size:12px;font-weight:800;margin:2px 0}.wallet-or:before,.wallet-or:after{content:"";flex:1;height:1px;background:rgba(255,255,255,.1)}.wallet-buttons-4{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wc-btn{border-color:rgba(120,240,255,.4)!important;background:rgba(120,240,255,.06)!important}.wc-btn:hover{background:rgba(120,240,255,.13)!important}.wallet-meta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;color:#8fa09a;font-size:11.5px;line-height:1.4;margin-top:4px}.wallet-meta span{white-space:nowrap}.wallet-step{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;color:#cfe0d8;text-align:left;margin-top:4px}.wallet-step-n{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(244,198,109,.16);border:1px solid rgba(244,198,109,.4);color:var(--gold3);font-size:12px;font-weight:900;flex:0 0 22px}.wallet-auth-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.google-btn{height:46px;gap:8px}.google-btn svg{flex:0 0 15px}.wlt-btn{gap:8px;height:46px}.wlt-ico{width:18px;height:18px;flex:0 0 18px;object-fit:contain}.wallet-status.success{border-color:rgba(125,255,173,.32);color:#dfffea;background:rgba(125,255,173,.08)}.wallet-status.error{border-color:rgba(255,125,86,.36);color:#ffd8cb;background:rgba(255,125,86,.08)}.wallet-status.info{border-color:rgba(120,240,255,.24);color:#dffcff}.wallet-meta{display:grid;gap:6px;color:#8fa09a;font-size:12px;line-height:1.45}.wallet-meta b{color:var(--gold3)}@media (max-width:640px){.wallet-buttons{grid-template-columns:1fr}}.guide-modal{z-index:110}.guide-card{width:min(960px,100%);max-height:min(92svh,980px);display:grid;grid-template-rows:auto 1fr auto;gap:18px}.guide-top{display:flex;align-items:center;justify-content:space-between;gap:16px}.guide-top h3{margin:0;font-size:26px}.guide-frame{display:grid;place-items:center;min-height:0;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:rgba(2,7,10,.52);overflow:hidden;padding:14px}.guide-frame img{display:block;width:100%;max-width:760px;max-height:68svh;height:auto;object-fit:contain;border-radius:14px;box-shadow:0 22px 70px rgba(0,0,0,.42)}.guide-controls{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.guide-count{color:var(--gold3);font-weight:950;letter-spacing:.08em}.guide-caption{color:#aebeb7;line-height:1.5;font-size:13px;flex:1 1 260px;text-align:center}.guide-nav{display:flex;gap:10px}.doc-card[data-guide-open]{display:block}.doc-card[data-guide-open]:focus-visible,.guide-card button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
     @keyframes pulse{0%,100%{transform:scale(.9);opacity:.75}50%{transform:scale(1.22);opacity:1}}@keyframes foil{0%,62%{transform:translateX(-42%)}78%,100%{transform:translateX(42%)}}
     @media (max-width:1020px){.sigils-grid{grid-template-columns:1fr}.pillars{grid-template-columns:repeat(2,1fr)}.token-panel:before{position:relative;display:inline-flex;right:auto;top:auto;margin-bottom:18px}.navlinks{display:none}.hero-inner,.agents,.token-grid{grid-template-columns:1fr}.hero-card{max-width:720px}.cards3,.docs{grid-template-columns:1fr}.zones{grid-template-columns:repeat(2,1fr)}.zone.wide{grid-column:span 1}.timeline{grid-template-columns:1fr}.timeline:before{display:none}.footin{display:block}.foot-links{margin-top:18px}.section{padding:86px 0}}
     @media (max-width:640px){.pillars,.download-grid,.wallet-choice,.wallet-qr-row{grid-template-columns:1fr}.wallet-buttons{grid-template-columns:1fr}.sigils-copy,.download-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:840px;margin:0 auto}.download-card{padding:30px;border:1px solid rgba(244,198,109,.18);border-radius:24px;background:linear-gradient(180deg,rgba(9,24,29,.78),rgba(3,11,15,.72));box-shadow:0 30px 100px rgba(0,0,0,.28);text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .28s var(--ease),border-color .28s var(--ease)}.download-card:hover{border-color:rgba(244,198,109,.36);transform:translateY(-2px)}.download-card h3{font-size:22px;margin:6px 0 2px}.download-card p{color:#9fb0aa;font-size:13px;line-height:1.55;margin:0 0 14px}.download-card .btn{width:100%}.download-icon{width:60px;height:60px;display:grid;place-items:center;border-radius:18px;border:1px solid rgba(120,240,255,.22);background:rgba(120,240,255,.06);color:var(--cyan);font-size:28px}@media (max-width:640px){.download-grid{grid-template-columns:1fr}}.wallet-qr{width:100%;height:auto;min-height:150px}:root{--nav:70px}.wrap{width:min(100% - 28px,var(--max))}.nav-actions .small-btn:not(.primary){display:none}.brand img{width:38px;height:38px}.wordmark{font-size:17px}.hero-inner{padding:58px 0 70px}.hero-card{display:none}h1{font-size:54px}.hero-sub{font-size:16px}.btn{width:100%;height:54px}.hero-ctas{width:100%}.zones{grid-template-columns:1fr}.zone{min-height:360px}.panel,.token-panel,.final-card{padding:26px;border-radius:22px}.ca{font-size:11px}.token-actions .btn,.token-actions .small-btn{width:100%}.modal-actions{display:grid}.section-head{text-align:left}.section-head p{margin:0}}
@@ -50,32 +50,39 @@
 <div class="noise" aria-hidden="true"></div><div class="page-glow" aria-hidden="true"></div>
 <nav class="nav" aria-label="Primary">
   <div class="wrap navin">
-    <a class="brand" href="#top" aria-label="HermesWorld home"><img src="./crest.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span></a>
+    <a class="brand" href="#top" aria-label="HermesWorld home"><img src="./crest-transparent.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span></a>
     <div class="navlinks">
-      <a href="#play">Play</a><a href="#world">World</a><a href="#agents">Agents</a><a href="#sigils">Sigils</a><a href="#token">Token</a><a href="#roadmap">Roadmap</a><a href="/download/">Download</a><a href="./docs.html">Docs</a>
+      <a href="/world/">World</a><a href="/agents/">Agents</a><a href="/token/">Token</a><a href="/roadmap/">Roadmap</a><a href="/download/">Download</a><a href="./docs.html">Docs</a><a href="/guide/">Guide</a>
     </div>
-    <div class="nav-actions"><a class="small-btn" href="/signin/" data-google-signin><span data-google-label>Sign In</span></a><a class="small-btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play Now</a><button class="small-btn" data-wallet-soon disabled title="Founder wallet verification is launching soon">Wallet · Soon</button></div>
+    <div class="nav-actions"><a class="small-btn" href="/signin/" data-google-signin><span data-google-label>Sign In</span></a><button class="small-btn primary btn-play" id="navPlay">▶ Play</button></div>
   </div>
 </nav>
 <main id="main">
   <section id="top" class="hero">
     <div class="hero-video" aria-hidden="true"><video id="heroVideo" autoplay muted loop playsinline preload="metadata"><source src="./world-demo.mp4" type="video/mp4"></video></div>
     <canvas id="stars" aria-hidden="true"></canvas>
-    <div class="wrap hero-inner">
-      <div class="reveal">
-        <div class="pill-row" style="margin:0 0 18px;"><div class="live-pill" aria-live="polite" style="margin:0;"><span class="live-dot"></span><span id="livePlayers">Online</span></div></div>
-        <div class="eyebrow">Browser playable · persistent · mythic</div>
-        <h1>The MMO where AI agents live.</h1>
-        <p class="hero-sub">A real 3D MMO where you and your AI companions train, quest, and build together — powered by the $HERMESWORLD economy on Solana. Play instantly in your browser.</p>
-        <div class="hero-ctas"><a class="btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play Now</a><button class="btn ghost" id="spectateBtn">Watch Demo</button><a class="btn ghost" href="/download/">Download Clients</a></div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+
+    <div class="wrap hero-center">
+      <img class="hero-crest reveal" src="./crest-transparent.png" alt="HermesWorld" />
+      <h1 class="hero-title reveal">HermesWorld</h1>
+      <p class="hero-tag reveal">The first AI-agent-native mythic MMO. Forge your character, bring your AI companions, and step into a living world of gods and gold — powered by $HERMESWORLD on Solana.</p>
+      <div class="hero-ctas hero-ctas-center cta-row reveal">
+        <button class="btn primary btn-play" id="heroPlay">▶ Play</button>
+        <a class="btn ghost" href="/signin/" data-google-signin><span data-google-label>Sign Up with Google</span></a>
       </div>
-      <aside class="hero-card reveal" aria-label="Live world preview">
-        <div class="statusbar"><div class="dots"><i></i><i></i><i></i></div><span>Live World Relay</span></div>
-        <div class="mini-screen"><video autoplay muted loop playsinline preload="metadata" aria-label="Live world gameplay relay"><source src="./relay-gameplay.mp4" type="video/mp4"></video><div class="hud-line"><span><b>Zone</b> AgoraTown Plaza</span><span><b>Party</b> Player + 2 AI companions</span><span><b>Status</b> Browser client ready</span></div></div>
-      </aside>
+      <div class="hero-gate reveal"><b>$HERMESWORLD</b> holders access only · connect your wallet to play</div>
+      <div class="hero-ca reveal">
+        <span class="ca-label">CA</span>
+        <code id="heroCa">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</code>
+        <button class="ca-copy" id="heroCaCopy" type="button" title="Copy contract address">Copy</button>
+        <a class="ca-link" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener">pump.fun ↗</a>
+      </div>
     </div>
+    <audio id="heroAudio" loop autoplay muted preload="auto"><source src="./audio/hermesworld-hero-loop.mp3" type="audio/mpeg"></audio>
   </section>
 
+  <div class="below-fold" hidden aria-hidden="true">
   <section id="play" class="section">
     <div class="wrap">
       <div class="section-head reveal"><div class="kicker">Zero install</div><h2>How it works</h2><p>Three steps from browser to in-world founder. No download required for the web client — launch instantly, or use the native downloads below for best performance.</p></div>
@@ -140,7 +147,7 @@ Risk: medium. Reward: Founder Sigil fragment.
   <section id="token" class="section">
     <div class="wrap token-panel reveal">
       <div class="token-grid">
-        <div><div class="kicker">Powered by Solana</div><h2>$HERMESWORLD</h2><p class="hero-sub">Hold $HERMESWORLD to unlock Founder perks first. Token utility starts with identity and cosmetics, then expands into the in-game economy.</p><div class="ca"><span>CA</span><span>2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</span></div><div class="token-actions"><a class="btn primary" href="/token/">View Chart</a><a class="btn ghost" target="_blank" rel="noopener" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9">Pump.fun</a><button class="btn" data-wallet-soon disabled title="Founder wallet verification is launching soon">Connect Wallet · Coming Soon</button></div></div>
+        <div><div class="kicker">Powered by Solana</div><h2>$HERMESWORLD</h2><p class="hero-sub">Hold $HERMESWORLD to unlock Founder perks first. Token utility starts with identity and cosmetics, then expands into the in-game economy.</p><div class="ca"><span>CA</span><span>2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</span></div><div class="token-actions"><a class="btn primary" href="/token/">View Chart</a><a class="btn ghost" target="_blank" rel="noopener" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9">Pump.fun</a><button class="btn" data-wallet>Connect Wallet</button></div></div>
         <ul class="utility" aria-label="$HERMESWORLD utility roadmap">
           <li><b>✅ Founder Badge + exclusive armor</b><br>Verified holders get early cosmetic identity and founder status in-game, live soon.</li>
           <li><b>🔜 Gold ↔ $HERMESWORLD conversion</b><br>Bridge in-game progression with token utility once economy controls are ready.</li>
@@ -156,33 +163,33 @@ Risk: medium. Reward: Founder Sigil fragment.
   </section>
 
 
-  <section class="final">
-    <div class="wrap final-card reveal"><div class="kicker">Founders wanted</div><h2>The first AI-agent-native MMO is here.</h2><p>Join the world and jump into the future. Bring your AI companions into a real 3D mythic world — train, build, quest, and shape what comes next.</p><div class="hero-ctas"><a class="btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play Now</a><a class="btn ghost" href="/download/">Download Clients</a><button class="btn ghost" data-wallet-soon disabled title="Founder wallet verification is launching soon">Connect Wallet · Coming Soon</button></div></div>
+  </div>
+  <section class="final below-fold" hidden aria-hidden="true">
+    <div class="wrap final-card reveal"><div class="kicker">Founders wanted</div><h2>The first AI-agent-native MMO is here.</h2><p>Join the world and jump into the future. Bring your AI companions into a real 3D mythic world — train, build, quest, and shape what comes next.</p><div class="hero-ctas"><a class="btn primary" href="https://play.hermes-world.ai/play/web/" target="_blank" rel="noopener">Play Now</a><a class="btn ghost" href="/download/">Download Clients</a><button class="btn ghost" data-wallet>Connect Wallet</button></div></div>
   </section>
 </main>
 <footer class="footer"><div class="wrap footin"><a class="brand" href="#top"><img src="./crest.png" alt="HermesWorld crest"><span class="wordmark">HermesWorld</span></a><div class="foot-links"><a href="/token/">Token</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://github.com/outsourc-e/hermes-workspace" target="_blank" rel="noopener">GitHub</a><a href="#play">Guide</a><a href="/download/">Download</a></div></div></footer>
 
 <div class="modal" id="walletModal" role="dialog" aria-modal="true" aria-labelledby="walletTitle">
-  <div class="modal-card">
-    <h3 id="walletTitle">Verify Founder Wallet</h3>
-    <p>Connect Phantom, Solflare, or Backpack, sign a read-only message, and verify your $HERMESWORLD holder wallet. No transactions are requested.</p>
+  <div class="modal-card wallet-card">
+    <button class="wallet-close" id="closeModal" type="button" aria-label="Close">✕</button>
+    <img class="wallet-crest" src="./crest-transparent.png" alt="" aria-hidden="true" />
+    <h3 id="walletTitle">Enter HermesWorld</h3>
+    <p class="wallet-sub">Sign in, then connect a wallet holding <b>$HERMESWORLD</b> to play. Wallet check is a read-only signature — no transaction, no gas.</p>
     <div class="wallet-form">
-      <div class="wallet-choice" role="radiogroup" aria-label="Account path">
-        <label><input type="radio" name="walletAccountPath" value="existing" checked> I have an account</label>
-        <label><input type="radio" name="walletAccountPath" value="signup"> I need an account</label>
+      <div class="wallet-step"><span class="wallet-step-n">1</span> Sign in or create your account</div>
+      <div class="wallet-auth-row">
+        <a class="small-btn google-btn" href="/signin/" data-google-signin><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 4.75c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 1.46 14.97.5 12 .5A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 6.68 9.14 4.75 12 4.75z"/></svg> <span data-google-label>Sign In</span></a>
+        <a class="small-btn primary google-btn" href="/signin/" data-google-signin>Sign Up with Google</a>
       </div>
-      <div class="wallet-field" id="walletUsernameField"><label for="walletUsername">HermesWorld username</label><input id="walletUsername" type="text" autocomplete="username" placeholder="Your in-game username" maxlength="64"></div>
-      <div class="wallet-path-note" id="walletPathNote">Existing accounts are linked by username after the wallet signature verifies.</div>
-      <div class="wallet-buttons"><button class="small-btn primary" id="connectPhantom" type="button">Phantom</button><button class="small-btn" id="connectSolflare" type="button">Solflare</button><button class="small-btn" id="connectBackpack" type="button">Backpack</button></div>
-      <div class="wallet-mobile">
-        <h4>Mobile / QR path</h4>
-        <div class="wallet-qr-row"><div class="wallet-qr" id="walletQr" aria-label="QR code to open this page in a mobile wallet browser"></div><div class="wallet-mobile-links"><span>Scan to open HermesWorld in a mobile wallet browser, then use the same read-only signature flow.</span><a id="phantomDeepLink" href="#" rel="noopener">Open in Phantom</a><a id="solflareDeepLink" href="#" rel="noopener">Open in Solflare</a></div></div>
-      </div>
-      <div class="wallet-status info" id="walletStatus" aria-live="polite">Choose your account path, then connect a wallet. QR opens the page in a mobile wallet browser; production-grade WalletConnect/Reown needs a projectId.</div>
-      <div class="wallet-signup" id="walletSignupCta">✓ Wallet holder check complete. <a href="/signin/">Create your HermesWorld account to claim your Founder Badge</a>, then return and link your username.</div>
-      <div class="wallet-meta" id="walletMeta"><span><b>Token:</b> $HERMESWORLD</span><span><b>Read-only:</b> message signature only, no transaction.</span><span><b>QR:</b> mobile wallet browser deeplink; WalletConnect projectId needed for full cross-device modal.</span></div>
+      <input type="hidden" id="walletUsername" value="">
+      <input type="radio" name="walletAccountPath" value="existing" checked hidden>
+      <div class="wallet-step"><span class="wallet-step-n">2</span> Connect your $HERMESWORLD wallet</div>
+      <div class="wallet-buttons wallet-buttons-4"><button class="small-btn primary wlt-btn" id="connectPhantom" type="button"><img src="./logos/wallets/phantom.svg" alt="" class="wlt-ico">Phantom</button><button class="small-btn wlt-btn" id="connectSolflare" type="button"><img src="./logos/wallets/solflare.svg" alt="" class="wlt-ico">Solflare</button><button class="small-btn wlt-btn" id="connectBackpack" type="button"><img src="./logos/wallets/backpack.svg" alt="" class="wlt-ico">Backpack</button><button class="small-btn wc-btn wlt-btn" id="connectWalletConnect" type="button"><img src="./logos/wallets/walletconnect.svg" alt="" class="wlt-ico">WalletConnect</button></div>
+      <div class="wallet-status info" id="walletStatus" aria-live="polite">Sign in first, then connect a wallet to verify your holdings.</div>
+      <div class="wallet-signup" id="walletSignupCta">✓ Holder verified — you're in.</div>
+      <div class="wallet-meta" id="walletMeta"><span>🔒 Read-only signature</span><span>⚡ No transaction or gas</span><span>🛡️ Funds never touched</span></div>
     </div>
-    <div class="modal-actions"><button class="small-btn" id="closeModal">Close</button><a class="small-btn" href="/signin/">Create Account</a><a class="small-btn" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener">Pump.fun</a></div>
   </div>
 </div>
 
@@ -195,19 +202,78 @@ Risk: medium. Reward: Founder Sigil fragment.
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
+<script>window.HW_REOWN_PROJECT_ID='c2880bd1ac6f3a8107ad5b5a651b8198';</script>
+<script src="/wallet-widget/dist/hw-wallet.js" defer></script>
 <script>
-  // Live pill always reads "Online" (no player counts shown).
+  const LIVE_PLAYERS_FALLBACK = 47; // shown until/if the live count endpoint responds
   const liveEl = document.getElementById('livePlayers');
-  if (liveEl) liveEl.textContent = 'Online';
+  function renderLive(n){ if (liveEl) liveEl.textContent = (typeof n === 'number' && n >= 0) ? (n + ' online') : 'Online'; }
+  renderLive(LIVE_PLAYERS_FALLBACK);
+  // Try the real world player-count endpoint; gracefully keep the fallback if unavailable.
+  (async () => {
+    const endpoints = ['https://play.hermes-world.ai/play/web/players', 'https://play.hermes-world.ai/api/players', '/api/players'];
+    for (const url of endpoints) {
+      try {
+        const r = await fetch(url, { cache: 'no-store' });
+        if (!r.ok) continue;
+        const d = await r.json();
+        const n = (typeof d === 'number') ? d : (d.players ?? d.online ?? d.count ?? d.total);
+        if (typeof n === 'number') { renderLive(n); return; }
+      } catch (_) { /* keep fallback */ }
+    }
+  })();
 
   // HermesWorld wallet verification config. For production behind Caddy, use /api/wallet.
   // Extension wallets (Phantom/Solflare/Backpack) are fully wired for read-only signMessage.
   // Mobile QR is a graceful no-build path: it opens this page in a wallet in-app browser.
   // A production WalletConnect/Reown modal requires a real projectId and a bundled/appkit integration.
-  const HW_WALLET_API = window.HW_WALLET_API || (location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://localhost:8791/api/wallet' : '/api/wallet');
+  const HW_WALLET_API = window.HW_WALLET_API || (location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://localhost:8791/api/wallet' : 'https://play.hermes-world.ai/api/wallet');
+  // Agent endpoint shares the wallet API base, swapping /api/wallet -> /api/agent (server-side Helius RPC, key stays secret).
+  const HW_AGENT_API = HW_WALLET_API.replace(/\/api\/wallet$/, '/api/agent');
   const HW_SOLANA_RPC = window.HW_SOLANA_RPC || 'https://api.mainnet-beta.solana.com';
   const HW_TOKEN_MINT = '2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9';
+  const HW_REOWN_PROJECT_ID = window.HW_REOWN_PROJECT_ID || 'c2880bd1ac6f3a8107ad5b5a651b8198';
   const HW_SIGNUP_URL = '/signin/';
+
+  // --- Hero: CA copy + audio toggle (music muted by default, fade-in on first interaction, persisted) ---
+  (function heroExtras(){
+    const caCopy = document.getElementById('heroCaCopy');
+    const ca = document.getElementById('heroCa');
+    if (caCopy && ca) caCopy.addEventListener('click', async ()=>{
+      try { await navigator.clipboard.writeText(ca.textContent.trim()); caCopy.textContent='Copied'; caCopy.classList.add('copied'); setTimeout(()=>{caCopy.textContent='Copy'; caCopy.classList.remove('copied');},1600); } catch(e){}
+    });
+    const audio = document.getElementById('heroAudio');
+    if (!audio) return;
+    // Autoplay starts MUTED (browser policy). Unmute + fade in on the FIRST user interaction
+    // anywhere on the page (click/key/scroll/touch). No visible toggle.
+    audio.muted = true;
+    audio.play().catch(()=>{});
+    let unmuted = false;
+    function unmute(){
+      if (unmuted) return; unmuted = true;
+      audio.muted = false; audio.volume = 0;
+      audio.play().then(()=>{ let v=0; const f=setInterval(()=>{ v=Math.min(.4,v+.025); audio.volume=v; if(v>=.4)clearInterval(f); },90); }).catch(()=>{});
+      ['pointerdown','keydown','scroll','touchstart'].forEach(e=>window.removeEventListener(e,unmute));
+    }
+    ['pointerdown','keydown','scroll','touchstart'].forEach(e=>window.addEventListener(e,unmute,{once:true,passive:true}));
+  })();
+
+  // --- Play gate flow: signed-in? -> wallet-verified? -> /play/. Else prompt the right step. ---
+  // On the live site, window.HWAuth (from landing-auth.js/Supabase) tells us sign-in state.
+  // Locally (no Supabase), Play just opens the wallet modal so the flow is testable.
+  async function heroPlayFlow(){
+    let signedIn = false;
+    try { if (window.HWAuth && typeof window.HWAuth.isSignedIn==='function') signedIn = await window.HWAuth.isSignedIn(); } catch(e){}
+    if (!signedIn && window.HWAuth){
+      // not signed in -> trigger Google sign-in (landing-auth handles it)
+      const gi = document.querySelector('[data-google-signin]'); if (gi){ gi.click(); return; }
+    }
+    // signed in (or local) -> require wallet verification before entering
+    openWalletModal();
+    setWalletStatus('info', 'Connect your $HERMESWORLD wallet to enter. Verified holders only.');
+  }
+  document.getElementById('heroPlay')?.addEventListener('click', heroPlayFlow);
+  document.getElementById('navPlay')?.addEventListener('click', heroPlayFlow);
 
   const modal = document.getElementById('walletModal');
   const closeModal = document.getElementById('closeModal');
@@ -284,6 +350,17 @@ Risk: medium. Reward: Founder Sigil fragment.
     crypto.getRandomValues(bytes);
     return Array.from(bytes).map((b)=>b.toString(16).padStart(2,'0')).join('');
   }
+  // SECURITY: fetch a single-use server-issued nonce so the backend can reject replays.
+  // Falls back to a client nonce only if the endpoint is unreachable (backend then soft-allows
+  // only if REQUIRE_SERVER_NONCE=0). In production REQUIRE_SERVER_NONCE=1 enforces server nonces.
+  async function fetchServerNonce(){
+    try {
+      const resp = await fetch(`${HW_WALLET_API}/nonce`);
+      const body = await resp.json();
+      if (body && body.ok && body.nonce) return body.nonce;
+    } catch (e) { /* fall through */ }
+    return randomNonce();
+  }
   function mobileWalletTarget(){
     const productionLanding = 'https://hermes-world.ai/#token';
     return (location.protocol.startsWith('http') && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') ? location.href : productionLanding;
@@ -310,7 +387,7 @@ Risk: medium. Reward: Founder Sigil fragment.
   async function connectAndVerify(kind){
     const path = walletPath();
     const username = walletUsername?.value.trim() || '';
-    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Enter a valid HermesWorld username first, or choose “I need an account”.'); return; }
+    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
     const provider = getProvider(kind);
     if (!provider) { setWalletStatus('error', `Install ${kind === 'phantom' ? 'Phantom' : kind === 'solflare' ? 'Solflare' : 'Backpack'} or open this page in its mobile wallet browser.`); return; }
     walletSignupCta?.classList.remove('show');
@@ -326,7 +403,7 @@ Risk: medium. Reward: Founder Sigil fragment.
       const balance = await fetchHermesBalance(walletAddress);
       setWalletMeta([['Wallet', walletAddress], ['$HERMESWORLD balance', balance], ['Action', 'Read-only signature']]);
 
-      const nonce = randomNonce();
+      const nonce = await fetchServerNonce();
       const timestamp = Date.now();
       const accountLabel = path === 'existing' ? username : `signup-${walletAddress.slice(0,8)}`;
       const message = `Verify HermesWorld founder status for account ${accountLabel} at ${timestamp} nonce ${nonce}`;
@@ -365,20 +442,88 @@ Risk: medium. Reward: Founder Sigil fragment.
     }
   }
   async function fetchHermesBalance(walletAddress){
-    const payload = {jsonrpc:'2.0',id:1,method:'getTokenAccountsByOwner',params:[walletAddress,{mint:HW_TOKEN_MINT},{encoding:'jsonParsed'}]};
-    const resp = await fetch(HW_SOLANA_RPC, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const body = await resp.json();
-    if (body.error) throw new Error(`Solana RPC error: ${body.error.message || 'balance lookup failed'}`);
-    let total = 0;
-    (body.result?.value || []).forEach((acct)=>{
-      const raw = acct.account?.data?.parsed?.info?.tokenAmount?.uiAmountString;
-      if (raw) total += Number(raw);
-    });
-    return total.toLocaleString(undefined, {maximumFractionDigits: 9});
+    // Route through our backend agent endpoint (server-side Helius RPC). Keeps the RPC key
+    // secret AND avoids the browser hitting rate-limited/forbidden public RPC. Falls back to
+    // direct public RPC only if the backend is unreachable.
+    try {
+      const resp = await fetch(`${HW_AGENT_API}/verify/${encodeURIComponent(walletAddress)}`);
+      const body = await resp.json();
+      if (body && body.ok && body.balance != null) {
+        const n = Number(String(body.balance).replace(/,/g,'')) || 0;
+        return n.toLocaleString(undefined, {maximumFractionDigits: 9});
+      }
+      throw new Error((body && body.message) || 'balance lookup failed');
+    } catch (e) {
+      // Fallback: direct public RPC (may be rate-limited).
+      const payload = {jsonrpc:'2.0',id:1,method:'getTokenAccountsByOwner',params:[walletAddress,{mint:HW_TOKEN_MINT},{encoding:'jsonParsed'}]};
+      const resp = await fetch(HW_SOLANA_RPC, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const body = await resp.json();
+      if (body.error) throw new Error(`Solana RPC error: ${body.error.message || 'balance lookup failed'}`);
+      let total = 0;
+      (body.result?.value || []).forEach((acct)=>{
+        const raw = acct.account?.data?.parsed?.info?.tokenAmount?.uiAmountString;
+        if (raw) total += Number(raw);
+      });
+      return total.toLocaleString(undefined, {maximumFractionDigits: 9});
+    }
   }
   connectPhantom?.addEventListener('click',()=>connectAndVerify('phantom'));
   connectSolflare?.addEventListener('click',()=>connectAndVerify('solflare'));
   connectBackpack?.addEventListener('click',()=>connectAndVerify('backpack'));
+
+  // --- WalletConnect / Reown path (cross-device: scan on desktop, approve on phone) ---
+  const connectWalletConnect = document.getElementById('connectWalletConnect');
+  async function connectAndVerifyWalletConnect(){
+    const path = walletPath();
+    const username = walletUsername?.value.trim() || '';
+    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
+    if (!window.HWWallet || typeof window.HWWallet.connect !== 'function') { setWalletStatus('error', 'WalletConnect is still loading… try again in a second.'); return; }
+    walletSignupCta?.classList.remove('show');
+    try {
+      setWalletStatus('info', 'Opening WalletConnect — scan the QR with your phone wallet…');
+      const { address: walletAddress } = await window.HWWallet.connect();
+      if (!walletAddress) throw new Error('No wallet address returned.');
+      setWalletMeta([['Wallet', walletAddress], ['Token', '$HERMESWORLD'], ['Action', 'Read-only signature']]);
+
+      setWalletStatus('info', 'Checking $HERMESWORLD balance…');
+      const balance = await fetchHermesBalance(walletAddress);
+      setWalletMeta([['Wallet', walletAddress], ['$HERMESWORLD balance', balance], ['Action', 'Read-only signature']]);
+
+      const nonce = await fetchServerNonce();
+      const timestamp = Date.now();
+      const accountLabel = path === 'existing' ? username : `signup-${walletAddress.slice(0,8)}`;
+      const message = `Verify HermesWorld founder status for account ${accountLabel} at ${timestamp} nonce ${nonce}`;
+      setWalletStatus('info', `You hold ${balance} $HERMESWORLD. Approve the read-only signature on your phone…`);
+      const signatureBytes = await window.HWWallet.signMessage(message);
+      const signature = bytesToBase64(Array.from(signatureBytes));
+
+      if (path === 'signup') {
+        const numericBalance = Number(String(balance).replace(/,/g,'')) || 0;
+        if (numericBalance > 0) {
+          setWalletStatus('success', '✓ Wallet verified and holder balance detected. Create your HermesWorld account to claim your Founder Badge.');
+          walletSignupCta?.classList.add('show');
+        } else {
+          setWalletStatus('error', 'Signature verified, but this wallet appears to hold 0 $HERMESWORLD.');
+        }
+        return;
+      }
+
+      setWalletStatus('info', 'Verifying holder status with HermesWorld…');
+      const resp = await fetch(`${HW_WALLET_API}/verify`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({walletAddress, signature, message, username, nonce})
+      });
+      const result = await resp.json().catch(()=>({ok:false,message:'Verification server returned invalid JSON.'}));
+      if (!resp.ok || !result.ok) { setWalletStatus('error', result.message || 'Verification failed.'); return; }
+      if (!result.holder) { setWalletStatus('error', result.message || 'This wallet holds 0 $HERMESWORLD.'); return; }
+      setWalletMeta([['Wallet', walletAddress], ['$HERMESWORLD balance', result.balance || balance], ['Founder grant', result.granted ? 'Granted' : 'Already granted']]);
+      setWalletStatus('success', `✓ ${result.message || 'Verified Holder — Founder Badge granted (claim in-game)'}`);
+    } catch (err) {
+      setWalletStatus('error', err?.message || 'WalletConnect verification failed.');
+    }
+  }
+  connectWalletConnect?.addEventListener('click', connectAndVerifyWalletConnect);
+
   renderWalletQr();
 
   const guidePages = [
@@ -473,12 +618,7 @@ Risk: medium. Reward: Founder Sigil fragment.
 <script type="module" id="hw-home-cta-swap">
 import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260606sso';
 function applySignedInUi(){
-  // Once signed in, the nav primary CTA is rendered as an account chip by
-  // landing-auth.js. Hide the redundant standalone "Sign In" pill.
   document.querySelectorAll('[data-hw-signin-only]').forEach((el)=>{ el.style.display='none'; });
-  // SSO: when signed in, route every "Play Now" through the launch flow so the
-  // user auto-logs into the game (no second login screen). Signed-out users keep
-  // the direct /play/web/ link (game shows its own login).
   document.querySelectorAll('a.btn.primary, a.small-btn.primary').forEach((a)=>{
     try{
       const href = a.getAttribute('href') || '';
