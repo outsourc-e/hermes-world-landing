@@ -247,6 +247,7 @@ function escapeHtml(input) {
 function setCtaButtons(label, href) {
   document.querySelectorAll('[data-google-signin]').forEach((anchor) => {
     // Anchor might still be in account-menu mode from a prior render — restore.
+    if (anchor.hasAttribute('data-hw-no-account')) anchor.style.display = '';
     restoreAnchorToCta(anchor);
     anchor.querySelector('[data-google-label]')?.replaceChildren(document.createTextNode(label));
     if (href) anchor.setAttribute('href', href);
@@ -263,6 +264,11 @@ function applyAccountState({ user, profile }) {
     profileUsername: profile?.username || null,
   };
   document.querySelectorAll('[data-google-signin]').forEach((anchor) => {
+    if (anchor.hasAttribute('data-hw-no-account')) {
+      // Hero/modal sign-in buttons: hide when signed in (account card lives in the header only).
+      anchor.style.display = 'none';
+      return;
+    }
     renderAccountAnchor(anchor, params);
   });
 }
