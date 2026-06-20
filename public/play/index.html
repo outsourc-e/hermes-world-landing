@@ -18,7 +18,29 @@ html,body{margin:0;background:#020608;color:#fff4dc;font-family:Inter,ui-sans-se
 </head>
 <body>
 <div id="root"><div class="hw-boot"><div class="hw-boot__inner"><div class="hw-boot__sigil"></div>Entering HermesWorld...</div></div></div>
-<script type="module" src="/assets/play-standalone.js"></script>
+<!-- GATE: holder-access only. Route through the launch page (which checks wallet verification)
+     before loading the client. The server-side authgate is the hard enforcement; this keeps the
+     UX honest so there is no ungated visible entry point. -->
+<script type="module">
+import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260606sso';
+(async () => {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) { location.replace('/play-webgl/launch.html'); return; }
+    const r = await fetch('/api/game-auth/launch', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ jwt: session.access_token }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (!r.ok || body.walletVerified === false) { location.replace('/play-webgl/launch.html'); return; }
+    // verified -> load the client
+    const s = document.createElement('script'); s.type = 'module'; s.src = '/assets/play-standalone.js';
+    document.body.appendChild(s);
+  } catch (e) {
+    location.replace('/play-webgl/launch.html');
+  }
+})();
+</script>
 <a class="hw-account-fixed" data-google-signin href="/signin/" style="position:fixed;top:14px;right:14px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(244,198,109,.12);border:1px solid rgba(244,198,109,.45);color:#f4c66d;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.04em;font-family:Inter,ui-sans-serif,system-ui,sans-serif;"><span data-google-label>Sign in</span></a>
 <script type="module" src="/assets/hermesworld/auth/landing-auth.js?v=20260606sso"></script>
 </body>
