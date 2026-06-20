@@ -266,6 +266,20 @@ Risk: medium. Reward: Founder Sigil fragment.
   // --- Play gate flow: signed-in? -> wallet-verified? -> /play/. Else prompt the right step. ---
   // On the live site, window.HWAuth (from landing-auth.js/Supabase) tells us sign-in state.
   // Locally (no Supabase), Play just opens the wallet modal so the flow is testable.
+  // Ask the server whether THIS signed-in account is already wallet-verified.
+  // Returns true/false/null(unknown). One verification is permanent — no re-signing every visit.
+  async function serverWalletVerified(){
+    try {
+      const mod = await import('/assets/hermesworld/auth/supabase-client.js?v=20260606sso');
+      const { data: { session } } = await mod.supabase.auth.getSession();
+      if (!session?.access_token) return null;
+      const r = await fetch('/api/game-auth/launch', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ jwt: session.access_token }) });
+      const body = await r.json().catch(()=>({}));
+      if (r.ok && body && typeof body.walletVerified === 'boolean') return body.walletVerified;
+      return null;
+    } catch(e){ return null; }
+  }
+
   async function heroPlayFlow(){
     let signedIn = false;
     try { if (window.HWAuth && typeof window.HWAuth.isSignedIn==='function') signedIn = await window.HWAuth.isSignedIn(); } catch(e){}
@@ -273,7 +287,16 @@ Risk: medium. Reward: Founder Sigil fragment.
       // not signed in -> trigger Google sign-in (landing-auth handles it)
       const gi = document.querySelector('[data-google-signin]'); if (gi){ gi.click(); return; }
     }
-    // signed in (or local) -> require wallet verification before entering
+    // ALREADY verified on the server? -> skip the wallet modal entirely, go straight to play.
+    if (window.HWAuth) {
+      const already = await serverWalletVerified();
+      if (already === true) {
+        try { sessionStorage.setItem('hw_wallet_verified', '1'); } catch(_){}
+        window.location.href = '/play-webgl/launch.html';
+        return;
+      }
+    }
+    // not yet verified -> require wallet verification before entering
     openWalletModal();
     setWalletStatus('info', 'Connect your $HERMESWORLD wallet to enter. Verified holders only.');
   }
@@ -285,6 +308,8 @@ Risk: medium. Reward: Founder Sigil fragment.
   document.addEventListener('click', function(e){
     const a = e.target.closest && e.target.closest('a[href*="play.hermes-world.ai/play/web"], a[href*="/play-webgl/launch"]');
     if (!a) return;
+    // launch.html does its own server-side verify gate — let those links through untouched.
+    try { if ((a.getAttribute('href')||'').indexOf('/play-webgl/launch') !== -1) return; } catch(_){}
     let verified = false;
     try { verified = !!sessionStorage.getItem('hw_wallet_verified'); } catch(_){}
     if (verified) return; // already verified this session -> allow
@@ -567,7 +592,11 @@ Risk: medium. Reward: Founder Sigil fragment.
       if (!resp.ok || !result.ok) { setWalletStatus('error', result.message || 'Verification failed.'); return; }
       if (!result.holder) { setWalletStatus('error', result.message || 'This wallet holds 0 $HERMESWORLD.'); return; }
       setWalletMeta([['Wallet', walletAddress], ['$HERMESWORLD balance', result.balance || balance], ['Founder grant', result.granted ? 'Granted' : 'Already granted']]);
-      setWalletStatus('success', `✓ ${result.message || 'Verified Holder — Founder Badge granted (claim in-game)'}`);
+      setWalletStatus('success', `✓ ${result.message || 'Verified Holder'} — entering HermesWorld…`);
+      // GATE PASSED: verified holder -> mark verified + route into the game (same as Phantom path).
+      try { sessionStorage.setItem('hw_wallet_verified', walletAddress); } catch(e){}
+      const enterUrl = (window.HWAuth ? '/play-webgl/launch.html' : 'https://play.hermes-world.ai/play/web/');
+      setTimeout(()=>{ window.location.href = enterUrl; }, 1200);
     } catch (err) {
       setWalletStatus('error', err?.message || 'WalletConnect verification failed.');
     }
