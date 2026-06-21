@@ -71,6 +71,17 @@
     <div class="row"><b>Account State</b><span id="ready-action">—</span></div>
     <div class="row"><b>HermesWorld Account ID</b><span id="ready-acctid">—</span></div>
     <div class="row"><b>Game Password</b><span id="ready-pw">stored locally · used by launcher</span></div>
+    <div class="row hw-region-row">
+      <b>Server Region</b>
+      <span>
+        <select id="hw-region-select" style="background:#0d1117;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font:inherit;cursor:pointer">
+          <option value="auto">⚡ Auto (fastest) — measuring…</option>
+          <option value="stl">🇺🇸 Americas (St. Louis)</option>
+          <option value="eu">🇪🇺 Europe (Frankfurt)</option>
+          <option value="sg">🇸🇬 Asia (Singapore)</option>
+        </select>
+      </span>
+    </div>
     <div class="ctas">
       <button id="launch-webgl" class="btn primary" type="button">Enter the World (WebGL)</button>
       <a id="dl-win" href="https://github.com/outsourc-e/hermes-world-landing/releases" class="small-btn">Download Windows Build</a>
@@ -165,20 +176,73 @@ async function provisionGameAccount(autoReservedName = false) {
     $('ready-action').textContent = body.action === 'created' ? 'New game account created' : 'Existing account refreshed';
     $('ready-acctid').textContent = '#' + (body.accountId ?? '?');
     show('state-ready');
+    hwMeasureRegions(); // measure region latencies + populate the selector
   } catch (err) {
     $('error-msg').textContent = String(err?.message || err);
     show('state-error');
   }
 }
 
+// HW_REGION v1 (2026-06-21): regional game nodes. Session WS + world run on the
+// chosen node = lower latency. Auto = measure round-trip to each, pick fastest.
+const HW_REGIONS = {
+  stl: { host: 'play.hermes-world.ai',    label: 'Americas (St. Louis)' },
+  eu:  { host: 'eu.play.hermes-world.ai', label: 'Europe (Frankfurt)' },
+  sg:  { host: 'sg.play.hermes-world.ai', label: 'Asia (Singapore)' }
+};
+let hwAutoBest = null; // {region, ms}
+
+function hwPingRegion(region) {
+  return new Promise(function(resolve){
+    const url = 'https://' + HW_REGIONS[region].host + '/play/web/?probe=' + Date.now();
+    const t0 = performance.now();
+    let done = false;
+    const finish = function(){ if(done) return; done = true; resolve({ region: region, ms: performance.now() - t0 }); };
+    fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' }).then(finish).catch(finish);
+    setTimeout(function(){ if(!done){ done = true; resolve({ region: region, ms: 99999 }); } }, 2500);
+  });
+}
+
+async function hwMeasureRegions() {
+  const results = await Promise.all([hwPingRegion('stl'), hwPingRegion('eu'), hwPingRegion('sg')]);
+  results.sort(function(a,b){ return a.ms - b.ms; });
+  hwAutoBest = results.find(function(r){ return r.ms < 99999; }) || { region: 'stl', ms: 0 };
+  // Update the Auto option label with the winner + latencies.
+  const sel = $('hw-region-select');
+  if (sel) {
+    const ms = function(r){ return r.ms >= 99999 ? '—' : Math.round(r.ms) + 'ms'; };
+    const byR = {}; results.forEach(function(r){ byR[r.region] = r; });
+    sel.options[0].textContent = '⚡ Auto (fastest: ' + HW_REGIONS[hwAutoBest.region].label.split(' (')[0] + ')';
+    if (byR.stl) sel.options[1].textContent = '🇺🇸 Americas (St. Louis) · ' + ms(byR.stl);
+    if (byR.eu)  sel.options[2].textContent = '🇪🇺 Europe (Frankfurt) · ' + ms(byR.eu);
+    if (byR.sg)  sel.options[3].textContent = '🇸🇬 Asia (Singapore) · ' + ms(byR.sg);
+  }
+  // restore saved manual choice if any
+  const saved = localStorage.getItem('hw_region');
+  if (saved && sel && HW_REGIONS[saved]) sel.value = saved;
+}
+
+function hwSelectedRegionHost() {
+  const sel = $('hw-region-select');
+  let choice = sel ? sel.value : 'auto';
+  if (choice === 'auto') {
+    choice = (hwAutoBest && hwAutoBest.region) ? hwAutoBest.region : 'stl';
+    localStorage.removeItem('hw_region');
+  } else {
+    localStorage.setItem('hw_region', choice); // remember manual pick
+  }
+  return HW_REGIONS[choice].host;
+}
+
 async function launchWebGL() {
   const u = sessionStorage.getItem('hw_username');
   const p = sessionStorage.getItem('hw_game_password');
   if (!u || !p) { $('webgl-status').textContent = 'Missing credentials — try refreshing.'; return; }
+  const regionHost = hwSelectedRegionHost();
   // Probe the loader before redirecting (build may not be ready yet)
-  $('webgl-status').textContent = 'Checking WebGL build…';
+  $('webgl-status').textContent = 'Connecting to ' + regionHost + '…';
   try {
-    const loaderJs = await fetch('https://play.hermes-world.ai/play/web/Build/webgl.loader.js', { method: 'HEAD' });
+    const loaderJs = await fetch('https://' + regionHost + '/play/web/Build/webgl.loader.js', { method: 'HEAD' });
     if (!loaderJs.ok) {
       $('webgl-status').innerHTML = `<strong>WebGL bridge is warming up.</strong><br>The browser bridge is online but the loader did not answer yet. Refresh this page in ~1 min, or grab the Windows build below.`;
       return;
@@ -189,7 +253,7 @@ async function launchWebGL() {
     // have 0 characters, and autologin=1 would hang on "Resolving World" trying to enter
     // the world with no character. charselecttest=1 lands the player at character select
     // (create/pick a character), which is the right next step.
-    const url = `https://play.hermes-world.ai/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}&charselecttest=1`;
+    const url = `https://${regionHost}/play/web/#user=${encodeURIComponent(u)}&pw=${encodeURIComponent(p)}&charselecttest=1`;
     window.location.href = url;
   } catch (err) {
     $('webgl-status').textContent = 'WebGL bridge not reachable yet — download the Windows build instead.';
