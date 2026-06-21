@@ -32,6 +32,29 @@
   .pill{display:inline-flex;gap:8px;align-items:center;padding:5px 11px;border-radius:99px;background:rgba(244,198,109,.1);color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
   code{background:rgba(120,240,255,.08);border-radius:6px;padding:1px 6px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--cyan)}
   .back{position:fixed;top:14px;left:14px;color:var(--gold);background:rgba(244,198,109,.12);border:1px solid rgba(244,198,109,.3);border-radius:8px;padding:6px 12px;text-decoration:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  /* HW region selector cards */
+  .hw-region-wrap{margin:18px 0 6px}
+  .hw-region-label{color:var(--gold3);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .hw-region-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .hw-region-card{position:relative;border:1.5px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(9,24,29,.7),rgba(3,11,15,.6));padding:14px 14px 13px;cursor:pointer;transition:all .16s ease;text-align:left;overflow:hidden}
+  .hw-region-card:hover{border-color:rgba(244,198,109,.5);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+  .hw-region-card.sel{border-color:var(--gold);background:linear-gradient(180deg,rgba(244,198,109,.14),rgba(233,170,60,.06));box-shadow:0 0 0 1px var(--gold),0 14px 40px rgba(244,166,54,.22)}
+  .hw-region-card.sel::after{content:'\2713';position:absolute;top:9px;right:11px;color:var(--gold);font-weight:900;font-size:14px}
+  .hw-rc-flag{font-size:22px;line-height:1;margin-bottom:7px}
+  .hw-rc-name{color:var(--text);font-size:13px;font-weight:900;letter-spacing:.02em;margin-bottom:2px}
+  .hw-rc-sub{color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+  .hw-rc-ping{margin-top:8px;display:flex;align-items:center;gap:6px;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:800}
+  .hw-rc-dot{width:7px;height:7px;border-radius:99px;background:#5a6b63;flex:none}
+  .hw-rc-dot.good{background:#5ad17a;box-shadow:0 0 8px rgba(90,209,122,.7)}
+  .hw-rc-dot.ok{background:#f4c66d;box-shadow:0 0 8px rgba(244,198,109,.6)}
+  .hw-rc-dot.slow{background:#e8794f;box-shadow:0 0 8px rgba(232,121,79,.6)}
+  .hw-rc-ms{color:#cad7d0}
+  .hw-region-card.auto{grid-column:1/-1;display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,rgba(120,240,255,.08),rgba(9,24,29,.5))}
+  .hw-region-card.auto .hw-rc-flag{margin:0;font-size:26px}
+  .hw-region-card.auto.sel{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 14px 40px rgba(120,240,255,.18)}
+  .hw-region-card.auto.sel::after{color:var(--cyan)}
+  .hw-rc-autotext{flex:1}
+  .hw-rc-autobest{color:var(--cyan);font-size:11px;font-weight:800;font-family:ui-monospace,Menlo,monospace;margin-top:3px}
 </style>
 </head>
 <body>
@@ -71,16 +94,36 @@
     <div class="row"><b>Account State</b><span id="ready-action">—</span></div>
     <div class="row"><b>HermesWorld Account ID</b><span id="ready-acctid">—</span></div>
     <div class="row"><b>Game Password</b><span id="ready-pw">stored locally · used by launcher</span></div>
-    <div class="row hw-region-row">
-      <b>Server Region</b>
-      <span>
-        <select id="hw-region-select" style="background:#0d1117;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font:inherit;cursor:pointer">
-          <option value="auto">⚡ Auto (fastest) — measuring…</option>
-          <option value="stl">🇺🇸 Americas (St. Louis)</option>
-          <option value="eu">🇪🇺 Europe (Frankfurt)</option>
-          <option value="sg">🇸🇬 Asia (Singapore)</option>
-        </select>
-      </span>
+    <div class="hw-region-wrap">
+      <div class="hw-region-label">🌐 Choose your server</div>
+      <div class="hw-region-grid">
+        <div class="hw-region-card auto sel" data-region="auto">
+          <div class="hw-rc-flag">⚡</div>
+          <div class="hw-rc-autotext">
+            <div class="hw-rc-name">Auto — Fastest</div>
+            <div class="hw-rc-sub">Recommended · picks lowest ping</div>
+            <div class="hw-rc-autobest" id="hw-auto-best">measuring latency…</div>
+          </div>
+        </div>
+        <div class="hw-region-card" data-region="stl">
+          <div class="hw-rc-flag">🇺🇸</div>
+          <div class="hw-rc-name">Americas</div>
+          <div class="hw-rc-sub">St. Louis</div>
+          <div class="hw-rc-ping"><span class="hw-rc-dot" id="dot-stl"></span><span class="hw-rc-ms" id="ms-stl">—</span></div>
+        </div>
+        <div class="hw-region-card" data-region="eu">
+          <div class="hw-rc-flag">🇪🇺</div>
+          <div class="hw-rc-name">Europe</div>
+          <div class="hw-rc-sub">Frankfurt</div>
+          <div class="hw-rc-ping"><span class="hw-rc-dot" id="dot-eu"></span><span class="hw-rc-ms" id="ms-eu">—</span></div>
+        </div>
+        <div class="hw-region-card" data-region="sg">
+          <div class="hw-rc-flag">🇸🇬</div>
+          <div class="hw-rc-name">Asia</div>
+          <div class="hw-rc-sub">Singapore</div>
+          <div class="hw-rc-ping"><span class="hw-rc-dot" id="dot-sg"></span><span class="hw-rc-ms" id="ms-sg">—</span></div>
+        </div>
+      </div>
     </div>
     <div class="ctas">
       <button id="launch-webgl" class="btn primary" type="button">Enter the World (WebGL)</button>
@@ -203,34 +246,45 @@ function hwPingRegion(region) {
   });
 }
 
+let hwRegionChoice = 'auto';
+
+function hwDotClass(ms){ if(ms>=99999) return 'slow'; if(ms<120) return 'good'; if(ms<260) return 'ok'; return 'slow'; }
+
+function hwSelectCard(region){
+  hwRegionChoice = region;
+  document.querySelectorAll('.hw-region-card').forEach(function(c){
+    c.classList.toggle('sel', c.getAttribute('data-region') === region);
+  });
+  if (region === 'auto') localStorage.removeItem('hw_region');
+  else localStorage.setItem('hw_region', region);
+}
+
 async function hwMeasureRegions() {
+  // wire card clicks once
+  document.querySelectorAll('.hw-region-card').forEach(function(c){
+    if (c.__hwWired) return; c.__hwWired = true;
+    c.addEventListener('click', function(){ hwSelectCard(c.getAttribute('data-region')); });
+  });
+  // restore saved manual choice
+  const saved = localStorage.getItem('hw_region');
+  if (saved && HW_REGIONS[saved]) hwSelectCard(saved); else hwSelectCard('auto');
+
   const results = await Promise.all([hwPingRegion('stl'), hwPingRegion('eu'), hwPingRegion('sg')]);
   results.sort(function(a,b){ return a.ms - b.ms; });
   hwAutoBest = results.find(function(r){ return r.ms < 99999; }) || { region: 'stl', ms: 0 };
-  // Update the Auto option label with the winner + latencies.
-  const sel = $('hw-region-select');
-  if (sel) {
-    const ms = function(r){ return r.ms >= 99999 ? '—' : Math.round(r.ms) + 'ms'; };
-    const byR = {}; results.forEach(function(r){ byR[r.region] = r; });
-    sel.options[0].textContent = '⚡ Auto (fastest: ' + HW_REGIONS[hwAutoBest.region].label.split(' (')[0] + ')';
-    if (byR.stl) sel.options[1].textContent = '🇺🇸 Americas (St. Louis) · ' + ms(byR.stl);
-    if (byR.eu)  sel.options[2].textContent = '🇪🇺 Europe (Frankfurt) · ' + ms(byR.eu);
-    if (byR.sg)  sel.options[3].textContent = '🇸🇬 Asia (Singapore) · ' + ms(byR.sg);
-  }
-  // restore saved manual choice if any
-  const saved = localStorage.getItem('hw_region');
-  if (saved && sel && HW_REGIONS[saved]) sel.value = saved;
+  const fmt = function(ms){ return ms >= 99999 ? 'offline' : Math.round(ms) + 'ms'; };
+  results.forEach(function(r){
+    const dot = $('dot-' + r.region), msEl = $('ms-' + r.region);
+    if (msEl) msEl.textContent = fmt(r.ms);
+    if (dot) dot.className = 'hw-rc-dot ' + hwDotClass(r.ms);
+  });
+  const bestEl = $('hw-auto-best');
+  if (bestEl) bestEl.textContent = '→ ' + HW_REGIONS[hwAutoBest.region].label.split(' (')[0] + ' · ' + fmt(hwAutoBest.ms);
 }
 
 function hwSelectedRegionHost() {
-  const sel = $('hw-region-select');
-  let choice = sel ? sel.value : 'auto';
-  if (choice === 'auto') {
-    choice = (hwAutoBest && hwAutoBest.region) ? hwAutoBest.region : 'stl';
-    localStorage.removeItem('hw_region');
-  } else {
-    localStorage.setItem('hw_region', choice); // remember manual pick
-  }
+  let choice = hwRegionChoice || 'auto';
+  if (choice === 'auto') choice = (hwAutoBest && hwAutoBest.region) ? hwAutoBest.region : 'stl';
   return HW_REGIONS[choice].host;
 }
 
