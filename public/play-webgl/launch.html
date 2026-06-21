@@ -293,11 +293,26 @@ async function launchWebGL() {
   const p = sessionStorage.getItem('hw_game_password');
   if (!u || !p) { $('webgl-status').textContent = 'Missing credentials — try refreshing.'; return; }
   const regionHost = hwSelectedRegionHost();
-  // Probe the loader before redirecting (build may not be ready yet)
-  $('webgl-status').textContent = 'Connecting to ' + regionHost + '…';
+  // Probe the loader before redirecting (build may not be ready yet).
+  // HW_RETRY v1 (2026-06-21): a single transient fetch failure (region briefly slow,
+  // mid-restart, cold TLS) used to dump players straight to the Windows download. Retry
+  // a few times with backoff before giving up so a blip does not look like an outage.
+  const loaderUrl = 'https://' + regionHost + '/play/web/Build/webgl.loader.js';
+  const HW_MAX_TRIES = 3;
+  let loaderJs = null, lastErr = null;
+  for (let attempt = 1; attempt <= HW_MAX_TRIES; attempt++) {
+    $('webgl-status').textContent = 'Connecting to ' + regionHost + '…' + (attempt > 1 ? ' (retry ' + (attempt - 1) + ')' : '');
+    try {
+      loaderJs = await fetch(loaderUrl, { method: 'HEAD', cache: 'no-store' });
+      if (loaderJs.ok) break;
+      lastErr = 'HTTP ' + loaderJs.status;
+    } catch (e) {
+      lastErr = e; loaderJs = null;
+    }
+    if (attempt < HW_MAX_TRIES) await new Promise(function(r){ setTimeout(r, attempt * 800); });
+  }
   try {
-    const loaderJs = await fetch('https://' + regionHost + '/play/web/Build/webgl.loader.js', { method: 'HEAD' });
-    if (!loaderJs.ok) {
+    if (!loaderJs || !loaderJs.ok) {
       $('webgl-status').innerHTML = `<strong>WebGL bridge is warming up.</strong><br>The browser bridge is online but the loader did not answer yet. Refresh this page in ~1 min, or grab the Windows build below.`;
       return;
     }
