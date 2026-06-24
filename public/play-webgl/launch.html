@@ -123,6 +123,12 @@
           <div class="hw-rc-sub">Singapore</div>
           <div class="hw-rc-ping"><span class="hw-rc-dot" id="dot-sg"></span><span class="hw-rc-ms" id="ms-sg">—</span></div>
         </div>
+        <div class="hw-region-card" data-region="hk">
+          <div class="hw-rc-flag">🇭🇰</div>
+          <div class="hw-rc-name">China</div>
+          <div class="hw-rc-sub">Hong Kong</div>
+          <div class="hw-rc-ping"><span class="hw-rc-dot" id="dot-hk"></span><span class="hw-rc-ms" id="ms-hk">—</span></div>
+        </div>
       </div>
     </div>
     <div class="ctas">
@@ -231,18 +237,34 @@ async function provisionGameAccount(autoReservedName = false) {
 const HW_REGIONS = {
   stl: { host: 'play.hermes-world.ai',    label: 'Americas (St. Louis)' },
   eu:  { host: 'eu.play.hermes-world.ai', label: 'Europe (Frankfurt)' },
-  sg:  { host: 'sg.play.hermes-world.ai', label: 'Asia (Singapore)' }
+  sg:  { host: 'sg.play.hermes-world.ai', label: 'Asia (Singapore)' },
+  hk:  { host: 'play-hk.hermes-world.ai', label: 'China (Hong Kong)' }
 };
 let hwAutoBest = null; // {region, ms}
 
-function hwPingRegion(region) {
+function hwPingOnce(region) {
   return new Promise(function(resolve){
-    const url = 'https://' + HW_REGIONS[region].host + '/play/web/?probe=' + Date.now();
+    const host = HW_REGIONS[region].host;
     const t0 = performance.now();
     let done = false;
-    const finish = function(){ if(done) return; done = true; resolve({ region: region, ms: performance.now() - t0 }); };
-    fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' }).then(finish).catch(finish);
-    setTimeout(function(){ if(!done){ done = true; resolve({ region: region, ms: 99999 }); } }, 2500);
+    const img = new Image();
+    const finish = function(){ if(done) return; done = true; resolve(performance.now() - t0); };
+    img.onload = finish; img.onerror = finish; // error still fires after TCP+TLS connect = real RTT
+    img.src = 'https://' + host + '/play/web/crest.png?p=' + Date.now() + Math.random();
+    setTimeout(function(){ if(!done){ done = true; resolve(99999); } }, 3000);
+  });
+}
+
+// Accurate latency: 3 lightweight asset probes, take the MIN (best-case RTT, least noise).
+function hwPingRegion(region) {
+  return hwPingOnce(region).then(function(a){
+    return hwPingOnce(region).then(function(b){
+      return hwPingOnce(region).then(function(c){
+        const vals = [a,b,c].filter(function(x){ return x < 99999; });
+        const best = vals.length ? Math.min.apply(null, vals) : 99999;
+        return { region: region, ms: best };
+      });
+    });
   });
 }
 
@@ -269,7 +291,7 @@ async function hwMeasureRegions() {
   const saved = localStorage.getItem('hw_region');
   if (saved && HW_REGIONS[saved]) hwSelectCard(saved); else hwSelectCard('auto');
 
-  const results = await Promise.all([hwPingRegion('stl'), hwPingRegion('eu'), hwPingRegion('sg')]);
+  const results = await Promise.all([hwPingRegion('stl'), hwPingRegion('eu'), hwPingRegion('sg'), hwPingRegion('hk')]);
   results.sort(function(a,b){ return a.ms - b.ms; });
   hwAutoBest = results.find(function(r){ return r.ms < 99999; }) || { region: 'stl', ms: 0 };
   const fmt = function(ms){ return ms >= 99999 ? 'offline' : Math.round(ms) + 'ms'; };
