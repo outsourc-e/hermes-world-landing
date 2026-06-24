@@ -139,21 +139,22 @@
     <div id="webgl-status" class="msg warn"></div>
   </div>
 
-  <!-- State: signed in + provisioned, but wallet NOT verified -> hard gate BEFORE world entry -->
+  <!-- State: signed in + provisioned, wallet not yet verified -> OPTIONAL rewards prompt (NOT a gate) -->
   <div id="state-verify" class="card hide">
     <div class="row"><b>HermesWorld Name</b><span id="verify-username">—</span></div>
-    <div class="row"><b>Account State</b><span style="color:#ffc06f">Needs wallet verification</span></div>
-    <p class="msg warn" style="margin:14px 0 4px">
-      <strong>Account needs verification.</strong><br>
-      HermesWorld is holder-access only. Connect your Solana wallet and verify you hold
-      <b style="color:var(--gold3)">$HERMESWORLD</b> to unlock entry. You can’t enter the world until your wallet is verified.
+    <div class="row"><b>Account State</b><span style="color:#7dffad">Ready to play</span></div>
+    <p class="msg" style="margin:14px 0 4px">
+      You’re in! <b style="color:var(--gold3)">$HERMESWORLD</b> holders unlock founder rewards —
+      exclusive armor, the Founder Badge, and perks. Verify your wallet now to claim them, or jump
+      straight into the world and link it anytime later.
     </p>
     <div class="ctas">
-      <a id="verify-wallet" class="btn primary" href="/#verify">Verify Your Wallet</a>
+      <button id="verify-playnow" class="btn primary" type="button">Enter the World</button>
+      <a id="verify-wallet" class="small-btn" href="/#verify">Verify Wallet for Rewards</a>
       <a class="small-btn" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener">Get $HERMESWORLD ↗</a>
       <button id="signout-verify" class="small-btn" type="button">Sign Out</button>
     </div>
-    <div id="verify-recheck" class="msg" style="margin-top:12px"><a href="#" id="verify-recheck-link" style="color:var(--cyan);text-decoration:underline">Already verified? Re-check ↻</a></div>
+    <div id="verify-recheck" class="msg" style="margin-top:12px"><a href="#" id="verify-recheck-link" style="color:var(--cyan);text-decoration:underline">Already verified a wallet? Re-check ↻</a></div>
   </div>
 
   <!-- State: bridge error -->
@@ -215,9 +216,10 @@ async function provisionGameAccount(autoReservedName = false) {
     sessionStorage.setItem('hw_username', body.username);
     sessionStorage.setItem('hw_game_password', body.gamePassword);
     sessionStorage.setItem('hw_account_id', String(body.accountId || ''));
-    // HARD GATE: holder-access only. If the wallet isn't verified, stop here — do NOT
-    // show "Enter the World" or start the auto-login loop. Send them to verify first.
-    if (body.walletVerified === false) {
+    // OPTIONAL wallet rewards prompt (NOT a gate). Show it once so holders know they can claim
+    // founder rewards, but they can enter the world immediately via "Enter the World".
+    if (body.walletVerified === false && !sessionStorage.getItem('hw_verify_seen')) {
+      sessionStorage.setItem('hw_verify_seen', '1');
       $('verify-username').textContent = body.username;
       return show('state-verify');
     }
@@ -355,6 +357,15 @@ document.addEventListener('DOMContentLoaded', () => {
   $('signout-noname')?.addEventListener('click', async () => { await supaSignOut(); location.reload(); });
   $('signout-ready')?.addEventListener('click', async () => { await supaSignOut(); location.reload(); });
   $('signout-verify')?.addEventListener('click', async () => { await supaSignOut(); location.reload(); });
+  // "Enter the World" on the optional rewards prompt: go straight to play, no wallet required.
+  $('verify-playnow')?.addEventListener('click', () => {
+    const u = sessionStorage.getItem('hw_username') || $('verify-username').textContent || '';
+    $('ready-username').textContent = u;
+    $('ready-action').textContent = 'Account ready';
+    $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
+    show('state-ready');
+    hwMeasureRegions();
+  });
   $('retry-launch')?.addEventListener('click', provisionGameAccount);
   $('launch-webgl')?.addEventListener('click', launchWebGL);
   // Re-check verification after the player links/verifies a wallet (re-provision pulls fresh status).

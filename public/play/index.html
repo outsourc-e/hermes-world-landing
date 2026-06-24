@@ -18,9 +18,8 @@ html,body{margin:0;background:#020608;color:#fff4dc;font-family:Inter,ui-sans-se
 </head>
 <body>
 <div id="root"><div class="hw-boot"><div class="hw-boot__inner"><div class="hw-boot__sigil"></div>Entering HermesWorld...</div></div></div>
-<!-- GATE: holder-access only. Route through the launch page (which checks wallet verification)
-     before loading the client. The server-side authgate is the hard enforcement; this keeps the
-     UX honest so there is no ungated visible entry point. -->
+<!-- Signed-in users load the client directly. Wallet verification is OPTIONAL (founder rewards),
+     NOT a gate. Unauthenticated users are routed to the launcher to sign in first. -->
 <script type="module">
 import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260606sso';
 (async () => {
@@ -32,8 +31,8 @@ import { supabase } from '/assets/hermesworld/auth/supabase-client.js?v=20260606
       body: JSON.stringify({ jwt: session.access_token }),
     });
     const body = await r.json().catch(() => ({}));
-    if (!r.ok || body.walletVerified === false) { location.replace('/play-webgl/launch.html'); return; }
-    // verified -> load the client
+    if (!r.ok) { location.replace('/play-webgl/launch.html'); return; }
+    // signed in (wallet optional) -> load the client
     const s = document.createElement('script'); s.type = 'module'; s.src = '/assets/play-standalone.js';
     document.body.appendChild(s);
   } catch (e) {

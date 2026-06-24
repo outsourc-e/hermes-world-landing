@@ -82,7 +82,7 @@
         <button class="btn primary btn-play" id="heroPlay">▶ Play</button>
         <a class="btn ghost" href="/signin/" data-google-signin data-hw-no-account><span data-google-label>Sign in / Sign up with Google</span></a>
       </div>
-      <div class="hero-gate reveal"><b>$HERMESWORLD</b> holders access only · connect your wallet to play</div>
+      <div class="hero-gate reveal">Free to play · <b>$HERMESWORLD</b> holders unlock founder rewards &amp; exclusive perks</div>
       <div class="hero-ca reveal">
         <span class="ca-label">CA</span>
         <a id="heroCa" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" title="View $HERMESWORLD on pump.fun" data-ca="2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9 <span class="ca-ext" aria-hidden="true">&#8599;</span></a>
@@ -284,35 +284,25 @@ Risk: medium. Reward: Founder Sigil fragment.
     let signedIn = false;
     try { if (window.HWAuth && typeof window.HWAuth.isSignedIn==='function') signedIn = await window.HWAuth.isSignedIn(); } catch(e){}
     if (!signedIn && window.HWAuth){
-      // not signed in -> trigger Google sign-in (landing-auth handles it)
+      // not signed in -> trigger Google sign-in (landing-auth handles it). Sign-in is the account,
+      // not a wallet gate.
       const gi = document.querySelector('[data-google-signin]'); if (gi){ gi.click(); return; }
     }
-    // ALREADY verified on the server? -> skip the wallet modal entirely, go straight to play.
-    if (window.HWAuth) {
-      const already = await serverWalletVerified();
-      if (already === true) {
-        try { sessionStorage.setItem('hw_wallet_verified', '1'); } catch(_){}
-        window.location.href = '/play-webgl/launch.html';
-        return;
-      }
-    }
-    // not yet verified -> require wallet verification before entering
-    openWalletModal();
-    setWalletStatus('info', 'Connect your $HERMESWORLD wallet to enter. Verified holders only.');
+    // Signed in -> go straight to the launcher. Wallet verification is OPTIONAL (for rewards),
+    // handled on launch.html, NOT a gate. Anyone signed in can play.
+    window.location.href = '/play-webgl/launch.html';
   }
   document.getElementById('heroPlay')?.addEventListener('click', heroPlayFlow);
   document.getElementById('navPlay')?.addEventListener('click', heroPlayFlow);
 
-  // GATE: block ALL direct entry to the web client without wallet verification.
-  // Any <a> pointing at the web client is intercepted -> wallet gate first.
+  // Wallet verification is OPTIONAL (rewards only) — no gate. Route web-client links through the
+  // sign-in/launch flow so signed-in players land on the launcher, but never block entry.
   document.addEventListener('click', function(e){
     const a = e.target.closest && e.target.closest('a[href*="play.hermes-world.ai/play/web"], a[href*="/play-webgl/launch"]');
     if (!a) return;
-    // launch.html does its own server-side verify gate — let those links through untouched.
+    // Direct launcher links pass through untouched.
     try { if ((a.getAttribute('href')||'').indexOf('/play-webgl/launch') !== -1) return; } catch(_){}
-    let verified = false;
-    try { verified = !!sessionStorage.getItem('hw_wallet_verified'); } catch(_){}
-    if (verified) return; // already verified this session -> allow
+    // Web-client link: send through the sign-in flow (account provisioning), not a wallet gate.
     e.preventDefault();
     heroPlayFlow();
   }, true);
