@@ -1,4 +1,8 @@
 /play https://play.hermes-world.ai/play/web/ 301
 /play/ https://play.hermes-world.ai/play/web/ 301
 /play/* https://play.hermes-world.ai/play/web/ 301
+/reset-password /reset-password.html 200
+/reset-password/ /reset-password.html 200
+/forgot-password /forgot-password.html 200
+/forgot-password/ /forgot-password.html 200
 /* /index.html 200
