@@ -1,3 +1,10 @@
 name = "hermes-world"
 compatibility_date = "2026-05-01"
 pages_build_output_dir = "public"
+
+# Native client Google-auth session relay (one-time, short-TTL game creds handoff).
+# Create the namespace with: wrangler kv namespace create GAME_AUTH_SESSIONS
+# then paste the id below (and a preview_id for local dev).
+[[kv_namespaces]]
+binding = "GAME_AUTH_SESSIONS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
