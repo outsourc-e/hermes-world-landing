@@ -9,6 +9,7 @@ import { Sigils } from "@/components/landing/Sigils";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Updates } from "@/components/landing/Updates";
 import { Footer } from "@/components/landing/Footer";
+import { NewsletterSignupPopup } from "@/components/landing/NewsletterSignupPopup";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,6 +52,7 @@ function Index() {
         <FinalCTA />
       </main>
       <Footer />
+      <NewsletterSignupPopup />
     </div>
   );
 }

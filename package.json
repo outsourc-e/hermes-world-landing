@@ -9,6 +9,7 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "check:quickwins": "node scripts/check-landing-quickwins.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {

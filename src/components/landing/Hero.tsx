@@ -6,10 +6,7 @@ export function Hero() {
 
   // Direct port of the canvas spinning-orbs animation from hermes-world.ai
   useEffect(() => {
-    if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
     const c = canvasRef.current;
@@ -45,7 +42,8 @@ export function Hero() {
       });
     }
     const palette = ["#facc15", "#fbbf24", "#fde68a", "#22d3ee", "#a78bfa", "#fb7185", "#34d399"];
-    const orbiters: { phase: number; orbit: number; speed: number; size: number; color: string }[] = [];
+    const orbiters: { phase: number; orbit: number; speed: number; size: number; color: string }[] =
+      [];
     for (let j = 0; j < 60; j++) {
       orbiters.push({
         phase: Math.random() * Math.PI * 2,
@@ -170,11 +168,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section
-      id="top"
-      className="relative w-full overflow-hidden"
-      style={{ background: "#020608" }}
-    >
+    <section id="top" className="relative w-full overflow-hidden" style={{ background: "#020608" }}>
       {/* AAA key-art backdrop (game world) with slow Ken Burns drift */}
       <div className="absolute inset-0 -z-0 overflow-hidden">
         <div
@@ -266,7 +260,8 @@ export function Hero() {
         <h1
           className="font-bold m-0 leading-[0.92] tracking-[0.05em] whitespace-nowrap"
           style={{
-            fontFamily: '"Cinzel","Trajan Pro","Cormorant Garamond","Playfair Display",Georgia,serif',
+            fontFamily:
+              '"Cinzel","Trajan Pro","Cormorant Garamond","Playfair Display",Georgia,serif',
             fontSize: "clamp(50px, 9vw, 140px)",
             background: "linear-gradient(180deg, #fffbe9 0%, #f5d97a 52%, #c89c2a 100%)",
             WebkitBackgroundClip: "text",
@@ -305,7 +300,8 @@ export function Hero() {
             textShadow: "0 1px 3px rgba(2,6,8,0.9), 0 0 18px rgba(2,6,8,0.7)",
           }}
         >
-          The first MMO where AI agents are citizens — they quest, own land, and trade alongside you. Step in from your browser; your legend starts in seconds.
+          The first MMO where AI agents are citizens — they quest, own land, and trade alongside
+          you. Step in from your browser; your legend starts in seconds.
         </p>
 
         <div className="cta-row mt-8 flex flex-wrap items-center justify-center gap-3.5">
@@ -320,11 +316,27 @@ export function Hero() {
               background: "linear-gradient(180deg, #ffe6a4 0%, #e9aa3c 48%, #a95d18 100%)",
               borderColor: "rgba(255,229,168,0.75)",
               color: "#160f07",
-              boxShadow:
-                "0 22px 60px rgba(244,166,54,0.25), inset 0 1px 0 rgba(255,255,255,0.38)",
+              boxShadow: "0 22px 60px rgba(244,166,54,0.25), inset 0 1px 0 rgba(255,255,255,0.38)",
             }}
           >
             Enter the World →
+          </a>
+          <a
+            href="/play/?guest=1"
+            className="inline-flex items-center justify-center rounded-[14px] border font-bold uppercase"
+            aria-label="Play HermesWorld as a guest without creating an account"
+            style={{
+              height: 60,
+              padding: "0 28px",
+              fontSize: 13,
+              letterSpacing: "0.03em",
+              background: "rgba(244,198,109,0.10)",
+              borderColor: "rgba(244,198,109,0.45)",
+              color: "#ffe6a4",
+              boxShadow: "0 14px 42px rgba(244,166,54,0.12)",
+            }}
+          >
+            Play as Guest
           </a>
           <a
             href="#preview"
@@ -344,17 +356,29 @@ export function Hero() {
         </div>
 
         {/* Proofs */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2" style={{ color: "#879a93", fontSize: 13 }}>
+        <div
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+          style={{ color: "#879a93", fontSize: 13 }}
+        >
           <div className="flex items-center gap-2">
-            <i className="block h-1.5 w-1.5 rounded-full" style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }} />
-            Play in your browser — no download.
+            <i
+              className="block h-1.5 w-1.5 rounded-full"
+              style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }}
+            />
+            No account needed — try the world first, claim your progress after.
           </div>
           <div className="flex items-center gap-2">
-            <i className="block h-1.5 w-1.5 rounded-full" style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }} />
+            <i
+              className="block h-1.5 w-1.5 rounded-full"
+              style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }}
+            />
             AI agents live in the world 24/7.
           </div>
           <div className="flex items-center gap-2">
-            <i className="block h-1.5 w-1.5 rounded-full" style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }} />
+            <i
+              className="block h-1.5 w-1.5 rounded-full"
+              style={{ background: "#f4c66d", boxShadow: "0 0 14px rgba(244,198,109,0.65)" }}
+            />
             Own land. Build. Founders welcome.
           </div>
         </div>

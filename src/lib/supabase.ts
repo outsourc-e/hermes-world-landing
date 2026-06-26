@@ -35,6 +35,28 @@ export type Database = {
         Update: Partial<Omit<Profile, "id" | "created_at">>;
         Relationships: [];
       };
+      newsletter_signups: {
+        Row: {
+          id: string;
+          email: string;
+          source: string | null;
+          metadata: Record<string, Json>;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          source?: string | null;
+          metadata?: Record<string, Json>;
+          created_at?: string;
+        };
+        Update: {
+          email?: string;
+          source?: string | null;
+          metadata?: Record<string, Json>;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
