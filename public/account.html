@@ -161,6 +161,25 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
           </form>
         </section>
 
+        <section class="panel" style="grid-column:1/-1">
+          <div class="panel-title">Game Login Password (Desktop Client)</div>
+          <div class="hint" style="margin:-8px 0 16px">You signed in with ${escapeHtml(provider)}. The <strong>web client</strong> logs you in automatically. To play the <strong>downloaded desktop client</strong>, set a password here, then log in with your <strong>username</strong> <code style="color:var(--gold)">${username ? escapeHtml(username) : '(set a username above first)'}</code> and this password.</div>
+          <form id="gamepw-form" class="form">
+            <div class="row">
+              <div class="field">
+                <label class="label" for="game_password">New game password</label>
+                <input class="input" id="game_password" name="game_password" type="password" minlength="6" maxlength="40" autocomplete="new-password" placeholder="At least 6 characters">
+              </div>
+              <div class="field">
+                <label class="label" for="game_password2">Confirm password</label>
+                <input class="input" id="game_password2" name="game_password2" type="password" minlength="6" maxlength="40" autocomplete="new-password" placeholder="Re-enter password">
+              </div>
+            </div>
+            <button class="btn primary" id="save-gamepw" type="submit">Set game password</button>
+            <div id="gamepw-status" class="status" aria-live="polite"></div>
+          </form>
+        </section>
+
         <aside class="grid">
           <div class="card">
             <div class="card-label">Email</div>
@@ -236,6 +255,49 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
         saveBtn.disabled = false;
       }
     });
+
+    // Game Login Password (desktop client). Calls /api/game-auth/set-password with the live JWT.
+    const gamepwForm = document.getElementById('gamepw-form');
+    if (gamepwForm) {
+      const setGamePwStatus = (msg, tone) => {
+        const el = document.getElementById('gamepw-status');
+        if (!el) return;
+        el.textContent = msg || '';
+        if (tone) el.setAttribute('data-tone', tone); else el.removeAttribute('data-tone');
+      };
+      gamepwForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const btn = document.getElementById('save-gamepw');
+        const pw = document.getElementById('game_password').value;
+        const pw2 = document.getElementById('game_password2').value;
+        if (!pw || pw.length < 6) { setGamePwStatus('Password must be at least 6 characters.', 'error'); return; }
+        if (pw !== pw2) { setGamePwStatus('Passwords do not match.', 'error'); return; }
+        btn.disabled = true;
+        setGamePwStatus('Setting game password\u2026');
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session?.access_token) { setGamePwStatus('Session expired. Please sign in again.', 'error'); btn.disabled = false; return; }
+          const r = await fetch('/api/game-auth/set-password', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ jwt: session.access_token, newPassword: pw }),
+          });
+          const out = await r.json().catch(() => ({}));
+          if (r.ok && out.ok !== false && !out.error) {
+            setGamePwStatus('Game password set! Log into the desktop client with your username + this password.', 'success');
+            document.getElementById('game_password').value = '';
+            document.getElementById('game_password2').value = '';
+          } else {
+            const m = out.message || out.error || 'Could not set game password.';
+            setGamePwStatus(m === 'no_account_for_identity' ? 'No game account found yet \u2014 open the web client once to provision it, then try again.' : m, 'error');
+          }
+        } catch (err) {
+          setGamePwStatus(String(err?.message || err), 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    }
   }
 
   loadAccount();
