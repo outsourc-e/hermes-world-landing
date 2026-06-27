@@ -157,6 +157,26 @@
     <div id="verify-recheck" class="msg" style="margin-top:12px"><a href="#" id="verify-recheck-link" style="color:var(--cyan);text-decoration:underline">Already verified a wallet? Re-check ↻</a></div>
   </div>
 
+  <!-- State: first login -> prompt to set a game password (overwrites the auto-generated one). Optional. -->
+  <div id="state-setpw" class="card hide">
+    <div class="row"><b>HermesWorld Name</b><span id="setpw-username">—</span></div>
+    <p class="msg" style="margin:14px 0 10px">
+      Welcome! Set a <b style="color:var(--gold3)">password</b> for your account so you can log in on the
+      <b>downloaded desktop client</b> with your username + password. The web Play button always logs you in automatically.
+    </p>
+    <div style="display:grid;gap:10px;max-width:360px;margin:0 auto">
+      <input id="setpw-pw" type="password" placeholder="New password (min 6 chars)" minlength="6" maxlength="40" autocomplete="new-password"
+        style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0a141a;color:var(--text);padding:13px 14px;font-size:15px;outline:none">
+      <input id="setpw-pw2" type="password" placeholder="Confirm password" minlength="6" maxlength="40" autocomplete="new-password"
+        style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0a141a;color:var(--text);padding:13px 14px;font-size:15px;outline:none">
+    </div>
+    <div class="ctas">
+      <button id="setpw-save" class="btn primary" type="button">Set Password &amp; Continue</button>
+      <button id="setpw-skip" class="small-btn" type="button">Skip (use auto password)</button>
+    </div>
+    <div id="setpw-status" class="msg" style="margin-top:10px"></div>
+  </div>
+
   <!-- State: bridge error -->
   <div id="state-error" class="card hide">
     <div class="row"><b>Status</b><span id="error-msg" style="color:#ff7d56">Could not provision your game account.</span></div>
@@ -181,7 +201,7 @@ import {
 
 const $ = (id) => document.getElementById(id);
 const show = (id) => {
-  for (const s of ['state-signin','state-noname','state-loading','state-ready','state-verify','state-error']) $(s).classList.add('hide');
+  for (const s of ['state-signin','state-noname','state-loading','state-ready','state-verify','state-setpw','state-error']) $(s).classList.add('hide');
   $(id).classList.remove('hide');
 };
 
@@ -222,6 +242,12 @@ async function provisionGameAccount(autoReservedName = false) {
       sessionStorage.setItem('hw_verify_seen', '1');
       $('verify-username').textContent = body.username;
       return show('state-verify');
+    }
+    // FIRST LOGIN: prompt to set a password (overwrites the auto-derived one). Shown once per account.
+    // They can Skip to keep the auto password. Only for newly-created accounts that haven't set one.
+    if (body.action === 'created' && !localStorage.getItem('hw_pw_set_' + (body.accountId || body.username))) {
+      $('setpw-username').textContent = body.username;
+      return show('state-setpw');
     }
     $('ready-username').textContent = body.username;
     $('ready-action').textContent = body.action === 'created' ? 'New game account created' : 'Existing account refreshed';
@@ -368,6 +394,52 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $('retry-launch')?.addEventListener('click', provisionGameAccount);
   $('launch-webgl')?.addEventListener('click', launchWebGL);
+
+  // First-login set-password: proceed to the ready screen (auto password stays in sessionStorage for launch).
+  function setpwProceedToReady() {
+    const u = sessionStorage.getItem('hw_username') || $('setpw-username').textContent || '';
+    $('ready-username').textContent = u;
+    $('ready-action').textContent = 'Account ready';
+    $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
+    show('state-ready');
+    hwMeasureRegions();
+  }
+  $('setpw-skip')?.addEventListener('click', () => {
+    const acctKey = sessionStorage.getItem('hw_account_id') || $('setpw-username').textContent || '';
+    localStorage.setItem('hw_pw_set_' + acctKey, 'skipped');
+    setpwProceedToReady();
+  });
+  $('setpw-save')?.addEventListener('click', async () => {
+    const btn = $('setpw-save');
+    const pw = $('setpw-pw').value, pw2 = $('setpw-pw2').value;
+    const st = $('setpw-status');
+    if (!pw || pw.length < 6) { st.textContent = 'Password must be at least 6 characters.'; st.style.color = '#ff7d56'; return; }
+    if (pw !== pw2) { st.textContent = 'Passwords do not match.'; st.style.color = '#ff7d56'; return; }
+    btn.disabled = true; st.style.color = ''; st.textContent = 'Setting password\u2026';
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) { st.textContent = 'Session expired. Please sign in again.'; st.style.color = '#ff7d56'; btn.disabled = false; return; }
+      const r = await fetch('/api/game-auth/set-password', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ jwt: session.access_token, newPassword: pw }),
+      });
+      const out = await r.json().catch(() => ({}));
+      if (r.ok && out.ok !== false && !out.error) {
+        // The chosen password now overrides the auto one. Update the launcher's stored password so
+        // the immediate WebGL launch uses what they just set.
+        sessionStorage.setItem('hw_game_password', pw);
+        const acctKey = sessionStorage.getItem('hw_account_id') || $('setpw-username').textContent || '';
+        localStorage.setItem('hw_pw_set_' + acctKey, '1');
+        st.style.color = '#7dffad'; st.textContent = 'Password set! Entering\u2026';
+        setTimeout(setpwProceedToReady, 700);
+      } else {
+        st.style.color = '#ff7d56';
+        st.textContent = (out.message || out.error || 'Could not set password.');
+      }
+    } catch (err) {
+      st.style.color = '#ff7d56'; st.textContent = String(err?.message || err);
+    } finally { btn.disabled = false; }
+  });
   // Re-check verification after the player links/verifies a wallet (re-provision pulls fresh status).
   $('verify-recheck-link')?.addEventListener('click', (e) => { e.preventDefault(); provisionGameAccount(); });
 });
