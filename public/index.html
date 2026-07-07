@@ -457,7 +457,14 @@ Risk: medium. Reward: Founder Sigil fragment.
     let username = walletUsername?.value.trim() || '';
     // If empty, the auth fill may not have run yet (deep-link / late session) — re-pull before failing.
     if (path === 'existing' && !username) { try{ await window.hwRefreshWalletAuth?.(); }catch(_){ } username = walletUsername?.value.trim() || ''; }
-    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
+    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) {
+      // WALLET-FIRST ONBOARDING: no session yet -> remember the wallet choice, send them through
+      // Google/email signup, and auto-resume the wallet link when they come back signed in.
+      try { sessionStorage.setItem('hw_pending_wallet', kind); } catch(_){}
+      setWalletStatus('info', 'Almost there — create your account (Google or email) and we’ll link this wallet automatically when you’re back.');
+      setTimeout(()=>{ window.location.href = '/signin/?next=wallet'; }, 1600);
+      return;
+    }
     let provider = getProvider(kind);
     // Browser-extension wallets can inject after load — wait briefly before declaring "not installed".
     if (!provider) {
@@ -562,7 +569,12 @@ Risk: medium. Reward: Founder Sigil fragment.
     const path = walletPath();
     let username = walletUsername?.value.trim() || '';
     if (path === 'existing' && !username) { try{ await window.hwRefreshWalletAuth?.(); }catch(_){ } username = walletUsername?.value.trim() || ''; }
-    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) { setWalletStatus('error', 'Sign in or sign up with Google first (Step 1), then connect your wallet.'); return; }
+    if (path === 'existing' && (!username || !/^[A-Za-z0-9_.@-]{3,64}$/.test(username))) {
+      try { sessionStorage.setItem('hw_pending_wallet', 'walletconnect'); } catch(_){}
+      setWalletStatus('info', 'Almost there — create your account (Google or email) and we’ll link this wallet automatically when you’re back.');
+      setTimeout(()=>{ window.location.href = '/signin/?next=wallet'; }, 1600);
+      return;
+    }
     // The Reown/WalletConnect bundle is large + deferred; instead of failing instantly, WAIT for it.
     if (!window.HWWallet || typeof window.HWWallet.connect !== 'function') {
       setWalletStatus('info', 'Loading WalletConnect…');
@@ -781,6 +793,24 @@ checkAndApply();
 window.hwRefreshWalletAuth = async ()=>{
   try{ const{data:{session}}=await supabase.auth.getSession(); await applyWalletModalAuth(session); }catch(e){}
 };
+// WALLET-FIRST RESUME: user picked a wallet before having an account, went through signup,
+// and is now back signed in -> reopen the modal and finish the link with one signature.
+(async ()=>{
+  let pending=null; try{ pending = sessionStorage.getItem('hw_pending_wallet'); }catch(_){}
+  if(!pending) return;
+  const{data:{session}}=await supabase.auth.getSession().catch(()=>({data:{}}));
+  if(!session){ return; } // still not signed in; keep the flag for next visit
+  try{ sessionStorage.removeItem('hw_pending_wallet'); }catch(_){}
+  await applyWalletModalAuth(session);
+  document.getElementById('walletModal')?.classList.add('open');
+  try{ const ws=document.getElementById('walletStatus'); if(ws){ ws.className='wallet-status info'; ws.textContent='Account created — finishing your wallet link…'; } }catch(e){}
+  setTimeout(()=>{
+    try{
+      if(pending==='walletconnect'){ document.getElementById('connectWalletConnect')?.click(); }
+      else { document.getElementById('connect' + pending.charAt(0).toUpperCase() + pending.slice(1))?.click(); }
+    }catch(e){}
+  }, 800);
+})();
 try{ supabase.auth.onAuthStateChange((_evt, sess)=>{ if(sess){ applySignedInUi(); applyWalletModalAuth(sess); } }); }catch(e){}
 </script>
 </body>

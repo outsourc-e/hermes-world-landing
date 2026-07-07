@@ -153,6 +153,13 @@
     async function continueAfterAuth() {
       const { user, profile } = await getCurrentProfile();
       if (!user) return false;
+      // Wallet-first onboarding resume: came from the wallet modal (?next=wallet) ->
+      // send them straight back to finish the wallet link (homepage auto-resumes it).
+      const params = new URLSearchParams(location.search);
+      if (params.get('next') === 'wallet') {
+        window.location.replace('/#wallet');
+        return true;
+      }
       if (profile?.username) {
         const dest = await getDestination();
         window.location.replace(dest);
