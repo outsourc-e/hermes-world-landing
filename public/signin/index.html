@@ -84,6 +84,12 @@
         <span>Continue with Google</span>
       </button>
 
+      <button id="wallet-btn" class="btn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5.5" width="19" height="14" rx="3"/><path d="M16.5 12.5h3" stroke-linecap="round"/><path d="M2.5 9h19"/></svg>
+        <span>Continue with Wallet</span>
+      </button>
+      <p class="copy" style="font-size:12px;margin:6px 0 0;opacity:.75">Solana wallet (Phantom, Solflare, Backpack, WalletConnect). Optional — pair it any time from your account for rewards.</p>
+
       <div id="status" class="status" aria-live="polite"></div>
       <div class="meta"><a href="/">← Back to landing</a></div>
     </div>
@@ -211,6 +217,13 @@
         setStatus(error?.message || 'Could not start Google sign-in.', 'error');
         googleBtn.disabled = false;
       }
+    });
+
+    // Wallet-first entry: route to the homepage wallet modal (full connect+verify flow lives there).
+    // After connect/verify the modal's own flow handles account link / signup completion.
+    document.getElementById('wallet-btn').addEventListener('click', () => {
+      setStatus('Opening wallet connect…');
+      window.location.href = '/#wallet';
     });
 
     forgotBtn.addEventListener('click', async () => {

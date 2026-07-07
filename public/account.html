@@ -195,7 +195,14 @@ a{color:inherit}.wrap{max-width:920px;margin:0 auto;padding-top:32px}.topbar{dis
             <div class="card-label">Founder status</div>
             <div class="card-value">${isFounder ? `★ ${founderTier ? ({holder:'Founder (Holder)',cavalier:'Founder — Cavalier',dragonlord:'Founder — Dragonlord'}[founderTier] || 'Founder') : 'Founder'}${founderRank ? ` #${founderRank}` : ''}` : 'Not assigned yet'}</div>
             <div class="sub">${isFounder ? 'Verified holder — your rewards are in your in-game shop.' : 'Verify your wallet to unlock Founder status + rewards.'}</div>
-            ${isFounder ? '' : '<a class="btn" style="margin-top:12px" href="/#verify">Verify wallet</a>'}
+          </div>
+          <div class="card">
+            <div class="card-label">Wallet</div>
+            <div class="card-value">${isFounder ? '✓ Paired &amp; verified' : 'Not paired'}</div>
+            <div class="sub">${isFounder
+              ? 'Your Solana wallet is linked to this account. Founder rewards and future token drops route here.'
+              : 'Optional — pair a Solana wallet (Phantom, Solflare, Backpack, WalletConnect) to receive Founder rewards and future token drops. Never required to play.'}</div>
+            ${isFounder ? '' : '<a class="btn" style="margin-top:12px" href="/#wallet">Pair wallet</a>'}
           </div>
           <div class="actions">
             <a class="btn primary" href="https://play.hermes-world.ai/play/web/">Enter HermesWorld →</a>
