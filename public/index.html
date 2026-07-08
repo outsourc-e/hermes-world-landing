@@ -55,11 +55,16 @@
     #heroCa .ca-ext{color:var(--gold3);font-size:11px;text-decoration:none;display:inline-block}
     @media (max-width:640px){#heroCa{font-size:10px}}
 /* HW_HERO_LIVECAM_v1: live agent cam as hero background (crossfade over video) */
-.hero-live-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.2s ease;filter:saturate(1.15) contrast(1.05) brightness(1.02)}
-.hero-live-img.show{opacity:1}
-/* lighten the scrim when a live cam is showing so the world is clearly visible */
-.hero.live-on .hero-scrim{background:radial-gradient(ellipse at 50% 38%,rgba(3,9,12,.10),rgba(3,9,12,.38) 78%),linear-gradient(180deg,rgba(3,9,12,.30),rgba(3,9,12,.10) 30%,rgba(3,9,12,.52))}
-.hero.live-on .hero-video:after{background:linear-gradient(180deg,rgba(3,8,12,.12) 0%,rgba(3,8,12,.10) 46%,rgba(3,8,12,.55) 100%)}
+/* HW_HERO_QUADWALL_v2: 2x2 live cam wall as the hero background */
+.hero-live-grid{position:absolute;inset:0;z-index:-4;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:#02070a;opacity:0;transition:opacity 1.8s ease}
+.hero-live-grid.show{opacity:1}
+.hero-live-cell{position:relative;overflow:hidden}
+.hero-live-cell img{width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.03) brightness(.82)}
+.hero-live-cell .cell-tag{position:absolute;left:10px;bottom:8px;display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#7dffad;background:rgba(2,10,7,.66);border:1px solid rgba(125,255,173,.25);border-radius:999px;padding:4px 10px}
+.hero-live-cell .cell-tag .cam-dot{width:6px;height:6px}
+/* moderate scrim over the quad wall - readable text, visible world */
+.hero.live-on .hero-scrim{background:radial-gradient(ellipse at 50% 42%,rgba(3,9,12,.30),rgba(3,9,12,.55) 80%),linear-gradient(180deg,rgba(3,9,12,.44),rgba(3,9,12,.22) 34%,rgba(3,9,12,.66))}
+.hero.live-on .hero-video{opacity:0}
 .hero-live-badge{position:absolute;z-index:5;left:50%;transform:translateX(-50%);bottom:26px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(125,255,173,.3);background:rgba(2,10,7,.72);backdrop-filter:blur(10px);color:#dfffea;border-radius:999px;padding:8px 16px;font-size:12px;font-weight:900;letter-spacing:.06em}
 .hero-live-badge .cam-dot{width:8px;height:8px}
 /* HW_LIVEWALL_v1 */
@@ -99,10 +104,14 @@
   <section id="top" class="hero">
     <div class="hero-video" aria-hidden="true">
       <video id="heroVideo" autoplay muted loop playsinline preload="metadata"><source src="./world-demo.mp4" type="video/mp4"></video>
-      <img id="heroLiveA" class="hero-live-img" alt="" aria-hidden="true">
-      <img id="heroLiveB" class="hero-live-img" alt="" aria-hidden="true">
     </div>
-    <div class="hero-live-badge" id="heroLiveBadge" hidden><span class="cam-dot"></span> LIVE · <span id="heroLiveName">AGENT-01</span> · an AI agent playing right now</div>
+    <div class="hero-live-grid" id="heroLiveGrid" aria-hidden="true">
+      <div class="hero-live-cell"><img id="qcam1" alt=""><span class="cell-tag"><span class="cam-dot"></span>AGENT-01</span></div>
+      <div class="hero-live-cell"><img id="qcam2" alt=""><span class="cell-tag"><span class="cam-dot"></span>AGENT-02</span></div>
+      <div class="hero-live-cell"><img id="qcam3" alt=""><span class="cell-tag"><span class="cam-dot"></span>AGENT-03</span></div>
+      <div class="hero-live-cell"><img id="qcam4" alt=""><span class="cell-tag"><span class="cam-dot"></span>AGENT-04</span></div>
+    </div>
+    <div class="hero-live-badge" id="heroLiveBadge" hidden><span class="cam-dot"></span> LIVE · 4 AI agents playing right now</div>
     <canvas id="stars" aria-hidden="true"></canvas>
     <div class="hero-scrim" aria-hidden="true"></div>
 
@@ -383,30 +392,38 @@ Risk: medium. Reward: Founder Sigil fragment.
   function openWalletModal(){ modal?.classList.add('open'); refreshWalletUi(); renderWalletQr(); setWalletStatus('info', walletProviderHint()); try{ window.hwRefreshWalletAuth && window.hwRefreshWalletAuth(); }catch(_){ } }
   function closeWalletModal(){ modal?.classList.remove('open'); }
   document.querySelectorAll('[data-wallet]').forEach((btn)=>btn.addEventListener('click',openWalletModal));
-  // --- HERO LIVE CAM (HW_HERO_LIVECAM_v1): rotate the 4 live agent cams as the hero bg ---
+  // --- HERO QUAD CAM WALL (HW_HERO_QUADWALL_v2): all 4 live agent cams as a 2x2 hero bg ---
   (function(){
-    const CAMS=[{n:1,label:'AGENT-01 · Aurora'},{n:2,label:'AGENT-02 · Wocky'},{n:3,label:'AGENT-03 · Admin'},{n:4,label:'AGENT-04 · Khaleesi'}];
-    const A=document.getElementById('heroLiveA'), B=document.getElementById('heroLiveB');
-    const badge=document.getElementById('heroLiveBadge'), nameEl=document.getElementById('heroLiveName');
-    if(!A||!B) return;
-    let idx=0, front=A, back=B, started=false;
-    function camUrl(n){ return 'https://play.hermes-world.ai/cams/agent'+n+'.jpg?t='+Date.now(); }
-    function cycle(){
-      const cam=CAMS[idx%CAMS.length]; idx++;
-      const probe=new Image();
-      probe.onload=()=>{
-        back.src=probe.src; back.classList.add('show'); front.classList.remove('show');
-        const t=front; front=back; back=t;
-        if(nameEl) nameEl.textContent=cam.label;
-        if(badge && badge.hidden){ badge.hidden=false; }
-        document.querySelector('.hero')?.classList.add('live-on');
-        started=true;
-      };
-      probe.onerror=()=>{ /* cam stale/off: keep video bg, retry next tick */ };
-      probe.src=camUrl(cam.n);
+    const grid=document.getElementById('heroLiveGrid');
+    const badge=document.getElementById('heroLiveBadge');
+    if(!grid) return;
+    let anyLive=false;
+    function refresh(){
+      let pending=4, ok=0;
+      for(let n=1;n<=4;n++){
+        (function(n){
+          const probe=new Image();
+          probe.onload=function(){
+            const img=document.getElementById('qcam'+n);
+            if(img) img.src=probe.src;
+            ok++; done();
+          };
+          probe.onerror=done;
+          function done(){
+            pending--;
+            if(pending===0 && ok>0 && !anyLive){
+              anyLive=true;
+              grid.classList.add('show');
+              document.querySelector('.hero')?.classList.add('live-on');
+              if(badge) badge.hidden=false;
+            }
+          }
+          probe.src='https://play.hermes-world.ai/cams/agent'+n+'.jpg?t='+Date.now();
+        })(n);
+      }
     }
-    cycle();
-    setInterval(cycle, 12000);
+    refresh();
+    setInterval(refresh, 15000);
   })();
 
   // --- Live wall + economy strip (HW_LIVEWALL_v1) ---
