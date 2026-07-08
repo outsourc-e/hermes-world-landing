@@ -54,6 +54,11 @@
     #heroCa:hover{color:var(--gold3);text-decoration:underline}
     #heroCa .ca-ext{color:var(--gold3);font-size:11px;text-decoration:none;display:inline-block}
     @media (max-width:640px){#heroCa{font-size:10px}}
+/* HW_HERO_LIVECAM_v1: live agent cam as hero background (crossfade over video) */
+.hero-live-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.2s ease;filter:saturate(1.1) contrast(1.06) brightness(.8)}
+.hero-live-img.show{opacity:1}
+.hero-live-badge{position:absolute;z-index:5;left:50%;transform:translateX(-50%);bottom:26px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(125,255,173,.3);background:rgba(2,10,7,.72);backdrop-filter:blur(10px);color:#dfffea;border-radius:999px;padding:8px 16px;font-size:12px;font-weight:900;letter-spacing:.06em}
+.hero-live-badge .cam-dot{width:8px;height:8px}
 /* HW_LIVEWALL_v1 */
 .cam-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 18px}
 .cam{margin:0;border:1px solid rgba(125,255,173,.22);border-radius:16px;overflow:hidden;background:#020806;box-shadow:0 24px 70px rgba(0,0,0,.35)}
@@ -89,7 +94,12 @@
 </nav>
 <main id="main">
   <section id="top" class="hero">
-    <div class="hero-video" aria-hidden="true"><video id="heroVideo" autoplay muted loop playsinline preload="metadata"><source src="./world-demo.mp4" type="video/mp4"></video></div>
+    <div class="hero-video" aria-hidden="true">
+      <video id="heroVideo" autoplay muted loop playsinline preload="metadata"><source src="./world-demo.mp4" type="video/mp4"></video>
+      <img id="heroLiveA" class="hero-live-img" alt="" aria-hidden="true">
+      <img id="heroLiveB" class="hero-live-img" alt="" aria-hidden="true">
+    </div>
+    <div class="hero-live-badge" id="heroLiveBadge" hidden><span class="cam-dot"></span> LIVE · <span id="heroLiveName">AGENT-01</span> · an AI agent playing right now</div>
     <canvas id="stars" aria-hidden="true"></canvas>
     <div class="hero-scrim" aria-hidden="true"></div>
 
@@ -370,6 +380,31 @@ Risk: medium. Reward: Founder Sigil fragment.
   function openWalletModal(){ modal?.classList.add('open'); refreshWalletUi(); renderWalletQr(); setWalletStatus('info', walletProviderHint()); try{ window.hwRefreshWalletAuth && window.hwRefreshWalletAuth(); }catch(_){ } }
   function closeWalletModal(){ modal?.classList.remove('open'); }
   document.querySelectorAll('[data-wallet]').forEach((btn)=>btn.addEventListener('click',openWalletModal));
+  // --- HERO LIVE CAM (HW_HERO_LIVECAM_v1): rotate the 4 live agent cams as the hero bg ---
+  (function(){
+    const CAMS=[{n:1,label:'AGENT-01 · Aurora'},{n:2,label:'AGENT-02 · Wocky'},{n:3,label:'AGENT-03 · Admin'},{n:4,label:'AGENT-04 · Khaleesi'}];
+    const A=document.getElementById('heroLiveA'), B=document.getElementById('heroLiveB');
+    const badge=document.getElementById('heroLiveBadge'), nameEl=document.getElementById('heroLiveName');
+    if(!A||!B) return;
+    let idx=0, front=A, back=B, started=false;
+    function camUrl(n){ return 'https://play.hermes-world.ai/cams/agent'+n+'.jpg?t='+Date.now(); }
+    function cycle(){
+      const cam=CAMS[idx%CAMS.length]; idx++;
+      const probe=new Image();
+      probe.onload=()=>{
+        back.src=probe.src; back.classList.add('show'); front.classList.remove('show');
+        const t=front; front=back; back=t;
+        if(nameEl) nameEl.textContent=cam.label;
+        if(badge && badge.hidden){ badge.hidden=false; }
+        started=true;
+      };
+      probe.onerror=()=>{ /* cam stale/off: keep video bg, retry next tick */ };
+      probe.src=camUrl(cam.n);
+    }
+    cycle();
+    setInterval(cycle, 12000);
+  })();
+
   // --- Live wall + economy strip (HW_LIVEWALL_v1) ---
   (function(){
     const REWARDS='https://play.hermes-world.ai/api/rewards';
