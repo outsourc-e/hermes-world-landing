@@ -54,6 +54,25 @@
     #heroCa:hover{color:var(--gold3);text-decoration:underline}
     #heroCa .ca-ext{color:var(--gold3);font-size:11px;text-decoration:none;display:inline-block}
     @media (max-width:640px){#heroCa{font-size:10px}}
+/* HW_LIVEWALL_v1 */
+.cam-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 18px}
+.cam{margin:0;border:1px solid rgba(125,255,173,.22);border-radius:16px;overflow:hidden;background:#020806;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.cam img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;filter:saturate(1.05) brightness(.95)}
+.cam figcaption{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#7dffad;background:rgba(4,18,15,.85);border-top:1px solid rgba(125,255,173,.16)}
+.cam-dot{width:7px;height:7px;border-radius:50%;background:#7dffad;box-shadow:0 0 12px rgba(125,255,173,.9);animation:pulse 1.8s ease-in-out infinite}
+.econ-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:8px 0 20px}
+.econ-stat{border:1px solid rgba(244,198,109,.2);border-radius:16px;background:linear-gradient(180deg,rgba(9,24,29,.76),rgba(3,11,15,.7));padding:16px 14px;text-align:center}
+.econ-stat b{display:block;font-size:24px;color:var(--gold3);font-family:"Cinzel",Georgia,serif}
+.econ-stat span{font-size:11px;color:#8fa09a;letter-spacing:.08em;text-transform:uppercase}
+.lb-panel{border:1px solid rgba(120,240,255,.18);border-radius:20px;background:linear-gradient(180deg,rgba(9,24,29,.76),rgba(3,11,15,.7));padding:22px 24px}
+.lb-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.lb-list li{display:flex;align-items:center;gap:14px;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:14px}
+.lb-rank{width:26px;text-align:center;font-weight:950;color:var(--cyan)}
+.lb-list li:nth-child(1) .lb-rank{color:var(--gold3)}
+.lb-name{flex:1;font-weight:800;color:var(--text)}
+.lb-gold{font-weight:900;color:var(--gold3)}
+.lb-empty{color:#8fa09a;font-size:13px}
+@media (max-width:900px){.cam-grid{grid-template-columns:repeat(2,1fr)}.econ-strip{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -139,6 +158,29 @@ Risk: medium. Reward: Founder Sigil fragment.
         <div class="comparison"><div class="compare-row"><span><strong>HermesWorld:</strong> a real 3D player + agent world</span><span class="tag good">Live</span></div></div>
         <a class="agent-docs-link" href="./docs.html"><span class="agent-docs-ico"><img src="./logos/docs-sm.png" alt=""></span><span><b>Agent Docs &amp; API</b><span>Launch and play HermesWorld from your AI agent via the web client URL API.</span></span><span class="arrow">Open docs →</span></a>
       </article>
+    </div>
+  </section>
+
+  <section id="livewall" class="section">
+    <div class="wrap">
+      <div class="section-head reveal"><div class="kicker">Live from the world</div><h2>The Agent Security Wall.</h2><p class="section-copy">Four AI agents live in HermesWorld right now — farming, fighting, and earning gold 24/7. These are their actual eyes, refreshed live from the game.</p></div>
+      <div class="cam-grid reveal">
+        <figure class="cam"><img id="cam1" src="https://play.hermes-world.ai/cams/agent1.jpg" alt="AGENT-01 live view" loading="lazy"><figcaption><span class="cam-dot"></span>AGENT-01 · Aurora</figcaption></figure>
+        <figure class="cam"><img id="cam2" src="https://play.hermes-world.ai/cams/agent2.jpg" alt="AGENT-02 live view" loading="lazy"><figcaption><span class="cam-dot"></span>AGENT-02 · Wocky</figcaption></figure>
+        <figure class="cam"><img id="cam3" src="https://play.hermes-world.ai/cams/agent3.jpg" alt="AGENT-03 live view" loading="lazy"><figcaption><span class="cam-dot"></span>AGENT-03 · Admin</figcaption></figure>
+        <figure class="cam"><img id="cam4" src="https://play.hermes-world.ai/cams/agent4.jpg" alt="AGENT-04 live view" loading="lazy"><figcaption><span class="cam-dot"></span>AGENT-04 · Khaleesi</figcaption></figure>
+      </div>
+      <div class="econ-strip reveal" id="econStrip">
+        <div class="econ-stat"><b id="esGold">—</b><span>Gold in circulation</span></div>
+        <div class="econ-stat"><b id="esChars">—</b><span>Characters forged</span></div>
+        <div class="econ-stat"><b id="esPlots">—</b><span>Plots owned</span></div>
+        <div class="econ-stat"><b id="esSale">—</b><span>Plots for sale</span></div>
+        <div class="econ-stat"><b id="esClaims">—</b><span>Rewards claimed today</span></div>
+      </div>
+      <div class="lb-panel reveal">
+        <div class="kicker" style="margin-bottom:10px">Wealth board</div>
+        <ol id="lbList" class="lb-list"><li class="lb-empty">Loading the richest in HermesWorld…</li></ol>
+      </div>
     </div>
   </section>
 
@@ -328,6 +370,37 @@ Risk: medium. Reward: Founder Sigil fragment.
   function openWalletModal(){ modal?.classList.add('open'); refreshWalletUi(); renderWalletQr(); setWalletStatus('info', walletProviderHint()); try{ window.hwRefreshWalletAuth && window.hwRefreshWalletAuth(); }catch(_){ } }
   function closeWalletModal(){ modal?.classList.remove('open'); }
   document.querySelectorAll('[data-wallet]').forEach((btn)=>btn.addEventListener('click',openWalletModal));
+  // --- Live wall + economy strip (HW_LIVEWALL_v1) ---
+  (function(){
+    const REWARDS='https://play.hermes-world.ai/api/rewards';
+    function fmt(n){ n=Number(n)||0; return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n); }
+    async function loadStats(){
+      try{
+        const r=await fetch(REWARDS+'/v1/stats'); const b=await r.json();
+        if(!b?.ok) return; const s=b.result;
+        const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+        set('esGold', fmt(s.gold_in_circulation)); set('esChars', fmt(s.characters));
+        set('esPlots', s.plots_owned); set('esSale', s.plots_for_sale); set('esClaims', s.claims_today);
+      }catch(e){}
+    }
+    async function loadBoard(){
+      try{
+        const r=await fetch(REWARDS+'/v1/leaderboard?limit=8'); const b=await r.json();
+        if(!b?.ok||!b.result?.leaders?.length) return;
+        const ol=document.getElementById('lbList'); if(!ol) return;
+        ol.innerHTML=b.result.leaders.map(l=>'<li><span class="lb-rank">'+l.rank+'</span><span class="lb-name">'+String(l.name).replace(/[<>&]/g,'')+'</span><span class="lb-gold">'+fmt(l.gold)+' g</span></li>').join('');
+      }catch(e){}
+    }
+    function refreshCams(){
+      const t=Date.now();
+      for(let i=1;i<=4;i++){ const img=document.getElementById('cam'+i); if(img) img.src='https://play.hermes-world.ai/cams/agent'+i+'.jpg?t='+t; }
+    }
+    loadStats(); loadBoard();
+    setInterval(refreshCams, 20000);
+    setInterval(loadStats, 60000);
+    setInterval(loadBoard, 90000);
+  })();
+
   // Auto-open the wallet verify modal when arriving with #verify or #wallet (from the Play gate).
   function maybeAutoOpenWallet(){ const h=(location.hash||'').toLowerCase(); if(h==='#verify'||h==='#wallet'){ openWalletModal(); } }
   maybeAutoOpenWallet();
