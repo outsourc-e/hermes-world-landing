@@ -186,7 +186,6 @@
     </div>
     <div class="ctas">
       <button id="setpw-save" class="btn primary" type="button">Set Password &amp; Continue</button>
-      <button id="setpw-skip" class="small-btn" type="button">Skip (use auto password)</button>
     </div>
     <div id="setpw-status" class="msg" style="margin-top:10px"></div>
   </div>
@@ -267,9 +266,10 @@ async function provisionGameAccount(autoReservedName = false) {
       $('verify-username').textContent = body.username;
       return show('state-verify');
     }
-    // FIRST LOGIN: prompt to set a password (overwrites the auto-derived one). Shown once per account.
-    // They can Skip to keep the auto password. Only for newly-created accounts that haven't set one.
-    if (body.action === 'created' && !localStorage.getItem('hw_pw_set_' + (body.accountId || body.username))) {
+    // HW_PW_REQUIRED_v1 (2026-07-10): ANY account still on the auto-derived password must set a
+    // real one before continuing (Google/SSO users never see the derived pw -> native login fails).
+    // Server truth: customPassword===true means the user already set their own password.
+    if (body.customPassword !== true) {
       $('setpw-username').textContent = body.username;
       return show('state-setpw');
     }
@@ -440,11 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $('enterpw-pw')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') $('enterpw-go').click(); });
 
-  $('setpw-skip')?.addEventListener('click', () => {
-    const acctKey = sessionStorage.getItem('hw_account_id') || $('setpw-username').textContent || '';
-    localStorage.setItem('hw_pw_set_' + acctKey, 'skipped');
-    setpwProceedToReady();
-  });
+  // HW_PW_REQUIRED_v1: skip removed — password setting is mandatory for derived-pw accounts.
   $('setpw-save')?.addEventListener('click', async () => {
     const btn = $('setpw-save');
     const pw = $('setpw-pw').value, pw2 = $('setpw-pw2').value;
