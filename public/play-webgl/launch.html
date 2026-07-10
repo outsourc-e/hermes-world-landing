@@ -158,6 +158,20 @@
   </div>
 
   <!-- State: first login -> prompt to set a game password (overwrites the auto-generated one). Optional. -->
+  <div id="state-enterpw" class="card hide">
+    <div class="row"><b>HermesWorld Name</b><span id="enterpw-username">—</span></div>
+    <p class="msg">You set a custom game password on this account. Enter it to launch:</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <input id="enterpw-pw" type="password" placeholder="Your game password" autocomplete="current-password"
+             style="padding:10px 12px;border-radius:8px;border:1px solid #444;background:#191925;color:#eee;font-size:15px">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button id="enterpw-go" class="btn primary" type="button">Continue</button>
+    </div>
+    <p class="msg" style="margin-top:8px;font-size:12px">Forgot it? Reset it on the <a href="/account" style="color:#7dbaff">account page</a>.</p>
+    <div id="enterpw-status" class="msg" style="margin-top:10px"></div>
+  </div>
+
   <div id="state-setpw" class="card hide">
     <div class="row"><b>HermesWorld Name</b><span id="setpw-username">—</span></div>
     <p class="msg" style="margin:14px 0 10px">
@@ -201,7 +215,7 @@ import {
 
 const $ = (id) => document.getElementById(id);
 const show = (id) => {
-  for (const s of ['state-signin','state-noname','state-loading','state-ready','state-verify','state-setpw','state-error']) $(s).classList.add('hide');
+  for (const s of ['state-signin','state-noname','state-loading','state-ready','state-verify','state-setpw','state-enterpw','state-error']) $(s).classList.add('hide');
   $(id).classList.remove('hide');
 };
 
@@ -234,8 +248,18 @@ async function provisionGameAccount(autoReservedName = false) {
     }
     // Stash for launcher (sessionStorage scoped to this tab only)
     sessionStorage.setItem('hw_username', body.username);
-    sessionStorage.setItem('hw_game_password', body.gamePassword);
     sessionStorage.setItem('hw_account_id', String(body.accountId || ''));
+    // HW_PWCLOBBER_FIX_v1: accounts with a CUSTOM password no longer receive gamePassword from
+    // the bridge (it must not be derivable). Prompt the player for it once per tab.
+    if (body.customPassword === true && !body.gamePassword) {
+      if (sessionStorage.getItem('hw_game_password')) { /* already entered this tab */ }
+      else {
+        $('enterpw-username').textContent = body.username;
+        return show('state-enterpw');
+      }
+    } else {
+      sessionStorage.setItem('hw_game_password', body.gamePassword);
+    }
     // OPTIONAL wallet rewards prompt (NOT a gate). Show it once so holders know they can claim
     // founder rewards, but they can enter the world immediately via "Enter the World".
     if (body.walletVerified === false && !sessionStorage.getItem('hw_verify_seen')) {
@@ -404,6 +428,18 @@ document.addEventListener('DOMContentLoaded', () => {
     show('state-ready');
     hwMeasureRegions();
   }
+  $('enterpw-go')?.addEventListener('click', () => {
+    const pw = $('enterpw-pw').value;
+    if (!pw || pw.length < 3) { $('enterpw-status').textContent = 'Enter your game password.'; return; }
+    sessionStorage.setItem('hw_game_password', pw);
+    $('ready-username').textContent = sessionStorage.getItem('hw_username') || '';
+    $('ready-action').textContent = 'Account ready';
+    $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
+    show('state-ready');
+    hwMeasureRegions();
+  });
+  $('enterpw-pw')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') $('enterpw-go').click(); });
+
   $('setpw-skip')?.addEventListener('click', () => {
     const acctKey = sessionStorage.getItem('hw_account_id') || $('setpw-username').textContent || '';
     localStorage.setItem('hw_pw_set_' + acctKey, 'skipped');
