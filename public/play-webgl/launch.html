@@ -251,7 +251,11 @@ async function provisionGameAccount(autoReservedName = false) {
     // HW_PWCLOBBER_FIX_v1: accounts with a CUSTOM password no longer receive gamePassword from
     // the bridge (it must not be derivable). Prompt the player for it once per tab.
     if (body.customPassword === true && !body.gamePassword) {
+      // HW_PW_PERSIST_v1: remember the custom password on this device (localStorage) so
+      // returning players auto-launch instead of re-typing every visit.
+      const savedPw = localStorage.getItem('hw_pw_' + (body.accountId ?? body.username));
       if (sessionStorage.getItem('hw_game_password')) { /* already entered this tab */ }
+      else if (savedPw) { sessionStorage.setItem('hw_game_password', savedPw); }
       else {
         $('enterpw-username').textContent = body.username;
         return show('state-enterpw');
@@ -432,6 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pw = $('enterpw-pw').value;
     if (!pw || pw.length < 3) { $('enterpw-status').textContent = 'Enter your game password.'; return; }
     sessionStorage.setItem('hw_game_password', pw);
+    localStorage.setItem('hw_pw_' + (sessionStorage.getItem('hw_account_id') || sessionStorage.getItem('hw_username') || ''), pw);
     $('ready-username').textContent = sessionStorage.getItem('hw_username') || '';
     $('ready-action').textContent = 'Account ready';
     $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
@@ -462,6 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('hw_game_password', pw);
         const acctKey = sessionStorage.getItem('hw_account_id') || $('setpw-username').textContent || '';
         localStorage.setItem('hw_pw_set_' + acctKey, '1');
+        localStorage.setItem('hw_pw_' + acctKey, pw);
         st.style.color = '#7dffad'; st.textContent = 'Password set! Entering\u2026';
         setTimeout(setpwProceedToReady, 700);
       } else {
