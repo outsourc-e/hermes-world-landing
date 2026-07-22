@@ -168,7 +168,14 @@
     <div style="display:flex;gap:10px;margin-top:12px">
       <button id="enterpw-go" class="btn primary" type="button">Continue</button>
     </div>
-    <p class="msg" style="margin-top:8px;font-size:12px">Forgot it? Reset it on the <a href="/account" style="color:#7dbaff">account page</a>.</p>
+    <p class="msg" style="margin-top:8px;font-size:12px">Forgot it? <a href="#" id="enterpw-rotate" style="color:#7dbaff">Set a new password instead</a> (you're signed in, so you can replace it).</p>
+    <div id="enterpw-newwrap" class="hide" style="display:none;flex-direction:column;gap:8px;margin-top:10px">
+      <input id="enterpw-new1" type="password" placeholder="New game password (min 6 chars)" autocomplete="new-password"
+             style="padding:10px 12px;border-radius:8px;border:1px solid #444;background:#191925;color:#eee;font-size:15px">
+      <input id="enterpw-new2" type="password" placeholder="Repeat new password" autocomplete="new-password"
+             style="padding:10px 12px;border-radius:8px;border:1px solid #444;background:#191925;color:#eee;font-size:15px">
+      <button id="enterpw-rotate-go" class="btn primary" type="button">Save New Password</button>
+    </div>
     <div id="enterpw-status" class="msg" style="margin-top:10px"></div>
   </div>
 
@@ -487,6 +494,52 @@ document.addEventListener('DOMContentLoaded', () => {
     } finally { btn.disabled = false; }
   });
   $('enterpw-pw')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') $('enterpw-go').click(); });
+  // HW_PWROTATE_v1: signed-in (JWT-proven) users may replace a forgotten game password inline.
+  $('enterpw-rotate')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const w = $('enterpw-newwrap');
+    w.classList.remove('hide');
+    w.style.display = 'flex';
+    $('enterpw-new1').focus();
+  });
+  $('enterpw-rotate-go')?.addEventListener('click', async () => {
+    const st = $('enterpw-status');
+    const p1 = $('enterpw-new1').value, p2 = $('enterpw-new2').value;
+    if (!p1 || p1.length < 6) { st.style.color = '#ff7d56'; st.textContent = 'New password must be at least 6 characters.'; return; }
+    if (p1 !== p2) { st.style.color = '#ff7d56'; st.textContent = 'Passwords do not match.'; return; }
+    const btn = $('enterpw-rotate-go'); btn.disabled = true; st.style.color = ''; st.textContent = 'Saving new password\u2026';
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) { st.style.color = '#ff7d56'; st.textContent = 'Session expired \u2014 sign in again.'; btn.disabled = false; return; }
+      const r = await fetch('/api/game-auth/set-password', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ jwt: session.access_token, newPassword: p1 }),
+      });
+      const out = await r.json().catch(() => ({}));
+      if (!r.ok || out.error || out.ok === false) { st.style.color = '#ff7d56'; st.textContent = out.message || out.error || 'Could not set password.'; btn.disabled = false; return; }
+      // read-back verify
+      st.textContent = 'Verifying\u2026';
+      const vr = await fetch('/api/game-auth/check-password', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ jwt: session.access_token, password: p1 }),
+      });
+      const vo = await vr.json().catch(() => ({}));
+      if (!vr.ok || vo.match !== true) { st.style.color = '#ff7d56'; st.textContent = 'Save could not be confirmed \u2014 try again.'; btn.disabled = false; return; }
+      sessionStorage.setItem('hw_game_password', p1);
+      const key = 'hw_pw_' + (sessionStorage.getItem('hw_account_id') || sessionStorage.getItem('hw_username') || '');
+      localStorage.setItem(key, p1);
+      st.style.color = '#7dffad'; st.textContent = 'New password set & verified! Entering\u2026';
+      setTimeout(() => {
+        $('ready-username').textContent = sessionStorage.getItem('hw_username') || '';
+        $('ready-action').textContent = 'Account ready';
+        $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
+        show('state-ready');
+        hwMeasureRegions();
+      }, 700);
+    } catch (err) {
+      st.style.color = '#ff7d56'; st.textContent = String(err?.message || err);
+    } finally { btn.disabled = false; }
+  });
 
   // HW_PW_REQUIRED_v1: skip removed — password setting is mandatory for derived-pw accounts.
   $('setpw-save')?.addEventListener('click', async () => {
