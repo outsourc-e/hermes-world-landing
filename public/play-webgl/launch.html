@@ -160,7 +160,7 @@
   <!-- State: first login -> prompt to set a game password (overwrites the auto-generated one). Optional. -->
   <div id="state-enterpw" class="card hide">
     <div class="row"><b>HermesWorld Name</b><span id="enterpw-username">—</span></div>
-    <p class="msg">You set a custom game password on this account. Enter it to launch:</p>
+    <p class="msg">This account already has a game password. Enter your <b>existing</b> password to launch (this is not where you create a new one):</p>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
       <input id="enterpw-pw" type="password" placeholder="Your game password" autocomplete="current-password"
              style="padding:10px 12px;border-radius:8px;border:1px solid #444;background:#191925;color:#eee;font-size:15px">
@@ -432,16 +432,37 @@ document.addEventListener('DOMContentLoaded', () => {
     show('state-ready');
     hwMeasureRegions();
   }
-  $('enterpw-go')?.addEventListener('click', () => {
+  $('enterpw-go')?.addEventListener('click', async () => {
     const pw = $('enterpw-pw').value;
-    if (!pw || pw.length < 3) { $('enterpw-status').textContent = 'Enter your game password.'; return; }
-    sessionStorage.setItem('hw_game_password', pw);
-    localStorage.setItem('hw_pw_' + (sessionStorage.getItem('hw_account_id') || sessionStorage.getItem('hw_username') || ''), pw);
-    $('ready-username').textContent = sessionStorage.getItem('hw_username') || '';
-    $('ready-action').textContent = 'Account ready';
-    $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
-    show('state-ready');
-    hwMeasureRegions();
+    const st = $('enterpw-status');
+    if (!pw || pw.length < 3) { st.textContent = 'Enter your game password.'; return; }
+    // HW_PWCHECK_v1: verify against the LIVE game DB before storing — catches typos and the
+    // "typed a brand-new password into the enter-password box" confusion (invalid-login loop).
+    const btn = $('enterpw-go'); btn.disabled = true; st.style.color = ''; st.textContent = 'Checking password…';
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) { st.style.color = '#ff7d56'; st.textContent = 'Session expired — sign in again.'; btn.disabled = false; return; }
+      const r = await fetch('/api/game-auth/check-password', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ jwt: session.access_token, password: pw }),
+      });
+      const out = await r.json().catch(() => ({}));
+      if (!r.ok || out.error) { st.style.color = '#ff7d56'; st.textContent = out.message || out.error || 'Could not verify password.'; btn.disabled = false; return; }
+      if (out.match !== true) {
+        st.style.color = '#ff7d56';
+        st.textContent = 'That password doesn\'t match this account. Use your existing game password, or reset it below.';
+        btn.disabled = false; return;
+      }
+      sessionStorage.setItem('hw_game_password', pw);
+      localStorage.setItem('hw_pw_' + (sessionStorage.getItem('hw_account_id') || sessionStorage.getItem('hw_username') || ''), pw);
+      $('ready-username').textContent = sessionStorage.getItem('hw_username') || '';
+      $('ready-action').textContent = 'Account ready';
+      $('ready-acctid').textContent = '#' + (sessionStorage.getItem('hw_account_id') || '?');
+      show('state-ready');
+      hwMeasureRegions();
+    } catch (err) {
+      st.style.color = '#ff7d56'; st.textContent = String(err?.message || err);
+    } finally { btn.disabled = false; }
   });
   $('enterpw-pw')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') $('enterpw-go').click(); });
 
