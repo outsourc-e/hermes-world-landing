@@ -253,9 +253,31 @@ async function provisionGameAccount(autoReservedName = false) {
     if (body.customPassword === true && !body.gamePassword) {
       // HW_PW_PERSIST_v1: remember the custom password on this device (localStorage) so
       // returning players auto-launch instead of re-typing every visit.
-      const savedPw = localStorage.getItem('hw_pw_' + (body.accountId ?? body.username));
+      const pwKey = 'hw_pw_' + (body.accountId ?? body.username);
+      const savedPw = localStorage.getItem(pwKey);
       if (sessionStorage.getItem('hw_game_password')) { /* already entered this tab */ }
-      else if (savedPw) { sessionStorage.setItem('hw_game_password', savedPw); }
+      else if (savedPw) {
+        // HW_PWCHECK_v1: verify the remembered password still matches the game DB (it may have
+        // been saved before verification existed, or changed elsewhere). Bad -> forget + prompt.
+        try {
+          const { data: { session: s2 } } = await supabase.auth.getSession();
+          const vr = await fetch('/api/game-auth/check-password', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ jwt: s2?.access_token || '', password: savedPw }),
+          });
+          const vo = await vr.json().catch(() => ({}));
+          if (vr.ok && vo.match === true) {
+            sessionStorage.setItem('hw_game_password', savedPw);
+          } else {
+            localStorage.removeItem(pwKey);
+            $('enterpw-username').textContent = body.username;
+            return show('state-enterpw');
+          }
+        } catch (e) {
+          // verification unreachable: fall back to using it (old behavior) rather than blocking play
+          sessionStorage.setItem('hw_game_password', savedPw);
+        }
+      }
       else {
         $('enterpw-username').textContent = body.username;
         return show('state-enterpw');
