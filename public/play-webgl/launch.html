@@ -505,13 +505,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const out = await r.json().catch(() => ({}));
       if (r.ok && out.ok !== false && !out.error) {
-        // The chosen password now overrides the auto one. Update the launcher's stored password so
-        // the immediate WebGL launch uses what they just set.
+        // HW_PWCHECK_v1c: don't trust the write — read it back. Verify the password now matches
+        // the live game DB before letting the player proceed (catches silent set failures).
+        st.textContent = 'Verifying\u2026';
+        const vr = await fetch('/api/game-auth/check-password', {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ jwt: session.access_token, password: pw }),
+        });
+        const vo = await vr.json().catch(() => ({}));
+        if (!vr.ok || vo.match !== true) {
+          st.style.color = '#ff7d56';
+          st.textContent = 'Password save could not be confirmed \u2014 please try again (or use Forgot Password).';
+          btn.disabled = false; return;
+        }
         sessionStorage.setItem('hw_game_password', pw);
         const acctKey = sessionStorage.getItem('hw_account_id') || $('setpw-username').textContent || '';
         localStorage.setItem('hw_pw_set_' + acctKey, '1');
         localStorage.setItem('hw_pw_' + acctKey, pw);
-        st.style.color = '#7dffad'; st.textContent = 'Password set! Entering\u2026';
+        st.style.color = '#7dffad'; st.textContent = 'Password set & verified! Entering\u2026';
         setTimeout(setpwProceedToReady, 700);
       } else {
         st.style.color = '#ff7d56';
