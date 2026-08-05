@@ -12,12 +12,12 @@
     a{color:inherit;text-decoration:none}
     .shell{width:min(100%,520px)}
     .card{border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(9,22,29,.94),rgba(3,9,12,.96));padding:32px 24px 24px;box-shadow:0 40px 120px rgba(0,0,0,.5),0 0 80px rgba(244,198,109,.08)}
-    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .brand img{width:42px;height:42px;border-radius:50%;box-shadow:0 0 24px rgba(244,198,109,.22)}
+    .brand{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:14px;text-align:center}
+    .brand img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(244,198,109,.35))}
     .brand b{font-size:18px}
     .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;border:1px solid rgba(244,198,109,.24);background:rgba(244,198,109,.08);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
-    .title{font-family:Georgia,serif;font-size:clamp(34px,7vw,48px);line-height:1;letter-spacing:-.04em;margin:18px 0 10px}
-    .copy{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 22px}
+    .title{font-family:Georgia,serif;font-size:clamp(34px,7vw,48px);line-height:1;letter-spacing:-.04em;margin:18px 0 10px;text-align:center}
+    .copy{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 22px;text-align:center}
     .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:6px;margin-bottom:18px}
     .tab{height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--muted);cursor:pointer;border:0;background:transparent}
     .tab.active{background:rgba(244,198,109,.12);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(244,198,109,.28)}
@@ -45,10 +45,10 @@
   <main class="shell">
     <div class="card">
       <div class="brand">
-        <img src="/assets/hermesworld/art/hermesworld-logo-h.png" alt="HermesWorld">
+        <img src="/crest-transparent.png" alt="HermesWorld">
         <b>HermesWorld</b>
       </div>
-      <div class="eyebrow">Enter the world</div>
+      <div style="text-align:center"><div class="eyebrow">Enter the world</div></div>
       <h1 class="title" id="title">Sign in to HermesWorld</h1>
       <p class="copy" id="subtitle">Use email or Google. Either way, you'll reserve a name on the next screen.</p>
 
