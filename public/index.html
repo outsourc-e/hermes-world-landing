@@ -251,7 +251,7 @@
       <video id="heroVideo" autoplay muted loop playsinline preload="metadata"><source src="/assets/hermesworld/video/cinematic-hero.mp4" type="video/mp4"></video>
     </div>
     <div class="hero-live-grid hero-live-single" id="heroLiveGrid" aria-hidden="true" hidden style="display:none">
-      <div class="hero-live-cell"><img id="qcam1" alt=""></div>
+      <div class="hero-live-cell"><img id="qcam1" alt="" style="display:none"></div>
     </div>
     <div class="hero-live-badge" id="heroLiveBadge" hidden style="display:none"><span class="cam-dot"></span> LIVE · 4 AI agents playing right now</div>
     <canvas id="stars" aria-hidden="true"></canvas>
@@ -272,7 +272,7 @@
         <button class="btn primary btn-play pp-main" id="heroPlay">&#9654; Play in Browser</button>
         <div class="pp-row">
           <a class="btn ghost pp-half" href="https://download.hermes-world.ai/HermesWorld-Setup-v1.3.exe">Windows</a>
-          <a class="btn ghost pp-half" href="https://download.hermes-world.ai/mac/HermesWorld-mac.dmg">Mac</a>
+          <a class="btn ghost pp-half" href="https://download.hermes-world.ai/mac/HermesWorld-Mac-v2.0.dmg">Mac</a>
         </div>
         <div class="pp-signin">
           <a href="/signin/" data-google-signin data-hw-signin-only><span data-google-label>Sign in / Sign up</span></a>
@@ -1120,9 +1120,6 @@ try{ supabase.auth.onAuthStateChange((_evt, sess)=>{ if(sess){ applySignedInUi()
 <script>
 // HW_CINEMATIC_20260804: live count in ribbon + CA copy
 (function(){
-  var t = document.getElementById('liveRibbonText');
-  function upd(){ fetch('https://play.hermes-world.ai/api/players',{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){ if (d && d.players > 0) t.textContent = 'THE WORLD IS LIVE \u2014 ' + d.players + ' IN-WORLD'; }).catch(function(){}); }
-  if (t) { upd(); setInterval(upd, 30000); }
   var cb = document.querySelector('[data-ca-copy]');
   var caCode = document.getElementById('caShort');
   if (cb) cb.addEventListener('click', function(){
@@ -1136,7 +1133,7 @@ try{ supabase.auth.onAuthStateChange((_evt, sess)=>{ if(sess){ applySignedInUi()
 <style>
 /* HW_CINEMATIC mobile overrides (final cascade) */
 @media (max-width:860px){
-  .play-panel{left:50% !important;right:auto !important;transform:translateX(-50%) !important;bottom:140px !important;width:min(320px,calc(100vw - 36px)) !important;padding:14px !important;gap:8px !important}
+  .play-panel-center{position:static !important;left:auto !important;right:auto !important;transform:none !important;bottom:auto !important;margin:20px auto 0 !important;width:min(320px,calc(100vw - 36px)) !important;padding:16px 18px 14px !important;gap:8px !important}
   .pp-title{font-size:16px}
   .pp-main{height:46px}
   .hero-center-cine{position:absolute;left:0;right:0;bottom:auto;top:12vh;align-items:center;text-align:center;padding:0 18px !important;max-width:none}
@@ -1218,7 +1215,7 @@ try{ supabase.auth.onAuthStateChange((_evt, sess)=>{ if(sess){ applySignedInUi()
       '</div>'+
       '<a class="nc-cta" href="#" onclick="document.getElementById(&quot;heroPlay&quot;).click();return false;">&#9654;&#xFE0E; Play in Browser</a>'+
       '<a class="nc-cta ghost" href="https://download.hermes-world.ai/HermesWorld-Setup-v1.3.exe">Windows</a>'+
-      '<a class="nc-cta ghost" href="https://download.hermes-world.ai/mac/HermesWorld-mac.dmg">macOS</a>'},
+      '<a class="nc-cta ghost" href="https://download.hermes-world.ai/mac/HermesWorld-Mac-v2.0.dmg">macOS</a>'},
     {id:'guide', label:'Guide', kick:'FROM LANDFALL TO LEGEND', title:'How to Play', html:
       '<div class="nc-steps">'+
       '<div class="nc-step"><i>1</i><b>Get in</b><span>Sign in with Google, connect a Solana wallet holding the token, and launch in your browser.</span></div>'+
