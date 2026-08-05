@@ -52,7 +52,7 @@
       box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 24px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,235,180,.08);
       backdrop-filter:blur(16px);padding:18px 22px 16px}
     .ppc-head{display:flex;flex-direction:column;align-items:center;gap:2px;margin-bottom:12px}
-    .ppc-crest{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))}
+    .ppc-crest{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 2px 10px rgba(0,0,0,.75))}
     .ppc-title{font-family:Cinzel,Georgia,serif;font-size:15px;letter-spacing:.12em;color:#f4e9d3;margin-top:4px}
     .ppc-rule{display:flex;align-items:center;gap:8px;width:78%;margin-top:6px}
     .ppc-rule span{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(244,198,109,.45))}
@@ -131,7 +131,10 @@
     section.hero{min-height:100svh !important;max-height:100svh;}
     .hero-ca-cine{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.15);background:rgba(2,7,10,.55);backdrop-filter:blur(10px);border-radius:999px;padding:7px 16px;cursor:pointer;font-family:Inter,system-ui,sans-serif}
     .hero-ca-cine .ca-label{font-size:9.5px;font-weight:950;letter-spacing:.2em;color:rgba(244,198,109,.9)}
-    .hero-ca-cine code{font-size:10.5px;color:#cfe0d8;font-family:ui-monospace,Menlo,monospace}
+    .hero-ca-cine code{font-size:11px;color:#cfe0d8;font-family:ui-monospace,Menlo,monospace;word-break:break-all;text-align:center}
+    .hero-ca-cine{max-width:min(94vw,720px);text-decoration:none}
+    .hero-ca-cine:hover{border-color:rgba(244,198,109,.5)}
+    @media (max-width:700px){.hero-ca-cine code{font-size:9px}}
     .hero-ca-cine .ca-link{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,233,211,.5)}
     .hero-ca-cine .ca-link:hover{color:var(--gold3)}
     .hero-ca-cine.copied code{color:#7dffad}
@@ -286,11 +289,11 @@
 
     <!-- Bottom-center: live ribbon + CA -->
     <div class="hero-bottom">
-      <button class="hero-ca hero-ca-cine reveal" type="button" data-ca-copy title="Copy contract address">
-        <span class="ca-label">$HERMESWORLD CA</span>
-        <code id="caShort">2YF1qx…FnYhH9</code>
-        <a id="heroCa" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" class="ca-link" onclick="event.stopPropagation()" title="View chart on pump.fun">&#8599;</a>
-      </button>
+      <a class="hero-ca hero-ca-cine reveal" id="heroCa" href="https://pump.fun/coin/2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9" target="_blank" rel="noopener" title="View on pump.fun">
+        <span class="ca-label">&#36;HERMESWORLD</span>
+        <code id="caShort">2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9</code>
+        <span class="ca-link">&#8599;</span>
+      </a>
     </div>
     <audio id="heroAudio" loop autoplay muted preload="auto"><source src="./audio/hermesworld-hero-loop.mp3" type="audio/mpeg"></audio>
   </section>
@@ -1120,14 +1123,7 @@ try{ supabase.auth.onAuthStateChange((_evt, sess)=>{ if(sess){ applySignedInUi()
 <script>
 // HW_CINEMATIC_20260804: live count in ribbon + CA copy
 (function(){
-  var cb = document.querySelector('[data-ca-copy]');
-  var caCode = document.getElementById('caShort');
-  if (cb) cb.addEventListener('click', function(){
-    navigator.clipboard.writeText('2YF1qxgYVY9x6UWVfampZp9er7PHXRYRDKi3isFnYhH9').then(function(){
-      if (caCode) caCode.textContent = 'Copied \u2713'; cb.classList.add('copied');
-      setTimeout(function(){ if (caCode) caCode.textContent = '2YF1qx\u2026FnYhH9'; cb.classList.remove('copied'); }, 1600);
-    });
-  });
+
 })();
 </script>
 <style>
