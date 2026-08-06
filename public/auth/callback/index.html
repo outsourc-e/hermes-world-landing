@@ -35,11 +35,28 @@
         </form>
         <div id="reserve-status" class="status"></div>
       </section>
+      <section id="gamepw-panel" class="panel hidden">
+        <form id="gamepw-form" class="form">
+          <div>
+            <div class="label">Game password</div>
+            <input id="gamepw" class="input" name="gamepw" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" />
+          </div>
+          <div>
+            <div class="label">Confirm password</div>
+            <input id="gamepw2" class="input" name="gamepw2" type="password" autocomplete="new-password" minlength="8" placeholder="Repeat it" />
+          </div>
+          <div class="hint">This is your password for HermesWorld on every device — browser, Windows, and Mac. Your username + this password logs you in anywhere.</div>
+          <div class="actions">
+            <button id="gamepw-submit" class="btn primary" type="submit">Set my game password →</button>
+          </div>
+        </form>
+        <div id="gamepw-status" class="status"></div>
+      </section>
       <div id="footnote" class="meta">Post-auth destination: /play if available, otherwise /dashboard.</div>
     </div>
   </main>
   <script type="module">
-    import { exchangeCodeFromCurrentUrl, generateUniqueUsername, getCurrentProfile, getDestination, normalizeUsername, reserveUniqueUsername, signInWithGoogle, suggestUsername } from '/assets/hermesworld/auth/supabase-client.js?v=20260616unique';
+    import { exchangeCodeFromCurrentUrl, generateUniqueUsername, getCurrentProfile, getCurrentSession, getDestination, normalizeUsername, reserveUniqueUsername, signInWithGoogle, suggestUsername } from '/assets/hermesworld/auth/supabase-client.js?v=20260616unique';
 
     const loadingPanel = document.getElementById('loading-panel');
     const reservePanel = document.getElementById('reserve-panel');
@@ -49,6 +66,69 @@
     const usernameInput = document.getElementById('username');
     const submitButton = document.getElementById('reserve-submit');
     const footnote = document.getElementById('footnote');
+    const gamepwPanel = document.getElementById('gamepw-panel');
+    const gamepwForm = document.getElementById('gamepw-form');
+    const gamepwInput = document.getElementById('gamepw');
+    const gamepwInput2 = document.getElementById('gamepw2');
+    const gamepwSubmit = document.getElementById('gamepw-submit');
+    const gamepwStatus = document.getElementById('gamepw-status');
+
+    async function getJwt() {
+      try {
+        const session = await getCurrentSession();
+        return session?.access_token || null;
+      } catch (_) { return null; }
+    }
+
+    // HW_PWSTATUS_v1: does this identity still need to choose a game password?
+    async function needsGamePassword() {
+      const jwt = await getJwt();
+      if (!jwt) return false;
+      try {
+        const r = await fetch('/api/game-auth/password-status', {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ jwt }),
+        });
+        if (!r.ok) return false;
+        const st = await r.json();
+        // needs one when: no pending signup pw stashed AND (no account yet OR account still on derived pw)
+        return !st.pending && !st.custom;
+      } catch (_) { return false; }
+    }
+
+    function showGamePw() {
+      loadingPanel.classList.add('hidden');
+      reservePanel.classList.add('hidden');
+      gamepwPanel.classList.remove('hidden');
+      gamepwInput.focus();
+    }
+
+    gamepwForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const pw = gamepwInput.value;
+      if (pw.length < 8) { setStatus(gamepwStatus, 'Password must be at least 8 characters.', 'error'); return; }
+      if (pw !== gamepwInput2.value) { setStatus(gamepwStatus, 'Passwords do not match.', 'error'); return; }
+      gamepwSubmit.disabled = true;
+      gamepwSubmit.textContent = 'Saving…';
+      setStatus(gamepwStatus, 'Setting your game password…');
+      try {
+        const jwt = await getJwt();
+        if (!jwt) throw new Error('Session expired — sign in again.');
+        const r = await fetch('/api/game-auth/sync-password', {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ jwt, password: pw }),
+        });
+        const res = await r.json().catch(() => ({}));
+        if (!r.ok || res?.ok === false) throw new Error(res?.message || 'Could not save the password.');
+        setStatus(gamepwStatus, 'Saved. Entering HermesWorld…', 'success');
+        await continueToDestination();
+      } catch (error) {
+        console.error(error);
+        setStatus(gamepwStatus, error?.message || 'Could not save the password.', 'error');
+        gamepwSubmit.disabled = false;
+        gamepwSubmit.textContent = 'Set my game password →';
+      }
+    });
 
     function setStatus(node, message, tone = 'muted') {
       node.textContent = message;
@@ -132,6 +212,11 @@
       }
 
       if (profile?.username) {
+        if (await needsGamePassword()) {
+          setStatus(loadingStatus, `Welcome back, ${profile.username}.`, 'success');
+          showGamePw();
+          return;
+        }
         setStatus(loadingStatus, `Welcome back, ${profile.username}. Sending you to the portal…`, 'success');
         await continueToDestination();
         return;
@@ -168,6 +253,7 @@
         const suffixNote = profile.username !== username ? ` ${username} was taken, so we reserved ${profile.username} instead.` : '';
         setStatus(reserveStatus, `Locked in. ${profile.username} is yours.${suffixNote}`, 'success');
         submitButton.textContent = 'Reserved';
+        if (await needsGamePassword()) { showGamePw(); return; }
         await continueToDestination();
       } catch (error) {
         console.error(error);
