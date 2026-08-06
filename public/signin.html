@@ -187,6 +187,19 @@
           return;
         }
 
+        // HW_PWSYNC_v1: adopt the typed password as the game password (server never
+        // overwrites a custom game password; safe to call on every sign-in).
+        try {
+          const sess = data?.session;
+          const jwt = sess?.access_token;
+          if (jwt) {
+            fetch('/api/game-auth/sync-password', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ jwt, password }),
+            }).catch(() => {});
+          }
+        } catch (_) { /* non-blocking */ }
         setStatus('Signed in. Continuing…', 'success');
         const continued = await continueAfterAuth();
         if (!continued) {
