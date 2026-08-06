@@ -74,26 +74,33 @@
     const gamepwStatus = document.getElementById('gamepw-status');
 
     async function getJwt() {
-      try {
-        const session = await getCurrentSession();
-        return session?.access_token || null;
-      } catch (_) { return null; }
+      // Session can lag right after the OAuth code exchange — retry briefly.
+      for (let i = 0; i < 6; i += 1) {
+        try {
+          const session = await getCurrentSession();
+          if (session?.access_token) return session.access_token;
+        } catch (_) { /* retry */ }
+        await new Promise((r) => setTimeout(r, 350));
+      }
+      return null;
     }
 
     // HW_PWSTATUS_v1: does this identity still need to choose a game password?
-    async function needsGamePassword() {
+    // failMode: 'ask' = show the panel when status can't be determined (fresh signups),
+    //           'skip' = don't block returning users if the check fails.
+    async function needsGamePassword(failMode = 'skip') {
       const jwt = await getJwt();
-      if (!jwt) return false;
+      if (!jwt) return failMode === 'ask';
       try {
         const r = await fetch('/api/game-auth/password-status', {
           method: 'POST', headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ jwt }),
         });
-        if (!r.ok) return false;
+        if (!r.ok) return failMode === 'ask';
         const st = await r.json();
         // needs one when: no pending signup pw stashed AND (no account yet OR account still on derived pw)
         return !st.pending && !st.custom;
-      } catch (_) { return false; }
+      } catch (_) { return failMode === 'ask'; }
     }
 
     function showGamePw() {
@@ -253,7 +260,7 @@
         const suffixNote = profile.username !== username ? ` ${username} was taken, so we reserved ${profile.username} instead.` : '';
         setStatus(reserveStatus, `Locked in. ${profile.username} is yours.${suffixNote}`, 'success');
         submitButton.textContent = 'Reserved';
-        if (await needsGamePassword()) { showGamePw(); return; }
+        if (await needsGamePassword('ask')) { showGamePw(); return; }
         await continueToDestination();
       } catch (error) {
         console.error(error);
