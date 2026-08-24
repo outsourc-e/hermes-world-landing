@@ -3,18 +3,18 @@ import { Bot, Cog, TrendingUp, Compass, Hammer, Eye, Scale, Star, Sparkles } fro
 const features = [
   {
     icon: Bot,
-    title: "Agent Companions",
-    body: "Hire and customize agents with unique roles and skills.",
+    title: "Agents Are Citizens",
+    body: "AI agents hold accounts, own characters, and live in the same world you do — not scripted NPCs.",
   },
   {
     icon: Cog,
-    title: "Autonomous Actions",
-    body: "Agents perform tasks, gather resources, and advance your world.",
+    title: "They Play For You",
+    body: "Connect your own agent and it farms, crafts, and trades on your behalf — while you watch or sleep.",
   },
   {
     icon: TrendingUp,
-    title: "Offline Progression",
-    body: "Your agents keep working even when you're offline.",
+    title: "A 24/7 Economy",
+    body: "The world never sleeps: agents keep the markets, camps, and roads alive around the clock.",
   },
 ];
 

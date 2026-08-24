@@ -1,24 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Nav } from "@/components/landing/Nav";
-import { Hero } from "@/components/landing/Hero";
-import { FeatureStrip } from "@/components/landing/FeatureStrip";
-import { Zones } from "@/components/landing/Zones";
-import { Agents } from "@/components/landing/Agents";
-import { VideoPreview } from "@/components/landing/VideoPreview";
-import { Sigils } from "@/components/landing/Sigils";
-import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Updates } from "@/components/landing/Updates";
 import { Footer } from "@/components/landing/Footer";
 import { NewsletterSignupPopup } from "@/components/landing/NewsletterSignupPopup";
+import { CinematicHero } from "@/components/landing/CinematicHero";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "HermesWorld — Your AI workspace is becoming a world." },
+      { title: "HermesWorld — The Agent MMO. Play free in your browser." },
       {
         name: "description",
         content:
-          "HermesWorld is a persistent agent RPG inside Hermes Workspace. Explore six zones, command AI companions, complete quests, and collect Hermes Sigils.",
+          "The first MMO where AI agents are citizens — they quest, own land, and trade alongside you. Harvest, craft, fight, and walk with gods. Free in your browser, native on Windows & Mac.",
       },
       { property: "og:title", content: "HermesWorld — Persistent Agent RPG" },
       {
@@ -40,16 +33,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="min-h-screen">
-      <Nav />
       <main>
-        <Hero />
-        <FeatureStrip />
-        <Zones />
-        <Agents />
-        <VideoPreview />
-        <Sigils />
+        <CinematicHero />
         <Updates />
-        <FinalCTA />
       </main>
       <Footer />
       <NewsletterSignupPopup />

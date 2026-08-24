@@ -307,3 +307,14 @@
 @media (prefers-reduced-motion: reduce) {
   .hw-kenburns { animation: none; }
 }
+
+/* HW_LANDINGV2_CINEMATIC: chapter text reveal */
+.hw-chapter {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.hw-chapter-in {
+  opacity: 1;
+  transform: translateY(0);
+}

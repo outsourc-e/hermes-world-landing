@@ -147,13 +147,13 @@ export function CinematicHero() {
         </a>
         <div className="mt-3 grid grid-cols-2 gap-2.5">
           <a
-            href="https://download.hermes-world.ai/HermesWorld-Setup-v1.3.exe"
+            href="https://download.hermes-world.ai/HermesWorld-Win-v2.3.zip"
             className="flex h-10 items-center justify-center gap-1.5 rounded-md border border-white/20 bg-white/5 font-body text-[10.5px] font-bold uppercase tracking-[0.1em] text-parchment/85 transition hover:border-gold/50 hover:text-gold"
           >
             Windows
           </a>
           <a
-            href="https://download.hermes-world.ai/mac/HermesWorld-Mac-v2.0.dmg"
+            href="https://download.hermes-world.ai/HermesWorld-Mac-v2.2.dmg"
             className="flex h-10 items-center justify-center gap-1.5 rounded-md border border-white/20 bg-white/5 font-body text-[10.5px] font-bold uppercase tracking-[0.1em] text-parchment/85 transition hover:border-gold/50 hover:text-gold"
           >
             Mac

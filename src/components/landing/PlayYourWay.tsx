@@ -29,7 +29,7 @@ const CARDS = [
     title: "Windows Client",
     version: VERSIONS.windows,
     desc: "Full native performance for serious sessions. DX12, uncapped framerate.",
-    href: "https://download.hermes-world.ai/HermesWorld-Setup-v1.3.exe",
+    href: "https://download.hermes-world.ai/HermesWorld-Win-v2.3.zip",
     cta: "Download for Windows",
     highlight: false,
     icon: (
@@ -43,7 +43,7 @@ const CARDS = [
     title: "Mac Client",
     version: VERSIONS.mac,
     desc: "Apple Silicon native. Right-click → Open on first launch.",
-    href: "https://download.hermes-world.ai/mac/HermesWorld-Mac-v2.0.dmg",
+    href: "https://download.hermes-world.ai/HermesWorld-Mac-v2.2.dmg",
     cta: "Download for Mac",
     highlight: false,
     icon: (

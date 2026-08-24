@@ -181,6 +181,18 @@ export function Hero() {
           }}
           aria-hidden
         />
+        {/* HW_LANDINGV2: live gameplay loop over the key art (muted, autoplay, respects reduced motion) */}
+        <video
+          className="absolute inset-0 h-full w-full object-cover hw-hero-video"
+          style={{ opacity: 0.85 }}
+          src="/assets/hermesworld/video/immersive/world-walk.mp4"
+          poster={heroKeyArt}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden
+        />
         {/* Readability scrim over art */}
         <div
           className="absolute inset-0"
